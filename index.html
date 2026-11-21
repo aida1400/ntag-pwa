@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>N-tag | سامانه تردد هلدینگ دُراس</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0D9488">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="N-tag">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Vazirmatn Font CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0A0F1D;
+      --bg-card: #111827;
+      --bg-elevated: #1F2937;
+      --teal-primary: #0D9488;
+      --teal-vibrant: #14B8A6;
+      --teal-glow: rgba(20, 184, 166, 0.25);
+      --amber-primary: #F59E0B;
+      --rose-primary: #F43F5E;
+      --text-main: #F9FAFB;
+      --text-sub: #9CA3AF;
+      --border-subtle: #374151;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 30px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Top Header */
+    .header-card {
+      background: linear-gradient(135deg, #111827 0%, #1E293B 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-title-box {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-sub {
+      font-size: 11px;
+      color: var(--teal-vibrant);
+      font-weight: 600;
+    }
+
+    .header-badge {
+      background-color: rgba(20, 184, 166, 0.15);
+      border: 1px solid var(--teal-primary);
+      color: var(--teal-vibrant);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    /* Employee Selector Card */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--teal-vibrant);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    select, input {
+      width: 100%;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      color: var(--text-main);
+      padding: 10px 12px;
+      font-size: 12.5px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--teal-primary);
+    }
+
+    /* Status Grid */
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .status-box {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+    }
+
+    .status-label {
+      font-size: 10.5px;
+      color: var(--text-sub);
+    }
+
+    .status-val {
+      font-size: 13px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    /* Punch Buttons */
+    .punch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .punch-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 16px 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    .punch-btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-entry {
+      background: linear-gradient(135deg, #F59E0B 0%, #10B981 100%);
+      color: #064E3B;
+    }
+
+    .btn-exit {
+      background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+      border: 1px solid #475569;
+      color: #F87171;
+    }
+
+    /* Leave & Overtime */
+    .tabs-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-elevated);
+      color: var(--text-sub);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background-color: var(--teal-primary);
+      border-color: var(--teal-vibrant);
+      color: #FFFFFF;
+    }
+
+    .duration-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .chip.selected {
+      background-color: var(--amber-primary);
+      color: #000000;
+      font-weight: 700;
+      border-color: var(--amber-primary);
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: #000000;
+      font-weight: 800;
+      font-size: 13px;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    /* Camera Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-content {
+      background-color: var(--bg-card);
+      border: 1px solid var(--teal-primary);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 10px 40px rgba(13, 148, 136, 0.3);
+    }
+
+    .camera-frame {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid var(--teal-vibrant);
+      position: relative;
+      background-color: #000;
+    }
+
+    video, canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+
+    .capture-btn {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 13.5px;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .cancel-btn {
+      background: transparent;
+      color: var(--text-sub);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-size: 12px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* History list */
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 11.5px;
+    }
+
+    .ios-tip {
+      background-color: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #FCD34D;
+      font-size: 10.5px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Top Header -->
+    <div class="header-card">
+      <div class="header-title-box">
+        <div class="header-title">
+          <span>🏢</span> هلدینگ بین‌المللی دُراس
+        </div>
+        <div class="header-sub">سامانه تردد هوشمند N-tag (نسخه تحت وب PWA)</div>
+      </div>
+      <div class="header-badge" id="liveClock">--:--</div>
+    </div>
+
+    <!-- iOS Installation Tip -->
+    <div class="ios-tip" id="iosTip" style="display: none;">
+      💡 <strong>راهنمای کاربران آیفون (iOS):</strong> جهت استفاده مشابه اپلیکیشن بومی، در مرورگر سافاری روی دکمه Share کلیک کرده و گزینه <strong>Add to Home Screen</strong> را انتخاب فرمایید.
+    </div>
+
+    <!-- Employee Profile & Supervisor Routing Card -->
+    <div class="card">
+      <div class="card-title">
+        <span>👤</span> شناسایی پرسنل و مقصد ناظر در بله
+      </div>
+
+      <select id="empSelect" onchange="onEmployeeChanged()">
+        <option value="101" data-phone="09309575995" data-sup="BOTH">سرکار خانم آیدا شفیع‌خانی (مدیریت ارشد)</option>
+        <option value="102" data-phone="09226886297" data-sup="AIDA_ONLY">جناب مهندس محمد نیازی (مدیریت اجرایی)</option>
+        <option value="103" data-phone="09120000001" data-sup="AIDA_ONLY">جناب مهندس امامی (توسعه و فنی)</option>
+        <option value="104" data-phone="09120000002" data-sup="AIDA_ONLY">ایلیا (سولار و فنی)</option>
+        <option value="105" data-phone="09120000003" data-sup="AIDA_ONLY">سینا (هوشان و تسک)</option>
+        <option value="106" data-phone="09120000004" data-sup="AIDA_ONLY">رایان (هوشان و تسک)</option>
+        <option value="107" data-phone="09120000005" data-sup="BOTH">کارشناس حسابداری (جمعه‌ها / مالی)</option>
+      </select>
+
+      <div style="font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between;">
+        <span>ناظر مستقیم در بله:</span>
+        <strong id="routingBadge" style="color: var(--teal-vibrant);">👥 هر دو مدیر ناظر</strong>
+      </div>
+    </div>
+
+    <!-- Status Summary -->
+    <div class="status-grid">
+      <div class="status-box">
+        <span class="status-label">تاریخ روز</span>
+        <span class="status-val" id="todayDate">--</span>
+      </div>
+      <div class="status-box">
+        <span class="status-label">وضعیت آخرین تردد</span>
+        <span class="status-val" id="lastPunchStatus">ثبت نشده</span>
+      </div>
+    </div>
+
+    <!-- Punch Entry & Exit Buttons -->
+    <div class="punch-grid">
+      <button class="punch-btn btn-entry" onclick="startPunch('ENTRY')">
+        <span>✅</span> ثبت ورود
+      </button>
+      <button class="punch-btn btn-exit" onclick="startPunch('EXIT')">
+        <span>🚪</span> ثبت خروج
+      </button>
+    </div>
+
+    <!-- Leave, Mission, Overtime Request -->
+    <div class="card">
+      <div class="card-title">
+        <span>⏱</span> ثبت هماهنگی و تردد ساعتی
+      </div>
+
+      <div class="tabs-row">
+        <button class="tab-btn active" id="tabLeave" onclick="selectTab('LEAVE')">مرخصی ساعتی 📋</button>
+        <button class="tab-btn" id="tabMission" onclick="selectTab('MISSION')">ماموریت اداری 🚗</button>
+        <button class="tab-btn" id="tabOvertime" onclick="selectTab('OVERTIME')">اضافه‌کاری ⏱</button>
+      </div>
+
+      <div class="duration-chips">
+        <div class="chip" onclick="setDuration(15, this)">۱۵ دقیقه</div>
+        <div class="chip" onclick="setDuration(30, this)">۳۰ دقیقه</div>
+        <div class="chip selected" onclick="setDuration(60, this)">۱ ساعت</div>
+        <div class="chip" onclick="setDuration(120, this)">۲ ساعت</div>
+        <div class="chip" onclick="setDuration(540, this)">۹ ساعت (روزانه)</div>
+      </div>
+
+      <button class="action-btn" id="submitActionBtn" onclick="sendHourlyRequest()">
+        ثبت و ارسال مرخصی ساعتی (۱ ساعت) به ناظران
+      </button>
+    </div>
+
+    <!-- Local Today's History -->
+    <div class="card">
+      <div class="card-title">
+        <span>📜</span> ثبت‌های امروز من
+      </div>
+      <div id="historyList" style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: var(--text-sub); text-align: center; padding: 10px;">
+          هنوز رکوردی برای امروز ثبت نشده است.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Camera & Selfie Capture Modal -->
+  <div class="modal-overlay" id="cameraModal">
+    <div class="modal-content">
+      <h3 style="font-size: 14px; font-weight: 800; color: #FFFFFF;" id="modalTitle">ثبت سلفی تردد</h3>
+      <p style="font-size: 11px; color: var(--text-sub); text-align: center;">
+        لطفاً صورت خود را در کادر بیضی روبرو قرار داده و دکمه تایید را لمس فرمایید.
+      </p>
+
+      <div class="camera-frame">
+        <video id="videoFeed" autoplay playsinline muted></video>
+        <canvas id="photoCanvas" style="display: none;"></canvas>
+      </div>
+
+      <div id="gpsStatus" style="font-size: 10.5px; color: var(--teal-vibrant); text-align: center;">
+        در حال دریافت موقعیت مکانی GPS...
+      </div>
+
+      <button class="capture-btn" id="btnCapture" onclick="takePhotoAndDispatch()">
+        📸 گرفتن عکس و ارسال مستقیم به بله
+      </button>
+      <button class="cancel-btn" onclick="closeCameraModal()">انصراف</button>
+    </div>
+  </div>
+
+  <script>
+    const BALE_BOT_TOKEN = "1272760798:ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs";
+    const AIDA_CHAT_ID = "1845765012";
+    const NIAZI_CHAT_ID = "1646215027";
+
+    let activePunchType = 'ENTRY';
+    let activeTabType = 'LEAVE';
+    let selectedDurationMinutes = 60;
+    let localStream = null;
+    let currentCoords = null;
+
+    // Detect iOS Safari
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIos && !window.navigator.standalone) {
+      document.getElementById('iosTip').style.display = 'block';
+    }
+
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+    }
+
+    // Live Clock & Jalali Date
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('liveClock').innerText = `${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Simple Jalali converter
+    function getTodayJalali() {
+      try {
+        const d = new Date();
+        const f = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long', day: 'numeric' });
+        return f.format(d);
+      } catch (e) {
+        return "آبان ۱۴۰۵";
+      }
+    }
+    document.getElementById('todayDate').innerText = getTodayJalali();
+
+    function onEmployeeChanged() {
+      const sel = document.getElementById('empSelect');
+      const opt = sel.options[sel.selectedIndex];
+      const sup = opt.getAttribute('data-sup');
+      const badge = document.getElementById('routingBadge');
+
+      if (sup === 'AIDA_ONLY') {
+        badge.innerText = '👤 فقط سرکار خانم شفیع‌خانی';
+        badge.style.color = '#14B8A6';
+      } else if (sup === 'NIAZI_ONLY') {
+        badge.innerText = '👤 فقط جناب مهندس نیازی';
+        badge.style.color = '#38BDF8';
+      } else {
+        badge.innerText = '👥 هر دو مدیر ناظر هلدینگ';
+        badge.style.color = '#F59E0B';
+      }
+    }
+    onEmployeeChanged();
+
+    function selectTab(type) {
+      activeTabType = type;
+      document.getElementById('tabLeave').className = 'tab-btn' + (type === 'LEAVE' ? ' active' : '');
+      document.getElementById('tabMission').className = 'tab-btn' + (type === 'MISSION' ? ' active' : '');
+      document.getElementById('tabOvertime').className = 'tab-btn' + (type === 'OVERTIME' ? ' active' : '');
+
+      const typeNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
+      const durLabel = selectedDurationMinutes >= 60 ? (selectedDurationMinutes / 60) + ' ساعت' : selectedDurationMinutes + ' دقیقه';
+      document.getElementById('submitActionBtn').innerText = `ثبت و ارسال ${typeNames[type]} (${durLabel}) به ناظران`;
+    }
+
+    function setDuration(mins, elem) {
+      selectedDurationMinutes = mins;
+      document.querySelectorAll('.duration-chips .chip').forEach(c => c.classList.remove('selected'));
+      elem.classList.add('selected');
+      selectTab(activeTabType);
+    }
+
+    // Camera & GPS Handling
+    async function startPunch(type) {
+      activePunchType = type;
+      document.getElementById('modalTitle').innerText = type === 'ENTRY' ? '📸 ثبت سلفی ورود' : '📸 ثبت سلفی خروج';
+      document.getElementById('cameraModal').style.display = 'flex';
+      document.getElementById('photoCanvas').style.display = 'none';
+      document.getElementById('videoFeed').style.display = 'block';
+      document.getElementById('btnCapture').innerText = '📸 گرفتن عکس و ارسال مستقیم به بله';
+      document.getElementById('btnCapture').disabled = false;
+
+      // Geolocation
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            currentCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            document.getElementById('gpsStatus').innerText = `📍 مختصات GPS ثبت شد: ${currentCoords.lat.toFixed(4)}, ${currentCoords.lng.toFixed(4)}`;
+          },
+          (err) => {
+            document.getElementById('gpsStatus').innerText = '📍 موقعیت مکانی تایید نشد (مجوز یا آنتن ضعیف)';
+          },
+          { enableHighAccuracy: true, timeout: 6000 }
+        );
+      }
+
+      // Camera stream
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 720 } },
+          audio: false
+        });
+        document.getElementById('videoFeed').srcObject = localStream;
+      } catch (err) {
+        alert('امکان دسترسی به دوربین وجود ندارد. لطفاً در تنظیمات مرورگر مجوز دوربین را فعال فرمایید.');
+        closeCameraModal();
+      }
+    }
+
+    function closeCameraModal() {
+      if (localStream) {
+        localStream.getTracks().forEach(t => t.stop());
+        localStream = null;
+      }
+      document.getElementById('cameraModal').style.display = 'none';
+    }
+
+    async function takePhotoAndDispatch() {
+      const video = document.getElementById('videoFeed');
+      const canvas = document.getElementById('photoCanvas');
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 640;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      video.style.display = 'none';
+      canvas.style.display = 'block';
+
+      const btn = document.getElementById('btnCapture');
+      btn.innerText = '⏳ در حال ارسال مستقیم به بله...';
+      btn.disabled = true;
+
+      canvas.toBlob(async (blob) => {
+        await dispatchToBale(blob);
+      }, 'image/jpeg', 0.85);
+    }
+
+    async function dispatchToBale(photoBlob) {
+      const sel = document.getElementById('empSelect');
+      const opt = sel.options[sel.selectedIndex];
+      const empName = opt.text.split('(')[0].trim();
+      const empPhone = opt.getAttribute('data-phone');
+      const routing = opt.getAttribute('data-sup');
+
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const jalaliDate = getTodayJalali();
+      const typeStr = activePunchType === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪';
+
+      // Determine supervisor targets
+      let targetChatIds = [];
+      if (empPhone.endsWith('09309575995')) {
+        targetChatIds = [AIDA_CHAT_ID, NIAZI_CHAT_ID];
+      } else if (routing === 'NIAZI_ONLY') {
+        targetChatIds = [NIAZI_CHAT_ID];
+      } else if (routing === 'BOTH') {
+        targetChatIds = [AIDA_CHAT_ID, NIAZI_CHAT_ID];
+      } else {
+        targetChatIds = [AIDA_CHAT_ID];
+      }
+
+      // Build Caption
+      let caption = `🏢 ثبت تردد سازمانی — هلدینگ دُراس (نسخه PWA)\n`;
+      caption += `👤 نام و نام خانوادگی: ${empName}\n`;
+      caption += `📱 شماره تماس: ${empPhone}\n`;
+      caption += `📅 تاریخ: ${jalaliDate}\n`;
+      caption += `⏰ ساعت ${typeStr}: ${timeStr}\n`;
+      if (currentCoords) {
+        caption += `📍 موقعیت مکانی: https://maps.google.com/?q=${currentCoords.lat},${currentCoords.lng}\n`;
+      }
+      caption += `📱 پلتفرم: وب‌اپلیکیشن سازمانی PWA (آیفون/اندروید)`;
+
+      let successCount = 0;
+      for (const chatId of targetChatIds) {
+        try {
+          const formData = new FormData();
+          formData.append('chat_id', chatId);
+          formData.append('caption', caption);
+          formData.append('photo', photoBlob, `attendance_${Date.now()}.jpg`);
+
+          const res = await fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendPhoto`, {
+            method: 'POST',
+            body: formData
+          });
+          const json = await res.json();
+          if (json && json.ok) {
+            successCount++;
+          }
+        } catch (e) {
+          console.error('Dispatch error:', e);
+        }
+      }
+
+      closeCameraModal();
+
+      if (successCount > 0) {
+        alert(`✅ تردد شما با موفقیت ثبت و به مدیر ناظر در بله ارسال گردید.`);
+        document.getElementById('lastPunchStatus').innerText = `${typeStr} در ${timeStr}`;
+        addHistoryItem(typeStr, timeStr, empName);
+      } else {
+        alert(`⚠️ عکس ذخیره شد اما اتصال به پیام‌رسان بله با افت سرعت همراه بود. لطفاً اینترنت خود را بررسی نمایید.`);
+      }
+    }
+
+    async function sendHourlyRequest() {
+      const sel = document.getElementById('empSelect');
+      const opt = sel.options[sel.selectedIndex];
+      const empName = opt.text.split('(')[0].trim();
+      const empPhone = opt.getAttribute('data-phone');
+      const routing = opt.getAttribute('data-sup');
+
+      const typeNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
+      const durLabel = selectedDurationMinutes >= 60 ? (selectedDurationMinutes / 60) + ' ساعت' : selectedDurationMinutes + ' دقیقه';
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+      let targetChatIds = routing === 'NIAZI_ONLY' ? [NIAZI_CHAT_ID] : (routing === 'BOTH' ? [AIDA_CHAT_ID, NIAZI_CHAT_ID] : [AIDA_CHAT_ID]);
+
+      let text = `📋 درخواست هماهنگی تردد — هلدینگ دُراس\n`;
+      text += `👤 متقاضی: ${empName} (${empPhone})\n`;
+      text += `📌 عنوان: ${typeNames[activeTabType]}\n`;
+      text += `⏱ مدت زمان: ${durLabel}\n`;
+      text += `📅 تاریخ و ساعت ثبت: ${getTodayJalali()} - ${timeStr}`;
+
+      const btn = document.getElementById('submitActionBtn');
+      btn.innerText = 'در حال ارسال به بله...';
+      btn.disabled = true;
+
+      let okCount = 0;
+      for (const chatId of targetChatIds) {
+        try {
+          const res = await fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: text })
+          });
+          const json = await res.json();
+          if (json && json.ok) okCount++;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      btn.disabled = false;
+      selectTab(activeTabType);
+
+      if (okCount > 0) {
+        alert(`✅ درخواست ${typeNames[activeTabType]} به مدت ${durLabel} با موفقیت به مدیر ناظر ارسال شد.`);
+        addHistoryItem(typeNames[activeTabType], durLabel, empName);
+      } else {
+        alert('⚠️ خطا در ارسال به پیام‌رسان بله. اینترنت خود را چک فرمایید.');
+      }
+    }
+
+    function addHistoryItem(action, val, name) {
+      const list = document.getElementById('historyList');
+      if (list.innerHTML.includes('هنوز رکوردی')) {
+        list.innerHTML = '';
+      }
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML = `
+        <div>
+          <strong style="color: #FFFFFF;">${action}</strong>
+          <span style="color: var(--text-sub); margin-right: 6px;">(${name})</span>
+        </div>
+        <span style="color: var(--teal-vibrant); font-weight: 700;">${val}</span>
+      `;
+      list.prepend(item);
+    }
+  </script>
+</body>
+</html>
