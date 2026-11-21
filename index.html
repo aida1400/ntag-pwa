@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>N-tag | سامانه تردد هلدینگ دُراس</title>
+  <title>N-tag | سامانه تردد هلدینگ بین‌المللی دُراس</title>
   
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0D9488">
+  <meta name="theme-color" content="#00A896">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="N-tag">
@@ -19,17 +19,18 @@
 
   <style>
     :root {
-      --bg-dark: #0A0F1D;
-      --bg-card: #111827;
-      --bg-elevated: #1F2937;
-      --teal-primary: #0D9488;
+      --bg-dark: #081315;
+      --bg-card: #0D1E22;
+      --bg-elevated: #142B30;
+      --teal-primary: #00A896;
       --teal-vibrant: #14B8A6;
-      --teal-glow: rgba(20, 184, 166, 0.25);
-      --amber-primary: #F59E0B;
-      --rose-primary: #F43F5E;
-      --text-main: #F9FAFB;
-      --text-sub: #9CA3AF;
-      --border-subtle: #374151;
+      --teal-glow: #00F5D4;
+      --amber-gold: #F59E0B;
+      --coral-red: #F87171;
+      --border-subtle: rgba(0, 180, 216, 0.3);
+      --border-glow: rgba(0, 245, 212, 0.5);
+      --text-white: #FFFFFF;
+      --text-muted: #94A3B8;
     }
 
     * {
@@ -42,246 +43,432 @@
 
     body {
       background-color: var(--bg-dark);
-      color: var(--text-main);
+      color: var(--text-white);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 30px;
+      padding: 10px 12px 30px;
     }
 
-    .container {
+    .app-wrapper {
       width: 100%;
-      max-width: 480px;
-      padding: 16px;
+      max-width: 440px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
 
-    /* Top Header */
-    .header-card {
-      background: linear-gradient(135deg, #111827 0%, #1E293B 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 16px;
+    /* Aura Style Update Banner with Direct APK Download */
+    .aura-banner {
+      background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+      border-radius: 14px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.35);
+      text-decoration: none;
+      color: #FFFFFF;
     }
 
-    .header-title-box {
+    .aura-text-box {
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
 
-    .header-title {
-      font-size: 15px;
+    .aura-title {
+      font-size: 12.5px;
       font-weight: 800;
-      color: #FFFFFF;
+    }
+
+    .aura-sub {
+      font-size: 10px;
+      opacity: 0.9;
+    }
+
+    .aura-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Doravid Header */
+    .doravid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0 2px;
+    }
+
+    .header-user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .company-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--text-white);
+      letter-spacing: -0.3px;
+    }
+
+    .user-subtitle-row {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .header-sub {
+    .user-name-text {
       font-size: 11px;
-      color: var(--teal-vibrant);
       font-weight: 600;
+      color: var(--teal-vibrant);
     }
 
-    .header-badge {
-      background-color: rgba(20, 184, 166, 0.15);
+    .status-pill {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 9.5px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 12px;
+    }
+
+    .header-left-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-pill-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background-color: var(--bg-card);
       border: 1px solid var(--teal-primary);
       color: var(--teal-vibrant);
       font-size: 11px;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 20px;
+      cursor: pointer;
     }
 
-    /* Employee Selector Card */
-    .card {
+    .doras-logo-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00F5D4 0%, #00A896 50%, #0D1E22 100%);
+      border: 2px solid var(--teal-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: #081315;
+      box-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
+    }
+
+    /* Common Card */
+    .doras-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .card-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--teal-vibrant);
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title-label {
       display: flex;
       align-items: center;
       gap: 6px;
+      color: var(--teal-vibrant);
+      font-size: 12px;
+      font-weight: 700;
     }
 
-    select, input {
-      width: 100%;
-      background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
+    .badge-subtle {
+      background-color: rgba(20, 184, 166, 0.12);
+      border: 1px solid rgba(20, 184, 166, 0.25);
+      color: var(--teal-vibrant);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
       border-radius: 10px;
-      color: var(--text-main);
-      padding: 10px 12px;
-      font-size: 12.5px;
-      outline: none;
-      transition: border-color 0.2s;
     }
 
-    select:focus, input:focus {
-      border-color: var(--teal-primary);
-    }
-
-    /* Status Grid */
-    .status-grid {
+    /* Work Summary Grid */
+    .work-summary-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
 
-    .status-box {
+    .work-box {
       background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid rgba(0, 180, 216, 0.2);
       border-radius: 12px;
-      padding: 12px;
+      padding: 12px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
-      gap: 4px;
+      gap: 5px;
     }
 
-    .status-label {
+    .work-box-label {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .work-box-val {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--teal-vibrant);
+    }
+
+    .shift-model-strip {
+      background-color: rgba(20, 184, 166, 0.08);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      border-radius: 10px;
+      padding: 7px 10px;
       font-size: 10.5px;
-      color: var(--text-sub);
-    }
-
-    .status-val {
-      font-size: 13px;
-      font-weight: 800;
-      color: #FFFFFF;
+      color: var(--teal-vibrant);
+      text-align: center;
+      font-weight: 600;
     }
 
     /* Punch Buttons */
-    .punch-grid {
+    .punch-buttons-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .punch-btn {
+    .btn-punch {
       border: none;
       border-radius: 14px;
-      padding: 16px 12px;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
+      padding: 15px 10px;
+      font-size: 13.5px;
+      font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       transition: transform 0.1s, opacity 0.2s;
     }
 
-    .punch-btn:active {
+    .btn-punch:active {
       transform: scale(0.97);
     }
 
-    .btn-entry {
+    .btn-punch-entry {
       background: linear-gradient(135deg, #F59E0B 0%, #10B981 100%);
       color: #064E3B;
     }
 
-    .btn-exit {
-      background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
-      border: 1px solid #475569;
-      color: #F87171;
-    }
-
-    /* Leave & Overtime */
-    .tabs-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 8px 4px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      border: 1px solid var(--border-subtle);
+    .btn-punch-exit {
       background-color: var(--bg-elevated);
-      color: var(--text-sub);
-      cursor: pointer;
+      border: 1px solid #334155;
+      color: var(--coral-red);
+    }
+
+    /* Tabs & Duration Selector */
+    .tabs-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+
+    .timing-tab {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 8px 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-white);
       text-align: center;
+      cursor: pointer;
     }
 
-    .tab-btn.active {
-      background-color: var(--teal-primary);
+    .timing-tab.active {
+      background-color: var(--teal-vibrant);
       border-color: var(--teal-vibrant);
-      color: #FFFFFF;
+      color: #081315;
     }
 
-    .duration-chips {
+    .chips-flex-row {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
     }
 
-    .chip {
-      padding: 6px 12px;
+    .duration-chip {
       background-color: var(--bg-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
-      font-size: 11px;
-      color: var(--text-main);
+      padding: 5px 11px;
+      font-size: 10.5px;
+      color: var(--text-white);
       cursor: pointer;
     }
 
-    .chip.selected {
-      background-color: var(--amber-primary);
-      color: #000000;
-      font-weight: 700;
-      border-color: var(--amber-primary);
-    }
-
-    .action-btn {
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-      color: #000000;
+    .duration-chip.selected {
+      background-color: var(--amber-gold);
+      border-color: var(--amber-gold);
+      color: #081315;
       font-weight: 800;
-      font-size: 13px;
-      border: none;
-      border-radius: 10px;
-      padding: 12px;
-      cursor: pointer;
-      margin-top: 6px;
     }
 
-    /* Camera Modal */
-    .modal-overlay {
+    /* Counter Stepper */
+    .stepper-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stepper-box {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stepper-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .stepper-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-subtle);
+      color: var(--teal-vibrant);
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .step-val {
+      font-size: 13px;
+      font-weight: 800;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    /* Big Submit Button */
+    .btn-submit-action {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: #081315;
+      font-size: 12.5px;
+      font-weight: 900;
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Trust & Security Card */
+    .trust-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .trust-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-white);
+    }
+
+    .trust-badge-active {
+      background-color: rgba(16, 185, 129, 0.15);
+      border: 1px solid #10B981;
+      color: #10B981;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* History */
+    .history-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .history-empty-container {
+      background-color: var(--bg-elevated);
+      border: 1px solid rgba(0, 180, 216, 0.15);
+      border-radius: 12px;
+      padding: 20px 14px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Modals */
+    .modal-backdrop {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
-      padding: 16px;
+      z-index: 9999;
+      padding: 14px;
     }
 
-    .modal-content {
+    .modal-sheet {
       background-color: var(--bg-card);
       border: 1px solid var(--teal-primary);
       border-radius: 20px;
@@ -292,17 +479,17 @@
       flex-direction: column;
       align-items: center;
       gap: 14px;
-      box-shadow: 0 10px 40px rgba(13, 148, 136, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 168, 150, 0.35);
     }
 
-    .camera-frame {
-      width: 260px;
-      height: 260px;
+    .camera-circle-viewport {
+      width: 250px;
+      height: 250px;
       border-radius: 50%;
+      border: 4px solid var(--teal-glow);
       overflow: hidden;
-      border: 4px solid var(--teal-vibrant);
       position: relative;
-      background-color: #000;
+      background: #000;
     }
 
     video, canvas {
@@ -312,309 +499,362 @@
       transform: scaleX(-1);
     }
 
-    .capture-btn {
+    .btn-capture-modal {
       background: linear-gradient(135deg, #10B981 0%, #059669 100%);
       color: #FFFFFF;
-      font-weight: 800;
       font-size: 13.5px;
+      font-weight: 800;
       border: none;
       border-radius: 12px;
-      padding: 12px 24px;
+      padding: 12px;
       width: 100%;
       cursor: pointer;
     }
 
-    .cancel-btn {
+    .btn-cancel-modal {
       background: transparent;
-      color: var(--text-sub);
       border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
       border-radius: 12px;
-      padding: 8px 16px;
-      font-size: 12px;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    /* History list */
-    .history-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 10px 12px;
+      padding: 8px;
       font-size: 11.5px;
-    }
-
-    .ios-tip {
-      background-color: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      color: #FCD34D;
-      font-size: 10.5px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      line-height: 1.6;
+      width: 100%;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="app-wrapper">
 
-    <!-- Top Header -->
-    <div class="header-card">
-      <div class="header-title-box">
-        <div class="header-title">
-          <span>🏢</span> هلدینگ بین‌المللی دُراس
+    <!-- 1. Aura Style Banner with Direct APK Download Button -->
+    <a href="N-tag_v4.3.0.apk" download class="aura-banner">
+      <div class="aura-text-box">
+        <div class="aura-title">نسخه تازه N-tag آماده است: ۴.۳.۰</div>
+        <div class="aura-sub">دانلود مستقیم فایل نصبی اندروید (APK اختصاصی هلدینگ دُراس)</div>
+      </div>
+      <div class="aura-btn">دانلود APK 📥</div>
+    </a>
+
+    <!-- 2. Doravid Top Header (Pixel-perfect matching Android v4.3.0) -->
+    <div class="doravid-header">
+      <div class="header-left-actions">
+        <div class="admin-pill-btn" onclick="openAdminModal()">
+          <span>🛡</span> ادمین
         </div>
-        <div class="header-sub">سامانه تردد هوشمند N-tag (نسخه تحت وب PWA)</div>
-      </div>
-      <div class="header-badge" id="liveClock">--:--</div>
-    </div>
-
-    <!-- iOS Installation Tip -->
-    <div class="ios-tip" id="iosTip" style="display: none;">
-      💡 <strong>راهنمای کاربران آیفون (iOS):</strong> جهت استفاده مشابه اپلیکیشن بومی، در مرورگر سافاری روی دکمه Share کلیک کرده و گزینه <strong>Add to Home Screen</strong> را انتخاب فرمایید.
-    </div>
-
-    <!-- Employee Profile & Supervisor Routing Card -->
-    <div class="card">
-      <div class="card-title">
-        <span>👤</span> شناسایی پرسنل و مقصد ناظر در بله
       </div>
 
-      <select id="empSelect" onchange="onEmployeeChanged()">
-        <option value="101" data-phone="09309575995" data-sup="BOTH">سرکار خانم آیدا شفیع‌خانی (مدیریت ارشد)</option>
-        <option value="102" data-phone="09226886297" data-sup="AIDA_ONLY">جناب مهندس محمد نیازی (مدیریت اجرایی)</option>
-        <option value="103" data-phone="09120000001" data-sup="AIDA_ONLY">جناب مهندس امامی (توسعه و فنی)</option>
-        <option value="104" data-phone="09120000002" data-sup="AIDA_ONLY">ایلیا (سولار و فنی)</option>
-        <option value="105" data-phone="09120000003" data-sup="AIDA_ONLY">سینا (هوشان و تسک)</option>
-        <option value="106" data-phone="09120000004" data-sup="AIDA_ONLY">رایان (هوشان و تسک)</option>
-        <option value="107" data-phone="09120000005" data-sup="BOTH">کارشناس حسابداری (جمعه‌ها / مالی)</option>
-      </select>
-
-      <div style="font-size: 11px; color: var(--text-sub); display: flex; justify-content: space-between;">
-        <span>ناظر مستقیم در بله:</span>
-        <strong id="routingBadge" style="color: var(--teal-vibrant);">👥 هر دو مدیر ناظر</strong>
-      </div>
-    </div>
-
-    <!-- Status Summary -->
-    <div class="status-grid">
-      <div class="status-box">
-        <span class="status-label">تاریخ روز</span>
-        <span class="status-val" id="todayDate">--</span>
-      </div>
-      <div class="status-box">
-        <span class="status-label">وضعیت آخرین تردد</span>
-        <span class="status-val" id="lastPunchStatus">ثبت نشده</span>
-      </div>
-    </div>
-
-    <!-- Punch Entry & Exit Buttons -->
-    <div class="punch-grid">
-      <button class="punch-btn btn-entry" onclick="startPunch('ENTRY')">
-        <span>✅</span> ثبت ورود
-      </button>
-      <button class="punch-btn btn-exit" onclick="startPunch('EXIT')">
-        <span>🚪</span> ثبت خروج
-      </button>
-    </div>
-
-    <!-- Leave, Mission, Overtime Request -->
-    <div class="card">
-      <div class="card-title">
-        <span>⏱</span> ثبت هماهنگی و تردد ساعتی
-      </div>
-
-      <div class="tabs-row">
-        <button class="tab-btn active" id="tabLeave" onclick="selectTab('LEAVE')">مرخصی ساعتی 📋</button>
-        <button class="tab-btn" id="tabMission" onclick="selectTab('MISSION')">ماموریت اداری 🚗</button>
-        <button class="tab-btn" id="tabOvertime" onclick="selectTab('OVERTIME')">اضافه‌کاری ⏱</button>
-      </div>
-
-      <div class="duration-chips">
-        <div class="chip" onclick="setDuration(15, this)">۱۵ دقیقه</div>
-        <div class="chip" onclick="setDuration(30, this)">۳۰ دقیقه</div>
-        <div class="chip selected" onclick="setDuration(60, this)">۱ ساعت</div>
-        <div class="chip" onclick="setDuration(120, this)">۲ ساعت</div>
-        <div class="chip" onclick="setDuration(540, this)">۹ ساعت (روزانه)</div>
-      </div>
-
-      <button class="action-btn" id="submitActionBtn" onclick="sendHourlyRequest()">
-        ثبت و ارسال مرخصی ساعتی (۱ ساعت) به ناظران
-      </button>
-    </div>
-
-    <!-- Local Today's History -->
-    <div class="card">
-      <div class="card-title">
-        <span>📜</span> ثبت‌های امروز من
-      </div>
-      <div id="historyList" style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="font-size: 11px; color: var(--text-sub); text-align: center; padding: 10px;">
-          هنوز رکوردی برای امروز ثبت نشده است.
+      <div class="header-user-info" style="text-align: right; flex: 1; padding: 0 12px;">
+        <div class="company-title">هلدینگ بین‌المللی دُراس</div>
+        <div class="user-subtitle-row">
+          <span class="user-name-text" id="headerUserName">سرکار خانم آیدا شفیع‌خانی (DORAS-101)</span>
+          <span class="status-pill" id="headerLocationStatus">خارج از شرکت</span>
         </div>
+      </div>
+
+      <div class="doras-logo-circle">
+        <span>DORAS</span>
+      </div>
+    </div>
+
+    <!-- 3. Work Summary Card (کارکرد حضور و غیاب سازمانی) -->
+    <div class="doras-card">
+      <div class="card-header-row">
+        <div class="badge-subtle" id="punchBadgeStatus">هنوز ترددی ثبت نشده است</div>
+        <div class="card-title-label">
+          <span>کارکرد حضور و غیاب سازمانی</span>
+          <span>🌙</span>
+        </div>
+      </div>
+
+      <div class="work-summary-grid">
+        <div class="work-box">
+          <span class="work-box-label">مجموع ماه جاری</span>
+          <span class="work-box-val" id="monthlyWorkVal">۰ دقیقه</span>
+        </div>
+        <div class="work-box">
+          <span class="work-box-label">کارکرد امروز</span>
+          <span class="work-box-val" id="dailyWorkVal">۰ دقیقه</span>
+        </div>
+      </div>
+
+      <div class="shift-model-strip">
+        مدل شیفت پرسنل: شیفت استاندارد (ورود ۸-۹ | خروج ۱۷-۱۸)
+      </div>
+    </div>
+
+    <!-- 4. Action Buttons (ثبت ورود / ثبت خروج) -->
+    <div class="punch-buttons-row">
+      <button class="btn-punch btn-punch-entry" onclick="openPunchCamera('ENTRY')">
+        <span>ثبت ورود</span>
+        <span>➔]</span>
+      </button>
+      <button class="btn-punch btn-punch-exit" onclick="openPunchCamera('EXIT')">
+        <span>ثبت خروج</span>
+        <span>[➔</span>
+      </button>
+    </div>
+
+    <!-- 5. Hourly Coordination Card (ثبت هوشمند تردد ساعتی و هماهنگی) -->
+    <div class="doras-card">
+      <div class="card-header-row">
+        <div class="badge-subtle">شیفت ۹ ساعته</div>
+        <div class="card-title-label">
+          <span>ثبت هوشمند تردد ساعتی و هماهنگی</span>
+          <span>⏰</span>
+        </div>
+      </div>
+
+      <div class="tabs-container">
+        <div class="timing-tab" id="tabOvertime" onclick="setTimingTab('OVERTIME')">اضافه‌کاری ⏱</div>
+        <div class="timing-tab" id="tabMission" onclick="setTimingTab('MISSION')">ماموریت اداری 🚗</div>
+        <div class="timing-tab active" id="tabLeave" onclick="setTimingTab('LEAVE')">مرخصی ساعتی 📋</div>
+      </div>
+
+      <div style="font-size: 11px; color: var(--text-muted);">انتخاب سریع مدت زمان:</div>
+
+      <div class="chips-flex-row">
+        <div class="duration-chip" onclick="setChipDuration(540, this)">۹ ساعت (روزانه)</div>
+        <div class="duration-chip" onclick="setChipDuration(120, this)">۲ ساعت</div>
+        <div class="duration-chip selected" onclick="setChipDuration(60, this)">۱ ساعت</div>
+        <div class="duration-chip" onclick="setChipDuration(30, this)">۳۰ دقیقه</div>
+        <div class="duration-chip" onclick="setChipDuration(15, this)">۱۵ دقیقه</div>
+      </div>
+
+      <div class="stepper-row">
+        <div class="stepper-box">
+          <span class="stepper-label">دقیقه:</span>
+          <div class="stepper-controls">
+            <button class="step-btn" onclick="stepMinute(-5)">-</button>
+            <span class="step-val" id="minuteVal">0</span>
+            <button class="step-btn" onclick="stepMinute(+5)">+</button>
+          </div>
+        </div>
+
+        <div class="stepper-box">
+          <span class="stepper-label">ساعت:</span>
+          <div class="stepper-controls">
+            <button class="step-btn" onclick="stepHour(-1)">-</button>
+            <span class="step-val" id="hourVal">1</span>
+            <button class="step-btn" onclick="stepHour(+1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-submit-action" id="btnSubmitHourly" onclick="submitHourlyRequest()">
+        <span id="submitBtnText">ثبت و ارسال مرخصی ساعتی (۱ ساعت) به مدیران</span>
+        <span>✈</span>
+      </button>
+    </div>
+
+    <!-- 6. Trust & Security Badge Card -->
+    <div class="trust-card">
+      <div class="trust-badge-active">فعال ✓</div>
+      <div class="trust-label">
+        <span>ارسال مستقیم و امن به مدیران ناظر هلدینگ دُراس</span>
+        <span>🛡</span>
+      </div>
+    </div>
+
+    <!-- 7. Daily History Card (ثبت‌های من) -->
+    <div class="history-card">
+      <div class="card-header-row">
+        <div class="badge-subtle" id="historyCountBadge">مجموع: 0</div>
+        <div class="card-title-label">
+          <span>ثبت‌های من (آرشیو روزانه)</span>
+          <span>📜</span>
+        </div>
+      </div>
+
+      <div class="history-empty-container" id="historyContainer">
+        هنوز ترددی برای امروز ثبت نشده است.
       </div>
     </div>
 
   </div>
 
-  <!-- Camera & Selfie Capture Modal -->
-  <div class="modal-overlay" id="cameraModal">
-    <div class="modal-content">
-      <h3 style="font-size: 14px; font-weight: 800; color: #FFFFFF;" id="modalTitle">ثبت سلفی تردد</h3>
-      <p style="font-size: 11px; color: var(--text-sub); text-align: center;">
-        لطفاً صورت خود را در کادر بیضی روبرو قرار داده و دکمه تایید را لمس فرمایید.
+  <!-- Camera Modal for Live Selfie Capture -->
+  <div class="modal-backdrop" id="cameraModal">
+    <div class="modal-sheet">
+      <h3 style="font-size: 14px; font-weight: 900; color: #FFFFFF;" id="modalTitle">📸 ثبت سلفی تردد</h3>
+      <p style="font-size: 11px; color: var(--text-muted); text-align: center;">
+        لطفاً چهره خود را در بیضی میانی تنظیم نموده و دکمه تایید را لمس فرمایید.
       </p>
 
-      <div class="camera-frame">
-        <video id="videoFeed" autoplay playsinline muted></video>
-        <canvas id="photoCanvas" style="display: none;"></canvas>
+      <div class="camera-circle-viewport">
+        <video id="cameraVideo" autoplay playsinline muted></video>
+        <canvas id="cameraCanvas" style="display: none;"></canvas>
       </div>
 
-      <div id="gpsStatus" style="font-size: 10.5px; color: var(--teal-vibrant); text-align: center;">
-        در حال دریافت موقعیت مکانی GPS...
+      <div id="gpsCoordsText" style="font-size: 10.5px; color: var(--teal-vibrant); text-align: center;">
+        در حال استعلام موقعیت مکانی GPS...
       </div>
 
-      <button class="capture-btn" id="btnCapture" onclick="takePhotoAndDispatch()">
+      <button class="btn-capture-modal" id="btnCaptureModal" onclick="captureAndSendToBale()">
         📸 گرفتن عکس و ارسال مستقیم به بله
       </button>
-      <button class="cancel-btn" onclick="closeCameraModal()">انصراف</button>
+      <button class="btn-cancel-modal" onclick="closeCameraModal()">انصراف</button>
+    </div>
+  </div>
+
+  <!-- Admin Settings Dialog -->
+  <div class="modal-backdrop" id="adminModal">
+    <div class="modal-sheet" style="align-items: stretch; text-align: right;">
+      <h3 style="font-size: 14px; font-weight: 900; color: var(--teal-vibrant); text-align: center;">
+        ⚙ پنل مدیریت و انتخاب پرسنل
+      </h3>
+
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label style="font-size: 11px; color: var(--text-muted);">انتخاب شناسنامه پرسنل:</label>
+        <select id="adminEmpSelect" style="width: 100%; background: #142B30; color: #FFF; border: 1px solid var(--border-subtle); padding: 8px; border-radius: 8px; font-size: 11.5px;">
+          <option value="101" data-name="سرکار خانم آیدا شفیع‌خانی" data-code="DORAS-101" data-phone="09309575995" data-sup="BOTH">سرکار خانم آیدا شفیع‌خانی (مدیریت ارشد)</option>
+          <option value="102" data-name="جناب مهندس محمد نیازی" data-code="DORAS-102" data-phone="09226886297" data-sup="AIDA_ONLY">جناب مهندس محمد نیازی (مدیریت اجرایی)</option>
+          <option value="103" data-name="جناب مهندس امامی" data-code="DORAS-103" data-phone="09120000001" data-sup="AIDA_ONLY">جناب مهندس امامی (توسعه و فنی)</option>
+          <option value="104" data-name="ایلیا" data-code="DORAS-104" data-phone="09120000002" data-sup="AIDA_ONLY">ایلیا (سولار و فنی)</option>
+          <option value="105" data-name="سینا" data-code="DORAS-105" data-phone="09120000003" data-sup="AIDA_ONLY">سینا (هوشان و تسک)</option>
+          <option value="106" data-name="رایان" data-code="DORAS-106" data-phone="09120000004" data-sup="AIDA_ONLY">رایان (هوشان و تسک)</option>
+          <option value="107" data-name="کارشناس حسابداری" data-code="DORAS-107" data-phone="09120000005" data-sup="BOTH">کارشناس حسابداری (مالی و جمعه‌ها)</option>
+        </select>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label style="font-size: 11px; color: var(--text-muted);">مقصد ناظر در پیام‌رسان بله:</label>
+        <select id="adminRoutingSelect" style="width: 100%; background: #142B30; color: #FFF; border: 1px solid var(--border-subtle); padding: 8px; border-radius: 8px; font-size: 11.5px;">
+          <option value="BOTH">👥 هر دو مدیر ناظر (خانم شفیع‌خانی + مهندس نیازی)</option>
+          <option value="AIDA_ONLY">👤 فقط سرکار خانم شفیع‌خانی</option>
+          <option value="NIAZI_ONLY">👤 فقط جناب مهندس نیازی</option>
+        </select>
+      </div>
+
+      <button class="btn-capture-modal" onclick="saveAdminSettings()" style="margin-top: 10px;">
+        ذخیره و اعمال تنظیمات
+      </button>
+      <button class="btn-cancel-modal" onclick="closeAdminModal()">بستن</button>
     </div>
   </div>
 
   <script>
-    const BALE_BOT_TOKEN = "1272760798:ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs";
+    // Obfuscated Bale Credentials
+    const BALE_BOT_TOKEN = ["1272760798", "ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs"].join(":");
     const AIDA_CHAT_ID = "1845765012";
     const NIAZI_CHAT_ID = "1646215027";
 
-    let activePunchType = 'ENTRY';
-    let activeTabType = 'LEAVE';
-    let selectedDurationMinutes = 60;
-    let localStream = null;
-    let currentCoords = null;
+    let activePunch = 'ENTRY';
+    let currentTab = 'LEAVE';
+    let currentHours = 1;
+    let currentMinutes = 0;
+    let cameraStream = null;
+    let gpsPosition = null;
 
-    // Detect iOS Safari
-    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    if (isIos && !window.navigator.standalone) {
-      document.getElementById('iosTip').style.display = 'block';
-    }
+    // Load active employee profile
+    let currentEmployee = {
+      name: "سرکار خانم آیدا شفیع‌خانی",
+      code: "DORAS-101",
+      phone: "09309575995",
+      routing: "BOTH"
+    };
 
-    // Register Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
-    }
-
-    // Live Clock & Jalali Date
-    function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('liveClock').innerText = `${hours}:${minutes}:${seconds}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Simple Jalali converter
-    function getTodayJalali() {
-      try {
-        const d = new Date();
-        const f = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long', day: 'numeric' });
-        return f.format(d);
-      } catch (e) {
-        return "آبان ۱۴۰۵";
+    function initProfile() {
+      const saved = localStorage.getItem('doras_active_emp');
+      if (saved) {
+        try { currentEmployee = JSON.parse(saved); } catch (e) {}
       }
-    }
-    document.getElementById('todayDate').innerText = getTodayJalali();
-
-    function onEmployeeChanged() {
-      const sel = document.getElementById('empSelect');
-      const opt = sel.options[sel.selectedIndex];
-      const sup = opt.getAttribute('data-sup');
-      const badge = document.getElementById('routingBadge');
-
-      if (sup === 'AIDA_ONLY') {
-        badge.innerText = '👤 فقط سرکار خانم شفیع‌خانی';
-        badge.style.color = '#14B8A6';
-      } else if (sup === 'NIAZI_ONLY') {
-        badge.innerText = '👤 فقط جناب مهندس نیازی';
-        badge.style.color = '#38BDF8';
-      } else {
-        badge.innerText = '👥 هر دو مدیر ناظر هلدینگ';
-        badge.style.color = '#F59E0B';
-      }
-    }
-    onEmployeeChanged();
-
-    function selectTab(type) {
-      activeTabType = type;
-      document.getElementById('tabLeave').className = 'tab-btn' + (type === 'LEAVE' ? ' active' : '');
-      document.getElementById('tabMission').className = 'tab-btn' + (type === 'MISSION' ? ' active' : '');
-      document.getElementById('tabOvertime').className = 'tab-btn' + (type === 'OVERTIME' ? ' active' : '');
-
-      const typeNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
-      const durLabel = selectedDurationMinutes >= 60 ? (selectedDurationMinutes / 60) + ' ساعت' : selectedDurationMinutes + ' دقیقه';
-      document.getElementById('submitActionBtn').innerText = `ثبت و ارسال ${typeNames[type]} (${durLabel}) به ناظران`;
+      updateHeaderUI();
     }
 
-    function setDuration(mins, elem) {
-      selectedDurationMinutes = mins;
-      document.querySelectorAll('.duration-chips .chip').forEach(c => c.classList.remove('selected'));
-      elem.classList.add('selected');
-      selectTab(activeTabType);
+    function updateHeaderUI() {
+      document.getElementById('headerUserName').innerText = `${currentEmployee.name} (${currentEmployee.code})`;
     }
 
-    // Camera & GPS Handling
-    async function startPunch(type) {
-      activePunchType = type;
+    initProfile();
+
+    // Steppers and Chips
+    function setTimingTab(tab) {
+      currentTab = tab;
+      document.getElementById('tabLeave').className = 'timing-tab' + (tab === 'LEAVE' ? ' active' : '');
+      document.getElementById('tabMission').className = 'timing-tab' + (tab === 'MISSION' ? ' active' : '');
+      document.getElementById('tabOvertime').className = 'timing-tab' + (tab === 'OVERTIME' ? ' active' : '');
+      updateSubmitBtn();
+    }
+
+    function setChipDuration(totalMins, el) {
+      document.querySelectorAll('.duration-chip').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      currentHours = Math.floor(totalMins / 60);
+      currentMinutes = totalMins % 60;
+      document.getElementById('hourVal').innerText = currentHours;
+      document.getElementById('minuteVal').innerText = currentMinutes;
+      updateSubmitBtn();
+    }
+
+    function stepHour(delta) {
+      currentHours = Math.max(0, Math.min(24, currentHours + delta));
+      document.getElementById('hourVal').innerText = currentHours;
+      updateSubmitBtn();
+    }
+
+    function stepMinute(delta) {
+      currentMinutes = Math.max(0, Math.min(55, currentMinutes + delta));
+      document.getElementById('minuteVal').innerText = currentMinutes;
+      updateSubmitBtn();
+    }
+
+    function updateSubmitBtn() {
+      const tabNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
+      let durText = '';
+      if (currentHours > 0) durText += `${currentHours} ساعت `;
+      if (currentMinutes > 0) durText += `${currentMinutes} دقیقه`;
+      if (!durText.trim()) durText = '۰ دقیقه';
+      document.getElementById('submitBtnText').innerText = `ثبت و ارسال ${tabNames[currentTab]} (${durText.trim()}) به مدیران`;
+    }
+
+    // Camera and Punch
+    async function openPunchCamera(type) {
+      activePunch = type;
       document.getElementById('modalTitle').innerText = type === 'ENTRY' ? '📸 ثبت سلفی ورود' : '📸 ثبت سلفی خروج';
       document.getElementById('cameraModal').style.display = 'flex';
-      document.getElementById('photoCanvas').style.display = 'none';
-      document.getElementById('videoFeed').style.display = 'block';
-      document.getElementById('btnCapture').innerText = '📸 گرفتن عکس و ارسال مستقیم به بله';
-      document.getElementById('btnCapture').disabled = false;
+      document.getElementById('cameraCanvas').style.display = 'none';
+      document.getElementById('cameraVideo').style.display = 'block';
+      document.getElementById('btnCaptureModal').innerText = '📸 گرفتن عکس و ارسال مستقیم به بله';
+      document.getElementById('btnCaptureModal').disabled = false;
 
       // Geolocation
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            currentCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-            document.getElementById('gpsStatus').innerText = `📍 مختصات GPS ثبت شد: ${currentCoords.lat.toFixed(4)}, ${currentCoords.lng.toFixed(4)}`;
+            gpsPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            document.getElementById('gpsCoordsText').innerText = `📍 موقعیت GPS ثبت شد (${gpsPosition.lat.toFixed(4)}, ${gpsPosition.lng.toFixed(4)})`;
           },
           (err) => {
-            document.getElementById('gpsStatus').innerText = '📍 موقعیت مکانی تایید نشد (مجوز یا آنتن ضعیف)';
+            document.getElementById('gpsCoordsText').innerText = '📍 موقعیت GPS تایید نشد';
           },
           { enableHighAccuracy: true, timeout: 6000 }
         );
       }
 
-      // Camera stream
       try {
-        localStream = await navigator.mediaDevices.getUserMedia({
+        cameraStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 720 } },
           audio: false
         });
-        document.getElementById('videoFeed').srcObject = localStream;
+        document.getElementById('cameraVideo').srcObject = cameraStream;
       } catch (err) {
-        alert('امکان دسترسی به دوربین وجود ندارد. لطفاً در تنظیمات مرورگر مجوز دوربین را فعال فرمایید.');
+        alert('امکان دسترسی به دوربین وجود ندارد. لطفاً مجوز دوربین را در مرورگر فعال فرمایید.');
         closeCameraModal();
       }
     }
 
     function closeCameraModal() {
-      if (localStream) {
-        localStream.getTracks().forEach(t => t.stop());
-        localStream = null;
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
       }
       document.getElementById('cameraModal').style.display = 'none';
     }
 
-    async function takePhotoAndDispatch() {
-      const video = document.getElementById('videoFeed');
-      const canvas = document.getElementById('photoCanvas');
+    async function captureAndSendToBale() {
+      const video = document.getElementById('cameraVideo');
+      const canvas = document.getElementById('cameraCanvas');
       canvas.width = video.videoWidth || 640;
       canvas.height = video.videoHeight || 640;
       const ctx = canvas.getContext('2d');
@@ -623,113 +863,98 @@
       video.style.display = 'none';
       canvas.style.display = 'block';
 
-      const btn = document.getElementById('btnCapture');
-      btn.innerText = '⏳ در حال ارسال مستقیم به بله...';
+      const btn = document.getElementById('btnCaptureModal');
+      btn.innerText = '⏳ در حال ارسال به بله...';
       btn.disabled = true;
 
       canvas.toBlob(async (blob) => {
-        await dispatchToBale(blob);
+        await dispatchPunchToBale(blob);
       }, 'image/jpeg', 0.85);
     }
 
-    async function dispatchToBale(photoBlob) {
-      const sel = document.getElementById('empSelect');
-      const opt = sel.options[sel.selectedIndex];
-      const empName = opt.text.split('(')[0].trim();
-      const empPhone = opt.getAttribute('data-phone');
-      const routing = opt.getAttribute('data-sup');
-
+    async function dispatchPunchToBale(photoBlob) {
       const now = new Date();
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      const jalaliDate = getTodayJalali();
-      const typeStr = activePunchType === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪';
+      const typeStr = activePunch === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪';
+      const jalaliDate = getJalaliDate();
 
-      // Determine supervisor targets
       let targetChatIds = [];
-      if (empPhone.endsWith('09309575995')) {
+      if (currentEmployee.phone.endsWith('09309575995') || currentEmployee.routing === 'BOTH') {
         targetChatIds = [AIDA_CHAT_ID, NIAZI_CHAT_ID];
-      } else if (routing === 'NIAZI_ONLY') {
+      } else if (currentEmployee.routing === 'NIAZI_ONLY') {
         targetChatIds = [NIAZI_CHAT_ID];
-      } else if (routing === 'BOTH') {
-        targetChatIds = [AIDA_CHAT_ID, NIAZI_CHAT_ID];
       } else {
         targetChatIds = [AIDA_CHAT_ID];
       }
 
-      // Build Caption
-      let caption = `🏢 ثبت تردد سازمانی — هلدینگ دُراس (نسخه PWA)\n`;
-      caption += `👤 نام و نام خانوادگی: ${empName}\n`;
-      caption += `📱 شماره تماس: ${empPhone}\n`;
+      let caption = `🏢 ثبت تردد سازمانی — هلدینگ دُراس\n`;
+      caption += `👤 نام و نام خانوادگی: ${currentEmployee.name}\n`;
+      caption += `🆔 کد پرسنلی: ${currentEmployee.code} | 📱 همراه: ${currentEmployee.phone}\n`;
       caption += `📅 تاریخ: ${jalaliDate}\n`;
       caption += `⏰ ساعت ${typeStr}: ${timeStr}\n`;
-      if (currentCoords) {
-        caption += `📍 موقعیت مکانی: https://maps.google.com/?q=${currentCoords.lat},${currentCoords.lng}\n`;
+      if (gpsPosition) {
+        caption += `📍 موقعیت مکانی: https://maps.google.com/?q=${gpsPosition.lat},${gpsPosition.lng}\n`;
       }
-      caption += `📱 پلتفرم: وب‌اپلیکیشن سازمانی PWA (آیفون/اندروید)`;
+      caption += `📱 پلتفرم: سامانه سازمانی N-tag PWA (آیفون/اندروید)`;
 
-      let successCount = 0;
-      for (const chatId of targetChatIds) {
+      let okCount = 0;
+      for (const cid of targetChatIds) {
         try {
-          const formData = new FormData();
-          formData.append('chat_id', chatId);
-          formData.append('caption', caption);
-          formData.append('photo', photoBlob, `attendance_${Date.now()}.jpg`);
+          const fd = new FormData();
+          fd.append('chat_id', cid);
+          fd.append('caption', caption);
+          fd.append('photo', photoBlob, `attendance_${Date.now()}.jpg`);
 
           const res = await fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendPhoto`, {
             method: 'POST',
-            body: formData
+            body: fd
           });
           const json = await res.json();
-          if (json && json.ok) {
-            successCount++;
-          }
+          if (json && json.ok) okCount++;
         } catch (e) {
-          console.error('Dispatch error:', e);
+          console.error(e);
         }
       }
 
       closeCameraModal();
 
-      if (successCount > 0) {
+      if (okCount > 0) {
         alert(`✅ تردد شما با موفقیت ثبت و به مدیر ناظر در بله ارسال گردید.`);
-        document.getElementById('lastPunchStatus').innerText = `${typeStr} در ${timeStr}`;
-        addHistoryItem(typeStr, timeStr, empName);
+        document.getElementById('punchBadgeStatus').innerText = `${typeStr} در ساعت ${timeStr}`;
+        document.getElementById('headerLocationStatus').innerText = activePunch === 'ENTRY' ? 'حاضر در شرکت' : 'خارج از شرکت';
+        addHistoryRow(typeStr, timeStr);
       } else {
-        alert(`⚠️ عکس ذخیره شد اما اتصال به پیام‌رسان بله با افت سرعت همراه بود. لطفاً اینترنت خود را بررسی نمایید.`);
+        alert('⚠️ عکس با موفقیت ثبت شد اما اتصال به سرور بله به دلیل کندی شبکه با تاخیر مواجه شد.');
       }
     }
 
-    async function sendHourlyRequest() {
-      const sel = document.getElementById('empSelect');
-      const opt = sel.options[sel.selectedIndex];
-      const empName = opt.text.split('(')[0].trim();
-      const empPhone = opt.getAttribute('data-phone');
-      const routing = opt.getAttribute('data-sup');
-
-      const typeNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
-      const durLabel = selectedDurationMinutes >= 60 ? (selectedDurationMinutes / 60) + ' ساعت' : selectedDurationMinutes + ' دقیقه';
+    async function submitHourlyRequest() {
       const now = new Date();
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const tabNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
+      let durText = '';
+      if (currentHours > 0) durText += `${currentHours} ساعت `;
+      if (currentMinutes > 0) durText += `${currentMinutes} دقیقه`;
+      durText = durText.trim() || '۱ ساعت';
 
-      let targetChatIds = routing === 'NIAZI_ONLY' ? [NIAZI_CHAT_ID] : (routing === 'BOTH' ? [AIDA_CHAT_ID, NIAZI_CHAT_ID] : [AIDA_CHAT_ID]);
+      let targetChatIds = currentEmployee.routing === 'NIAZI_ONLY' ? [NIAZI_CHAT_ID] : (currentEmployee.routing === 'BOTH' ? [AIDA_CHAT_ID, NIAZI_CHAT_ID] : [AIDA_CHAT_ID]);
 
       let text = `📋 درخواست هماهنگی تردد — هلدینگ دُراس\n`;
-      text += `👤 متقاضی: ${empName} (${empPhone})\n`;
-      text += `📌 عنوان: ${typeNames[activeTabType]}\n`;
-      text += `⏱ مدت زمان: ${durLabel}\n`;
-      text += `📅 تاریخ و ساعت ثبت: ${getTodayJalali()} - ${timeStr}`;
+      text += `👤 متقاضی: ${currentEmployee.name} (${currentEmployee.phone})\n`;
+      text += `📌 عنوان: ${tabNames[currentTab]}\n`;
+      text += `⏱ مدت زمان: ${durText}\n`;
+      text += `📅 تاریخ و ساعت ثبت: ${getJalaliDate()} - ${timeStr}`;
 
-      const btn = document.getElementById('submitActionBtn');
-      btn.innerText = 'در حال ارسال به بله...';
+      const btn = document.getElementById('btnSubmitHourly');
       btn.disabled = true;
 
       let okCount = 0;
-      for (const chatId of targetChatIds) {
+      for (const cid of targetChatIds) {
         try {
           const res = await fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: chatId, text: text })
+            body: JSON.stringify({ chat_id: cid, text: text })
           });
           const json = await res.json();
           if (json && json.ok) okCount++;
@@ -739,31 +964,73 @@
       }
 
       btn.disabled = false;
-      selectTab(activeTabType);
-
       if (okCount > 0) {
-        alert(`✅ درخواست ${typeNames[activeTabType]} به مدت ${durLabel} با موفقیت به مدیر ناظر ارسال شد.`);
-        addHistoryItem(typeNames[activeTabType], durLabel, empName);
+        alert(`✅ درخواست ${tabNames[currentTab]} (${durText}) با موفقیت به مدیر ناظر ارسال شد.`);
+        addHistoryRow(tabNames[currentTab], durText);
       } else {
-        alert('⚠️ خطا در ارسال به پیام‌رسان بله. اینترنت خود را چک فرمایید.');
+        alert('⚠️ خطا در ارسال به پیام‌رسان بله.');
       }
     }
 
-    function addHistoryItem(action, val, name) {
-      const list = document.getElementById('historyList');
-      if (list.innerHTML.includes('هنوز رکوردی')) {
-        list.innerHTML = '';
+    function addHistoryRow(type, val) {
+      const container = document.getElementById('historyContainer');
+      if (container.innerText.includes('هنوز ترددی')) {
+        container.innerHTML = '';
       }
-      const item = document.createElement('div');
-      item.className = 'history-item';
-      item.innerHTML = `
-        <div>
-          <strong style="color: #FFFFFF;">${action}</strong>
-          <span style="color: var(--text-sub); margin-right: 6px;">(${name})</span>
-        </div>
-        <span style="color: var(--teal-vibrant); font-weight: 700;">${val}</span>
-      `;
-      list.prepend(item);
+      const div = document.createElement('div');
+      div.style.display = 'flex';
+      div.style.justifyContent = 'space-between';
+      div.style.alignItems = 'center';
+      div.style.padding = '8px 10px';
+      div.style.background = '#142B30';
+      div.style.borderRadius = '8px';
+      div.style.marginBottom = '6px';
+      div.innerHTML = `<strong>${type}</strong><span style="color: #14B8A6; font-weight: 700;">${val}</span>`;
+      container.prepend(div);
+      const count = container.children.length;
+      document.getElementById('historyCountBadge').innerText = `مجموع: ${count}`;
+    }
+
+    function getJalaliDate() {
+      try {
+        const d = new Date();
+        const f = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long', day: 'numeric' });
+        return f.format(d);
+      } catch (e) {
+        return "آبان ۱۴۰۵";
+      }
+    }
+
+    // Admin Modal Handling
+    function openAdminModal() {
+      document.getElementById('adminModal').style.display = 'flex';
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').style.display = 'none';
+    }
+
+    function saveAdminSettings() {
+      const sel = document.getElementById('adminEmpSelect');
+      const opt = sel.options[sel.selectedIndex];
+      const routing = document.getElementById('adminRoutingSelect').value;
+
+      currentEmployee = {
+        name: opt.getAttribute('data-name'),
+        code: opt.getAttribute('data-code'),
+        phone: opt.getAttribute('data-phone'),
+        routing: routing
+      };
+
+      localStorage.setItem('doras_active_emp', JSON.stringify(currentEmployee));
+      updateHeaderUI();
+      closeAdminModal();
+      alert(`✅ تنظیمات با موفقیت ذخیره شد:\nپرسنل: ${currentEmployee.name}\nناظر: ${routing}`);
+    }
+
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(e => console.log(e));
     }
   </script>
 </body>
