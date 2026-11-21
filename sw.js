@@ -1,5 +1,5 @@
-// N-tag Progressive Web App Service Worker
-const CACHE_NAME = 'ntag-pwa-v1.1';
+// N-tag Progressive Web App Service Worker v4.3.1
+const CACHE_NAME = 'ntag-pwa-v4.3.1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -33,7 +33,9 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.url.includes('bale.ai') || event.request.url.includes('googleapis') || event.request.url.includes('gstatic')) {
+  const url = event.request.url;
+  // Never cache Bale API, GitHub API or version.json to ensure live freshness
+  if (url.includes('bale.ai') || url.includes('api.github.com') || url.includes('version.json')) {
     return;
   }
   event.respondWith(
