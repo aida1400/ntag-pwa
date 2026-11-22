@@ -1,19 +1,7 @@
-// N-tag Progressive Web App Service Worker v4.3.1
-const CACHE_NAME = 'ntag-pwa-v4.3.1';
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
+// N-tag Progressive Web App Service Worker v4.3.3
+const CACHE_NAME = 'ntag-pwa-v4.3.3';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
   self.skipWaiting();
 });
 
@@ -33,11 +21,31 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  const url = event.request.url;
-  // Never cache Bale API, GitHub API or version.json to ensure live freshness
-  if (url.includes('bale.ai') || url.includes('api.github.com') || url.includes('version.json')) {
+  // Never intercept external APIs, Bale, or GitHub
+  if (
+    event.request.url.includes('bale.ai') ||
+    event.request.url.includes('github') ||
+    event.request.url.includes('googleapis') ||
+    event.request.url.includes('gstatic')
+  ) {
     return;
   }
+
+  // Network First for HTML and version.json to ensure immediate updates
+  if (event.request.mode === 'navigate' || event.request.url.includes('index.html') || event.request.url.includes('version.json')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache First for icons and static assets
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request);
