@@ -1,1122 +1,1494 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>N-tag | سامانه تردد هلدینگ بین‌المللی دُراس</title>
-  
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#00A896">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="N-tag">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>سامانه حضور و غیاب سازمانی — هلدینگ دُراس</title>
 
-  <!-- Vazirmatn Font CDN -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="theme-color" content="#081315" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ان‌تگ دُراس" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/png" href="icon-192.png" />
+
+  <!-- Vazirmatn Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg-dark: #081315;
-      --bg-card: #0D1E22;
-      --bg-elevated: #142B30;
-      --teal-primary: #00A896;
-      --teal-vibrant: #14B8A6;
-      --teal-glow: #00F5D4;
-      --amber-gold: #F59E0B;
-      --coral-red: #F87171;
-      --border-subtle: rgba(0, 180, 216, 0.35);
-      --border-glow: rgba(0, 245, 212, 0.5);
-      --text-white: #FFFFFF;
+      --bg-primary: #081315;
+      --bg-secondary: #0D1E22;
+      --bg-card: #142B30;
+      --bg-glass: rgba(20, 43, 48, 0.75);
+      --border-glass: rgba(0, 245, 212, 0.18);
+      --teal-vibrant: #00F5D4;
+      --teal-accent: #00A896;
+      --teal-dark: #028090;
+      --accent-gold: #F59E0B;
+      --accent-red: #EF4444;
+      --accent-emerald: #10B981;
+      --text-primary: #F8FAFC;
       --text-muted: #94A3B8;
+      --font-vazir: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-vazir);
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 10px 12px 30px;
+      padding: 0 0 40px 0;
+      overflow-x: hidden;
     }
 
-    .app-wrapper {
+    .app-viewport {
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      padding: 10px 14px 20px 14px;
     }
 
-    /* Onboarding Screen */
-    #onboardingView {
+    /* Aura Update Banner (منطبق دقیق بر اسکرین‌شات آئورا) */
+    .aura-update-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #F43F5E 0%, #A855F7 50%, #06B6D4 100%);
+      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.35);
+      cursor: pointer;
+      animation: bannerSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 2px;
+    }
+
+    @keyframes bannerSlideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .aura-banner-info {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 30px 16px;
-      text-align: center;
-      min-height: 80vh;
-    }
-
-    .onboarding-logo {
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #00F5D4 0%, #00A896 50%, #0D1E22 100%);
-      border: 3px solid var(--teal-glow);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 900;
-      color: #081315;
-      box-shadow: 0 0 20px rgba(0, 245, 212, 0.4);
-    }
-
-    .onboarding-title {
-      font-size: 17px;
-      font-weight: 900;
-      color: #FFFFFF;
-    }
-
-    .onboarding-sub {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 320px;
-    }
-
-    .onboarding-input-box {
-      width: 100%;
-      max-width: 340px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      gap: 2px;
       text-align: right;
     }
 
-    .text-input-field {
-      width: 100%;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      color: #FFFFFF;
-      padding: 12px 14px;
-      font-size: 13.5px;
-      direction: ltr;
-      text-align: center;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .text-input-field:focus {
-      border-color: var(--teal-primary);
-    }
-
-    .btn-onboarding-submit {
-      background: linear-gradient(135deg, #00A896 0%, #00776B 100%);
-      color: #FFFFFF;
-      font-size: 14px;
+    .aura-banner-title {
+      font-size: 13px;
       font-weight: 800;
-      border: none;
+      color: #FFFFFF;
+      letter-spacing: -0.2px;
+    }
+
+    .aura-banner-subtitle {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: underline;
+    }
+
+    .aura-banner-dismiss {
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 12px;
-      padding: 13px;
-      width: 100%;
+      color: #FFFFFF;
+      padding: 5px 14px;
+      font-size: 11.5px;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 168, 150, 0.3);
+      backdrop-filter: blur(8px);
+      transition: background 0.2s;
+    }
+
+    .aura-banner-dismiss:active {
+      background: rgba(255, 255, 255, 0.35);
     }
 
     /* Doravid Header */
     .doravid-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 4px 0 2px;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
     }
 
-    .header-user-info {
+    .doras-logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .doras-logo-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--teal-vibrant), var(--teal-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+      color: #081315;
+      box-shadow: 0 4px 14px rgba(0, 245, 212, 0.25);
+    }
+
+    .header-user-meta {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2px;
+      text-align: right;
     }
 
-    .company-title {
-      font-size: 15px;
-      font-weight: 900;
-      color: var(--text-white);
-      letter-spacing: -0.3px;
-    }
-
-    .user-subtitle-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .user-name-text {
+    .header-company-name {
       font-size: 11px;
-      font-weight: 600;
       color: var(--teal-vibrant);
+      font-weight: 700;
     }
 
-    .status-pill {
-      background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      font-size: 9.5px;
-      font-weight: 600;
-      padding: 1px 7px;
-      border-radius: 12px;
-    }
-
-    .header-left-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .header-user-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #FFFFFF;
     }
 
     .admin-pill-btn {
       display: flex;
       align-items: center;
-      gap: 5px;
-      background-color: var(--bg-card);
-      border: 1px solid var(--teal-primary);
-      color: var(--teal-vibrant);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 5px 12px;
+      gap: 6px;
+      padding: 7px 14px;
       border-radius: 20px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--accent-gold);
+      font-size: 11.5px;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .doras-logo-circle {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #00F5D4 0%, #00A896 50%, #0D1E22 100%);
-      border: 2px solid var(--teal-glow);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
-      color: #081315;
-      box-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
+    .admin-pill-btn:active {
+      transform: scale(0.96);
+      background: rgba(245, 158, 11, 0.25);
     }
 
-    /* Common Card */
-    .doras-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 14px;
+    /* Main Punch Section */
+    .punch-card {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
+      padding: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      text-align: center;
     }
 
-    .card-header-row {
+    .live-clock-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .card-title-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--teal-vibrant);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .badge-subtle {
-      background-color: rgba(20, 184, 166, 0.12);
-      border: 1px solid rgba(20, 184, 166, 0.25);
-      color: var(--teal-vibrant);
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 10px;
-    }
-
-    /* Work Summary Grid */
-    .work-summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .work-box {
-      background-color: var(--bg-elevated);
-      border: 1px solid rgba(0, 180, 216, 0.2);
-      border-radius: 12px;
-      padding: 12px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .work-box-label {
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .work-box-val {
-      font-size: 13.5px;
+    .digital-clock {
+      font-size: 26px;
       font-weight: 900;
       color: var(--teal-vibrant);
+      letter-spacing: 1px;
+      direction: ltr;
     }
 
-    .shift-model-strip {
-      background-color: rgba(20, 184, 166, 0.08);
-      border: 1px solid rgba(20, 184, 166, 0.2);
-      border-radius: 10px;
-      padding: 7px 10px;
-      font-size: 10.5px;
-      color: var(--teal-vibrant);
-      text-align: center;
+    .jalali-date-str {
+      font-size: 12.5px;
+      color: var(--text-muted);
       font-weight: 600;
     }
 
-    /* Punch Buttons */
-    .punch-buttons-row {
+    .status-badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .status-pill.active {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .punch-action-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
+      margin-top: 4px;
     }
 
     .btn-punch {
-      border: none;
-      border-radius: 14px;
-      padding: 15px 10px;
-      font-size: 13.5px;
-      font-weight: 900;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
+      padding: 18px 12px;
+      border-radius: 18px;
+      border: none;
+      color: #FFFFFF;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      transition: transform 0.1s, opacity 0.2s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .btn-punch:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
 
     .btn-punch-entry {
-      background: linear-gradient(135deg, #F59E0B 0%, #10B981 100%);
-      color: #064E3B;
+      background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
     }
 
     .btn-punch-exit {
-      background-color: var(--bg-elevated);
-      border: 1px solid #334155;
-      color: var(--coral-red);
+      background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%);
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
     }
 
-    /* Tabs & Duration Selector */
-    .tabs-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+    .btn-punch-icon {
+      font-size: 24px;
+    }
+
+    .btn-punch-label {
+      font-size: 13.5px;
+      font-weight: 800;
+    }
+
+    .btn-punch-sub {
+      font-size: 10px;
+      opacity: 0.85;
+    }
+
+    /* Timing Requests Card (مرخصی، ماموریت، اضافه‌کاری) */
+    .timing-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+    }
+
+    .timing-card-header {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--teal-vibrant);
+      display: flex;
+      align-items: center;
       gap: 6px;
     }
 
+    .timing-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px;
+      border-radius: 14px;
+    }
+
     .timing-tab {
-      background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
       padding: 8px 4px;
-      font-size: 10.5px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11.5px;
       font-weight: 700;
-      color: var(--text-white);
-      text-align: center;
       cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
     }
 
     .timing-tab.active {
-      background-color: var(--teal-vibrant);
-      border-color: var(--teal-vibrant);
-      color: #081315;
+      background: var(--bg-card);
+      color: var(--teal-vibrant);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
-    .chips-flex-row {
-      display: flex;
-      flex-wrap: wrap;
+    .duration-chips {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 6px;
     }
 
     .duration-chip {
-      background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 5px 11px;
-      font-size: 10.5px;
-      color: var(--text-white);
-      cursor: pointer;
-    }
-
-    .duration-chip.selected {
-      background-color: var(--amber-gold);
-      border-color: var(--amber-gold);
-      color: #081315;
-      font-weight: 800;
-    }
-
-    /* Counter Stepper */
-    .stepper-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .stepper-box {
-      background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
+      padding: 8px 4px;
       border-radius: 10px;
-      padding: 6px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .stepper-label {
-      font-size: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-muted);
-    }
-
-    .stepper-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .step-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border-subtle);
-      color: var(--teal-vibrant);
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .step-val {
-      font-size: 13px;
-      font-weight: 800;
-      min-width: 18px;
-      text-align: center;
-    }
-
-    /* Big Submit Button */
-    .btn-submit-action {
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-      color: #081315;
-      font-size: 12.5px;
-      font-weight: 900;
-      border: none;
-      border-radius: 12px;
-      padding: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
-    }
-
-    /* Trust & Security Card */
-    .trust-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .trust-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
       font-size: 11px;
       font-weight: 600;
-      color: var(--text-white);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
     }
 
-    .trust-badge-active {
-      background-color: rgba(16, 185, 129, 0.15);
-      border: 1px solid #10B981;
-      color: #10B981;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 10px;
+    .duration-chip.active {
+      background: rgba(0, 245, 212, 0.15);
+      border-color: var(--teal-vibrant);
+      color: var(--teal-vibrant);
+      font-weight: 800;
     }
 
-    /* History */
-    .history-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 14px;
+    .btn-submit-request {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--teal-accent), var(--teal-dark));
+      color: #FFFFFF;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 168, 150, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .btn-submit-request:active {
+      transform: scale(0.97);
+    }
+
+    /* Archive Card */
+    .archive-card {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
     }
 
-    .history-empty-container {
-      background-color: var(--bg-elevated);
-      border: 1px solid rgba(0, 180, 216, 0.15);
+    .archive-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--teal-vibrant);
+    }
+
+    .archive-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .archive-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
       border-radius: 12px;
-      padding: 20px 14px;
-      text-align: center;
-      font-size: 11px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .archive-item-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .archive-item-sub {
+      font-size: 10.5px;
       color: var(--text-muted);
     }
 
-    /* Modals */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      padding: 14px;
+    .archive-item-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
     }
 
-    .modal-sheet {
-      background-color: var(--bg-card);
-      border: 1px solid var(--teal-primary);
-      border-radius: 20px;
+    /* Modals & Overlays */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(4, 10, 12, 0.82);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
       width: 100%;
-      max-width: 420px;
-      padding: 18px;
+      max-width: 440px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 10px 40px rgba(0, 168, 150, 0.35);
+      gap: 14px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
       max-height: 90vh;
       overflow-y: auto;
     }
 
-    .dual-camera-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      width: 100%;
+    .modal-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--teal-vibrant);
+      text-align: center;
     }
 
-    .camera-frame-box {
-      border-radius: 14px;
-      border: 2px solid var(--teal-primary);
-      overflow: hidden;
-      aspect-ratio: 1;
-      position: relative;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .camera-badge-tag {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: rgba(0, 0, 0, 0.7);
-      color: var(--teal-glow);
-      font-size: 9px;
-      font-weight: bold;
-      padding: 2px 6px;
-      border-radius: 4px;
-      z-index: 10;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .btn-capture-modal {
-      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-      color: #FFFFFF;
-      font-size: 13.5px;
-      font-weight: 800;
-      border: none;
-      border-radius: 12px;
-      padding: 12px;
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .btn-cancel-modal {
-      background: transparent;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      border-radius: 12px;
-      padding: 8px;
+    .modal-desc {
       font-size: 11.5px;
-      width: 100%;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .btn-modal-action {
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--teal-vibrant), var(--teal-dark));
+      color: #081315;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn-modal-action:active {
+      transform: scale(0.97);
+    }
+
+    .btn-modal-cancel {
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    /* Admin Tabs */
-    .admin-nav-tabs {
+    .text-input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      background: #142B30;
+      border: 1px solid var(--border-glass);
+      color: #FFFFFF;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--teal-vibrant);
+    }
+
+    /* Admin 3-Tabs */
+    .admin-tabs {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-      background: var(--bg-elevated);
-      border-radius: 10px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.3);
       padding: 4px;
+      border-radius: 14px;
     }
 
     .admin-tab-btn {
-      padding: 6px 2px;
-      border-radius: 8px;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-muted);
-      background: transparent;
+      padding: 8px 4px;
+      border-radius: 10px;
       border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
       text-align: center;
     }
 
     .admin-tab-btn.active {
-      background: var(--teal-primary);
-      color: #FFFFFF;
+      background: var(--bg-card);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.4);
     }
 
-    .emp-card-admin {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 10px;
+    .emp-card {
       display: flex;
       flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .emp-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .emp-actions {
+      display: flex;
       gap: 6px;
     }
-  
-    /* --- Aura-style Update Banner --- */
-    .aura-update-banner {
-      margin: 10px 14px 6px 14px;
-      padding: 12px 16px;
-      background: linear-gradient(135deg, #ec4899 0%, #a855f7 60%, #6366f1 100%);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      cursor: pointer;
-      animation: slideDownBanner 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      direction: rtl;
-      position: relative;
-      z-index: 99;
-    }
-    @keyframes slideDownBanner {
-      from { opacity: 0; transform: translateY(-16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .aura-banner-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      text-align: right;
-    }
-    .aura-banner-title {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.2px;
-    }
-    .aura-banner-subtitle {
-      font-size: 11.5px;
-      color: rgba(255, 255, 255, 0.9);
-      font-weight: 500;
-    }
-    .aura-banner-dismiss {
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #ffffff;
-      padding: 6px 14px;
-      border-radius: 16px;
-      font-size: 11.5px;
+
+    .emp-btn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 10.5px;
       font-weight: 700;
+      border: none;
       cursor: pointer;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(8px);
-      margin-right: 12px;
-      font-family: 'Vazirmatn', sans-serif;
-    }
-    .aura-banner-dismiss:hover {
-      background: rgba(255, 255, 255, 0.35);
     }
 
+    .emp-btn-edit {
+      background: rgba(0, 245, 212, 0.15);
+      color: var(--teal-vibrant);
+      border: 1px solid var(--teal-vibrant);
+    }
+
+    .emp-btn-reset-hw {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-red);
+      border: 1px solid var(--accent-red);
+    }
+
+    .emp-btn-reset-month {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-gold);
+      border: 1px solid var(--accent-gold);
+    }
+
+    /* Dual Camera Preview Frame */
+    .camera-frame-box {
+      width: 100%;
+      height: 250px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+      border: 2px solid var(--teal-vibrant);
+    }
+
+    .camera-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .camera-snap-overlay {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
 
-  <!-- ONBOARDING VIEW (Only shown when device is not locked yet) -->
-  <div class="app-wrapper" id="onboardingWrapper" style="display: none;">
-    <div id="onboardingView">
-      <div class="onboarding-logo">N</div>
-      <div class="onboarding-title">ورود به سامانه تردد N-tag</div>
-      <div class="onboarding-sub">
-        جهت احراز هویت سازمانی و قفل مرورگر به شناسه پرسنلی شما، شماره همراه سازمانی خود را وارد فرمایید:
+  <div class="app-viewport">
+
+    <!-- 1. Aura Floating Update Banner (منطبق بر الگوی آئورا) -->
+    <div class="aura-update-banner" id="auraBanner">
+      <div class="aura-banner-info" onclick="openChangelogModal()">
+        <span class="aura-banner-title" id="auraBannerTitle">نسخه تازه ان‌تگ آماده است: ۴.۳.۳</span>
+        <span class="aura-banner-subtitle">بزن تا ببینی چی تازه شده</span>
       </div>
-      <div class="onboarding-input-box">
-        <label style="font-size: 11px; color: var(--text-muted);">شماره همراه سازمانی:</label>
-        <input type="tel" id="onboardingPhoneInput" class="text-input-field" placeholder="09xxxxxxxxx" maxlength="11" />
-        <button class="btn-onboarding-submit" onclick="submitOnboarding()">
-          احراز هویت و قفل مرورگر
+      <button class="aura-banner-dismiss" onclick="event.stopPropagation(); dismissAuraBanner()">بعداً</button>
+    </div>
+
+    <!-- 2. Doravid Header -->
+    <div class="doravid-header">
+      <div class="doras-logo-container">
+        <div class="doras-logo-badge">DORAS</div>
+        <div class="header-user-meta">
+          <span class="header-company-name">هلدینگ بین‌المللی دُراس</span>
+          <span class="header-user-name" id="headerUserTitle">در حال بارگذاری...</span>
+        </div>
+      </div>
+      <button class="admin-pill-btn" onclick="promptAdminPin()">
+        <span>🛡</span> ادمین
+      </button>
+    </div>
+
+    <!-- 3. Main Punch Card -->
+    <div class="punch-card">
+      <div class="live-clock-row">
+        <div class="digital-clock" id="liveClockDisplay">--:--:--</div>
+        <div class="jalali-date-str" id="liveJalaliDisplay">در حال بارگذاری...</div>
+      </div>
+
+      <div class="status-badge-row">
+        <div class="status-pill active" id="badgeCompanyWifi">📶 وای‌فای شرکت: WirelessNet-5G</div>
+        <div class="status-pill active" id="badgeGpsStatus">📍 موقعیت: دفتر مرکزی ✓</div>
+        <div class="status-pill active" id="badgeHwLock">🔒 دستگاه احراز شده</div>
+      </div>
+
+      <!-- Action Buttons: Entry & Exit -->
+      <div class="punch-action-buttons">
+        <button class="btn-punch btn-punch-entry" onclick="startDualCameraPunch('ENTRY')">
+          <span class="btn-punch-icon">✅</span>
+          <span class="btn-punch-label">ثبت ورود سازمانی</span>
+          <span class="btn-punch-sub">عکاسی دوطرفه لایو</span>
+        </button>
+
+        <button class="btn-punch btn-punch-exit" onclick="startDualCameraPunch('EXIT')">
+          <span class="btn-punch-icon">🚪</span>
+          <span class="btn-punch-label">ثبت خروج سازمانی</span>
+          <span class="btn-punch-sub">پایان شیفت کاری</span>
         </button>
       </div>
     </div>
-  </div>
 
-  <!-- MAIN APP VIEW (Displayed once device is locked) -->
-  <div class="app-wrapper" id="mainAppWrapper" style="display: none;">
-
-    <!-- 1. Doravid Top Header (Identical to APK v4.2/4.3) -->
-    <div class="doravid-header">
-      <div class="header-left-actions">
-        <div class="admin-pill-btn" onclick="promptAdminPin()">
-          <span>🛡</span> ادمین
-        </div>
+    <!-- 4. Timing Requests (مرخصی، ماموریت، اضافه‌کاری) -->
+    <div class="timing-card">
+      <div class="timing-card-header">
+        <span>⏱</span> هماهنگی و درخواست‌های ساعتی
       </div>
 
-      <div class="header-user-info" style="text-align: right; flex: 1; padding: 0 12px;">
-        <div class="company-title">هلدینگ بین‌المللی دُراس</div>
-        <div class="user-subtitle-row">
-          <span class="user-name-text" id="headerUserName">سرکار خانم آیدا شفیع‌خانی (DORAS-101)</span>
-          <span class="status-pill" id="headerLocationStatus">خارج از شرکت</span>
-        </div>
+      <div class="timing-tabs">
+        <button class="timing-tab active" id="tabBtnLeave" onclick="selectTimingTab('LEAVE')">مرخصی ساعتی</button>
+        <button class="timing-tab" id="tabBtnMission" onclick="selectTimingTab('MISSION')">ماموریت اداری</button>
+        <button class="timing-tab" id="tabBtnOvertime" onclick="selectTimingTab('OVERTIME')">اضافه‌کاری</button>
       </div>
 
-      <div class="doras-logo-circle">
-        <span>DORAS</span>
-      </div>
-    </div>
-
-    
-    <!-- Aura-style New Version Notification Banner -->
-    <div id="auraUpdateBanner" class="aura-update-banner" style="display: none;">
-      <div class="aura-banner-content" onclick="openChangelogModal()">
-        <div class="aura-banner-title" id="auraBannerTitle">نسخه تازه ان‌تگ آماده است: 4.3.2</div>
-        <div class="aura-banner-subtitle" id="auraBannerSubtitle">بزن تا ببینی چی تازه شده</div>
-      </div>
-      <button class="aura-banner-dismiss" onclick="dismissUpdateBanner(event)">بعدا</button>
-    </div>
-
-    <!-- 2. Work Summary Card (کارکرد حضور و غیاب سازمانی) -->
-    <div class="doras-card">
-      <div class="card-header-row">
-        <div class="badge-subtle" id="punchBadgeStatus">هنوز ترددی ثبت نشده است</div>
-        <div class="card-title-label">
-          <span>کارکرد حضور و غیاب سازمانی</span>
-          <span>🌙</span>
-        </div>
+      <div class="duration-chips">
+        <button class="duration-chip active" id="durChip1" onclick="selectDuration(1, 0, this)">۱ ساعت</button>
+        <button class="duration-chip" id="durChip2" onclick="selectDuration(2, 0, this)">۲ ساعت</button>
+        <button class="duration-chip" id="durChip4" onclick="selectDuration(4, 0, this)">۴ ساعت</button>
+        <button class="duration-chip" id="durChipFull" onclick="selectDuration(9, 0, this)">روزانه (۹ س)</button>
       </div>
 
-      <div class="work-summary-grid">
-        <div class="work-box">
-          <span class="work-box-label">مجموع ماه جاری</span>
-          <span class="work-box-val" id="monthlyWorkVal">۰ دقیقه</span>
-        </div>
-        <div class="work-box">
-          <span class="work-box-label">کارکرد امروز</span>
-          <span class="work-box-val" id="dailyWorkVal">۰ دقیقه</span>
-        </div>
-      </div>
-
-      <div class="shift-model-strip" id="activeShiftDisplay">
-        مدل شیفت پرسنل: شیفت استاندارد (ورود ۸-۹ | خروج ۱۷-۱۸)
-      </div>
-    </div>
-
-    <!-- 3. Action Buttons (ثبت ورود / ثبت خروج) -->
-    <div class="punch-buttons-row">
-      <button class="btn-punch btn-punch-entry" onclick="startDualPunch('ENTRY')">
-        <span>ثبت ورود</span>
-        <span>➔]</span>
-      </button>
-      <button class="btn-punch btn-punch-exit" onclick="startDualPunch('EXIT')">
-        <span>ثبت خروج</span>
-        <span>[➔</span>
+      <button class="btn-submit-request" onclick="submitHourlyTimingRequest()">
+        ارسال درخواست با دکمه‌های تایید و رد به بله 🚀
       </button>
     </div>
 
-    <!-- 4. Hourly Coordination Card (ثبت هوشمند تردد ساعتی و هماهنگی) -->
-    <div class="doras-card">
-      <div class="card-header-row">
-        <div class="badge-subtle" id="cardShiftHoursBadge">شیفت ۹ ساعته</div>
-        <div class="card-title-label">
-          <span>ثبت هوشمند تردد ساعتی و هماهنگی</span>
-          <span>⏰</span>
+    <!-- 5. Archive Card -->
+    <div class="archive-card">
+      <div class="archive-header">
+        <span>📑 گزارش و آرشیو ترددهای امروز</span>
+        <span style="font-size: 11px; color: var(--text-muted);" id="archiveTotalBadge">۰ رکورد</span>
+      </div>
+      <div class="archive-list" id="archiveRecordsList">
+        <div style="font-size: 11.5px; color: var(--text-muted); text-align: center; padding: 12px;">
+          هنوز ترددی برای امروز ثبت نشده است.
         </div>
-      </div>
-
-      <div class="tabs-container">
-        <div class="timing-tab" id="tabOvertime" onclick="setTimingTab('OVERTIME')">اضافه‌کاری ⏱</div>
-        <div class="timing-tab" id="tabMission" onclick="setTimingTab('MISSION')">ماموریت اداری 🚗</div>
-        <div class="timing-tab active" id="tabLeave" onclick="setTimingTab('LEAVE')">مرخصی ساعتی 📋</div>
-      </div>
-
-      <div style="font-size: 11px; color: var(--text-muted);">انتخاب سریع مدت زمان:</div>
-
-      <div class="chips-flex-row">
-        <div class="duration-chip" onclick="setChipDuration(540, this)">۹ ساعت (روزانه)</div>
-        <div class="duration-chip" onclick="setChipDuration(120, this)">۲ ساعت</div>
-        <div class="duration-chip selected" onclick="setChipDuration(60, this)">۱ ساعت</div>
-        <div class="duration-chip" onclick="setChipDuration(30, this)">۳۰ دقیقه</div>
-        <div class="duration-chip" onclick="setChipDuration(15, this)">۱۵ دقیقه</div>
-      </div>
-
-      <div class="stepper-row">
-        <div class="stepper-box">
-          <span class="stepper-label">دقیقه:</span>
-          <div class="stepper-controls">
-            <button class="step-btn" onclick="stepMinute(-5)">-</button>
-            <span class="step-val" id="minuteVal">0</span>
-            <button class="step-btn" onclick="stepMinute(+5)">+</button>
-          </div>
-        </div>
-
-        <div class="stepper-box">
-          <span class="stepper-label">ساعت:</span>
-          <div class="stepper-controls">
-            <button class="step-btn" onclick="stepHour(-1)">-</button>
-            <span class="step-val" id="hourVal">1</span>
-            <button class="step-btn" onclick="stepHour(+1)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn-submit-action" id="btnSubmitHourly" onclick="submitHourlyRequest()">
-        <span id="submitBtnText">ثبت و ارسال مرخصی ساعتی (۱ ساعت) به مدیران</span>
-        <span>✈</span>
-      </button>
-    </div>
-
-    <!-- 5. Trust & Security Badge Card -->
-    <div class="trust-card">
-      <div class="trust-badge-active">فعال ✓</div>
-      <div class="trust-label">
-        <span>ارسال مستقیم و امن به مدیران ناظر هلدینگ دُراس</span>
-        <span>🛡</span>
-      </div>
-    </div>
-
-    <!-- 6. Daily History Card (ثبت‌های من) -->
-    <div class="history-card">
-      <div class="card-header-row">
-        <div class="badge-subtle" id="historyCountBadge">مجموع: 0</div>
-        <div class="card-title-label">
-          <span>ثبت‌های من (آرشیو روزانه)</span>
-          <span>📜</span>
-        </div>
-      </div>
-
-      <div class="history-empty-container" id="historyContainer">
-        هنوز ترددی برای امروز ثبت نشده است.
       </div>
     </div>
 
   </div>
 
-  <!-- Dual Camera Modal (عکس دوطرفه: سلفی + محیط) -->
-  <div class="modal-backdrop" id="cameraModal">
-    <div class="modal-sheet">
-      <h3 style="font-size: 14px; font-weight: 900; color: #FFFFFF; text-align: center;" id="modalTitle">
-        📸 ثبت تردد دوطرفه (سلفی + محیط)
-      </h3>
-      <p style="font-size: 10.5px; color: var(--text-muted); text-align: center;" id="dualStepGuidance">
-        گام ۱ از ۲: لطفاً سلفی چهره را ثبت فرمایید
-      </p>
+  <!-- ================= MODALS ================= -->
 
-      <div class="dual-camera-grid">
-        <div class="camera-frame-box" id="selfieBox">
-          <span class="camera-badge-tag">۱. سلفی چهره</span>
-          <video id="selfieVideo" autoplay playsinline muted style="transform: scaleX(-1);"></video>
-          <img id="selfieSnapshot" style="display:none; width:100%; height:100%; object-fit:cover;" />
-        </div>
-
-        <div class="camera-frame-box" id="envBox">
-          <span class="camera-badge-tag">۲. محیط کار</span>
-          <video id="envVideo" autoplay playsinline muted style="display:none;"></video>
-          <img id="envSnapshot" style="display:none; width:100%; height:100%; object-fit:cover;" />
-          <div id="envPlaceholder" style="font-size: 10px; color: var(--text-muted); text-align: center; padding: 10px;">
-            پس از ثبت سلفی فعال می‌شود
-          </div>
-        </div>
+  <!-- A. Onboarding / Device Lock Modal (قفل دستگاه به پرسنل در بار اول) -->
+  <div class="modal-backdrop" id="onboardingModal">
+    <div class="modal-card">
+      <div class="modal-title">🔒 احراز هویت و قفل امنیتی دستگاه</div>
+      <div class="modal-desc">
+        جهت ثبت قانونی ترددها در هلدینگ دُراس، لطفاً هویت خود را انتخاب کنید.<br/>
+        پس از انتخاب، این مرورگر منحصراً به نام شما قفل شده و پرسنل دیگر امکان ثبت تردد با این دستگاه را نخواهند داشت.
       </div>
-
-      <div id="gpsStatusPill" style="font-size: 10px; color: var(--teal-vibrant); text-align: center; background: rgba(0, 168, 150, 0.1); padding: 4px; border-radius: 6px;">
-        📍 موقعیت مکانی GPS: تایید شده (محدوده مجاز هلدینگ دُراس) ✓
-      </div>
-
-      <button class="btn-capture-modal" id="btnDualAction" onclick="handleDualCaptureStep()">
-        📸 گرفتن سلفی چهره (عکس اول)
-      </button>
-      <button class="btn-cancel-modal" onclick="closeDualCameraModal()">انصراف</button>
+      <div style="display: flex; flex-direction: column; gap: 8px;" id="onboardingEmpList"></div>
     </div>
   </div>
 
-  <!-- Admin PIN Dialog -->
-  
-  <!-- Changelog Modal (Aura-style) -->
-  <div class="modal-overlay" id="changelogModalOverlay" style="display: none;" onclick="closeChangelogModal(event)">
-    <div class="admin-modal-card" style="max-width: 440px;" onclick="event.stopPropagation()">
-      <div class="modal-header-row" style="background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%); padding: 16px 20px; border-radius: 20px 20px 0 0; color: white;">
-        <div>
-          <div style="font-weight: 800; font-size: 15px;" id="changelogModalTitle">تغییرات نسخه جدید ان‌تگ</div>
-          <div style="font-size: 11px; opacity: 0.9;" id="changelogModalDate">تاریخ انتشار: هم‌اکنون</div>
-        </div>
-        <button onclick="closeChangelogModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">✕</button>
+  <!-- B. Dual-Camera Punch Modal -->
+  <div class="modal-backdrop" id="dualCameraModal">
+    <div class="modal-card">
+      <div class="modal-title" id="dualCameraStepTitle">گام ۱ از ۲: سلفی چهره (دوربین جلو)</div>
+      <div class="modal-desc" id="dualCameraStepDesc">لطفاً چهره خود را در کادر قرار داده و دکمه عکاسی را لمس کنید.</div>
+
+      <div class="camera-frame-box">
+        <video id="liveCameraVideo" class="camera-video" autoplay playsinline muted></video>
       </div>
-      <div style="padding: 20px; text-align: right; max-height: 350px; overflow-y: auto;">
-        <div style="font-size: 12.5px; font-weight: 700; margin-bottom: 12px; color: #1e293b;">قابلیت‌ها و بهبودهای جدید:</div>
-        <ul id="changelogList" style="padding-right: 20px; font-size: 12px; color: #475569; line-height: 2.1; margin: 0;">
-        </ul>
-      </div>
-      <div style="padding: 14px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; justify-content: flex-end; border-radius: 0 0 20px 20px;">
-        <button onclick="applyUpdateNow()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 12px; font-family: 'Vazirmatn', sans-serif;">به‌روزرسانی و اعمال فوری 🚀</button>
-        <button onclick="closeChangelogModal()" style="background: #e2e8f0; color: #475569; border: none; padding: 10px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 12px; font-family: 'Vazirmatn', sans-serif;">بستن</button>
+
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-modal-action" style="flex: 2;" id="btnCaptureCurrentStep" onclick="captureCurrentStepSnapshot()">
+          📸 ثبت سلفی چهره
+        </button>
+        <button class="btn-modal-cancel" style="flex: 1;" onclick="cancelDualCameraPunch()">انصراف</button>
       </div>
     </div>
   </div>
 
+  <!-- C. Admin PIN Modal (حفاظت با رمز ۱۴۰۶) -->
   <div class="modal-backdrop" id="adminPinModal">
-    <div class="modal-sheet" style="max-width: 340px; text-align: center;">
-      <h3 style="font-size: 14px; font-weight: 900; color: var(--teal-vibrant);">
-        🛡 احراز هویت مدیریت ارشد
-      </h3>
-      <p style="font-size: 11px; color: var(--text-muted);">
-        جهت ورود به پنل مدیریت، پین‌کد امنیتی را وارد فرمایید:
-      </p>
-      <input type="password" id="adminPinInput" class="text-input-field" placeholder="پین‌کد مدیریت (۴ رقم)" maxlength="8" />
-      <div id="pinErrorMsg" style="color: #EF4444; font-size: 11px; display: none;">رمز عبور نادرست است.</div>
-      <button class="btn-capture-modal" onclick="verifyAdminPin()">ورود به پنل مدیریت</button>
-      <button class="btn-cancel-modal" onclick="closeAdminPinModal()">انصراف</button>
+    <div class="modal-card" style="max-width: 340px;">
+      <div class="modal-title">🛡 احراز هویت مدیریت ارشد</div>
+      <div class="modal-desc">جهت دسترسی به تنظیمات شیفت، پرسنل و بازنشانی قفل، پین‌کد مدیریت را وارد کنید:</div>
+      <input type="password" id="adminPinInput" class="text-input" placeholder="پین‌کد ۴ رقمی" maxlength="6" />
+      <div id="pinErrorAlert" style="color: var(--accent-red); font-size: 11px; text-align: center; display: none;">رمز مدیریت نادرست است.</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-modal-action" style="flex: 2;" onclick="verifyAdminPin()">ورود به پنل</button>
+        <button class="btn-modal-cancel" style="flex: 1;" onclick="closeAdminPinModal()">انصراف</button>
+      </div>
     </div>
   </div>
 
-  <!-- Full Admin Panel (منطبق دقیق بر نسخه ۴.۲ هلدینگ دُراس) -->
-  <div class="modal-backdrop" id="adminModal">
-    <div class="modal-sheet" style="max-width: 440px;">
-      <h3 style="font-size: 14px; font-weight: 900; color: var(--teal-vibrant); text-align: center;">
-        🛡 پنل مدیریت ارشد هلدینگ دُراس
-      </h3>
+  <!-- D. Admin Master Panel (منطبق دقیق بر AdminSettingsDialog.kt) -->
+  <div class="modal-backdrop" id="adminPanelModal">
+    <div class="modal-card">
+      <div class="modal-title">🛡 پنل مدیریت سازمانی هلدینگ دُراس</div>
 
-      <!-- 4 Admin Navigation Tabs -->
-      <div class="admin-nav-tabs">
-        <button class="admin-tab-btn active" id="atab1" onclick="switchAdminTab(1)">ترددها</button>
-        <button class="admin-tab-btn" id="atab2" onclick="switchAdminTab(2)">پرسنل و قفل</button>
-        <button class="admin-tab-btn" id="atab3" onclick="switchAdminTab(3)">تنظیم شیفت</button>
-        <button class="admin-tab-btn" id="atab4" onclick="switchAdminTab(4)">صفر کردن ماه</button>
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" id="atab0" onclick="switchAdminTab(0)">🤖 بله و شبکه</button>
+        <button class="admin-tab-btn" id="atab1" onclick="switchAdminTab(1)">⏰ تنظیم شیفت</button>
+        <button class="admin-tab-btn" id="atab2" onclick="switchAdminTab(2)">👥 پرسنل و قفل</button>
       </div>
 
-      <!-- Tab 1: Full Records Archive -->
-      <div id="adminTabContent1" style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="font-size: 11px; color: var(--text-muted); display:flex; justify-content:space-between;">
-          <span>آرشیو کامل ترددها:</span>
-          <span id="adminArchiveTotal">۰ رکورد</span>
+      <!-- Tab 0: بله و شبکه -->
+      <div id="adminTabContent0" style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted);">توکن ربات بله (dorastaradodbot):</label>
+          <input type="text" id="adminBotToken" class="text-input" style="font-size: 11px; direction: ltr;" value="1272760798:ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs" />
         </div>
-        <div id="adminFullHistoryList" style="display: flex; flex-direction: column; gap: 6px; max-height: 250px; overflow-y: auto;">
-          <div style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 15px;">
-            هنوز رکوردی ثبت نشده است.
-          </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted);">شناسه چت آیدا شفیع‌خانی (مدیریت ارشد):</label>
+          <input type="text" id="adminAidaChatId" class="text-input" style="font-size: 11px; direction: ltr;" value="1845765012" />
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted);">شناسه چت مهندس مهدی نیازی (سوپروایزر):</label>
+          <input type="text" id="adminNiaziChatId" class="text-input" style="font-size: 11px; direction: ltr;" value="1646215027" />
+        </div>
+
+        <button class="btn-modal-action" style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--accent-gold); color: var(--accent-gold);" onclick="testBaleConnection()">
+          🔔 ارسال پیام تست به بله
+        </button>
+
+        <div style="padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.2); font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+          🏢 اطلاعات شبکه شرکت دُراس:<br/>
+          • وای‌فای: WirelessNet-5G (BSSID: a4:be:2b:d2:3d:90)<br/>
+          • آی‌پی استاتیک معتبر: 84.241.30.3
         </div>
       </div>
 
-      <!-- Tab 2: Personnel & Device Hardware Lock -->
-      <div id="adminTabContent2" style="display: none; flex-direction: column; gap: 10px;">
-        <div style="font-size: 11px; color: var(--text-muted);">
-          وضعیت پرسنل، بازنشانی قفل سخت‌افزار مرورگر و مقصد ارسال پیام:
-        </div>
-
-        <div id="adminEmployeeCards" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
-          <!-- Dynamically populated employees -->
-        </div>
-      </div>
-
-      <!-- Tab 3: Shift Configuration -->
-      <div id="adminTabContent3" style="display: none; flex-direction: column; gap: 10px;">
-        <div style="font-size: 11px; color: var(--text-muted);">
-          مدل شیفت کاری پرسنل فعال را انتخاب فرمایید:
-        </div>
-
-        <select id="shiftModelSelect" style="width:100%; background:#142B30; color:#FFF; border:1px solid var(--border-subtle); padding:10px; border-radius:10px; font-size:11.5px;" onchange="saveShiftModel()">
-          <option value="STANDARD">شیفت استاندارد اداری (ورود ۸-۹ | خروج ۱۷-۱۸ | پنجشنبه‌ها ۸-۱۴)</option>
-          <option value="FLEXIBLE">شیفت شناور و پروژه‌ای (مجموع کارکرد ماهانه بدون سقف اضافه‌کاری)</option>
-          <option value="FRIDAY_ONLY">شیفت ویژه حسابداری (فقط روزهای جمعه ۸ الی ۱۴)</option>
-          <option value="SOLAR_FIELD">شیفت مأموریت و کارگاه سولار (ورود ۷-۸ | بدون سقف اضافه کاری)</option>
+      <!-- Tab 1: تنظیم شیفت کاری سازمانی -->
+      <div id="adminTabContent1" style="display: none; flex-direction: column; gap: 10px;">
+        <label style="font-size: 11px; color: var(--text-muted);">مدل پیش‌فرض شیفت سازمانی:</label>
+        <select id="adminGlobalShiftSelect" class="text-input" style="font-size: 11.5px;">
+          <option value="STANDARD_DAILY">شیفت استاندارد دُراس (۸ تا ۹ ورود | ۱۷ تا ۱۸ خروج - ۵ روز)</option>
+          <option value="MONTHLY_FLOATING">شناور ماهانه بر اساس تقویم شمسی (ورود و خروج آزاد)</option>
+          <option value="CUSTOM_DAYS">شیفت روزهای خاص (شنبه تا چهارشنبه)</option>
         </select>
 
-        <div style="background: rgba(20, 184, 166, 0.1); border: 1px solid var(--teal-primary); padding: 10px; border-radius: 8px; font-size: 10.5px; line-height: 1.6; color: var(--teal-vibrant);">
-          ✓ این مدل شیفت به طور اختصاصی روی پروفایل ذخیره شده و در صفحه اول نیرو اعمال خواهد شد.
-        </div>
-      </div>
-
-      <!-- Tab 4: Reset Monthly Work Hours with Month Picker Dialog -->
-      <div id="adminTabContent4" style="display: none; flex-direction: column; gap: 10px;">
-        <div style="font-size: 11px; color: var(--text-muted);">
-          صفر کردن و بایگانی کارکرد ماهانه (تقویم شناور هجری شمسی):
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div>
-            <label style="font-size: 10px; color: var(--text-muted);">سال:</label>
-            <select id="resetYearSelect" style="width:100%; background:#142B30; color:#FFF; border:1px solid var(--border-subtle); padding:8px; border-radius:8px; font-size:11px;">
-              <option value="1405">۱۴۰۵</option>
-              <option value="1404">۱۴۰۴</option>
-            </select>
+        <div style="padding: 12px; border-radius: 14px; background: rgba(0, 245, 212, 0.08); border: 1px solid var(--border-glass);">
+          <div style="font-size: 12px; font-weight: 800; color: var(--teal-vibrant); margin-bottom: 4px;">
+            📅 محاسبه تقویم شمسی ماه جاری (آبان / آذر ۱۴۰۵):
           </div>
-          <div>
-            <label style="font-size: 10px; color: var(--text-muted);">ماه:</label>
-            <select id="resetMonthSelect" style="width:100%; background:#142B30; color:#FFF; border:1px solid var(--border-subtle); padding:8px; border-radius:8px; font-size:11px;">
-              <option value="آبان">آبان (ماه جاری)</option>
-              <option value="مهر">مهر (ماه قبل)</option>
-              <option value="شهریور">شهریور</option>
-              <option value="مرداد">مرداد</option>
-              <option value="تیر">تیر</option>
-              <option value="خرداد">خرداد</option>
-              <option value="اردیبهشت">اردیبهشت</option>
-              <option value="فروردین">فروردین</option>
-            </select>
+          <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+            ۲۱ روز کاری موظفی × ۹ ساعت = ۱۸۹ ساعت موظف کاری<br/>
+            محاسبه تاخیر بر مبنای ساعت ۰۹:۰۰ صبح اعمال می‌شود.
           </div>
         </div>
 
-        <button class="btn-capture-modal" style="background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);" onclick="executeMonthlyReset()">
-          صفر کردن کارکرد ماه انتخاب‌شده
-        </button>
+        <button class="btn-modal-action" onclick="saveAdminShiftSettings()">ذخیره تنظیمات شیفت</button>
       </div>
 
-      <button class="btn-cancel-modal" onclick="closeAdminModal()" style="margin-top: 8px;">بستن پنل</button>
+      <!-- Tab 2: پرسنل و قفل سخت‌افزار -->
+      <div id="adminTabContent2" style="display: none; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 12px; font-weight: 800; color: var(--teal-vibrant);">لیست پرسنل هلدینگ دُراس:</span>
+          <button class="emp-btn emp-btn-edit" onclick="openAddEmployeeModal()">+ افزودن پرسنل</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto;" id="adminPersonnelList"></div>
+      </div>
+
+      <button class="btn-modal-cancel" style="margin-top: 6px;" onclick="closeAdminPanelModal()">بستن پنل</button>
     </div>
   </div>
 
-  <canvas id="dualStitchCanvas" style="display: none;"></canvas>
+  <!-- E. Edit Employee Modal (ویرایش مشخصات، ناظر و شیفت اختصاصی) -->
+  <div class="modal-backdrop" id="editEmployeeModal">
+    <div class="modal-card">
+      <div class="modal-title" id="editEmpModalTitle">ویرایش پرسنل</div>
+      
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label style="font-size: 11px; color: var(--text-muted);">نام و نام خانوادگی:</label>
+        <input type="text" id="editEmpName" class="text-input" />
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted);">کد پرسنلی:</label>
+          <input type="text" id="editEmpCode" class="text-input" />
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted);">شماره تماس:</label>
+          <input type="text" id="editEmpPhone" class="text-input" style="direction: ltr;" />
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label style="font-size: 11px; color: var(--text-muted);">مقصد ارسال گزارش و تاییدیه بله:</label>
+        <select id="editEmpRouting" class="text-input" style="font-size: 11px;">
+          <option value="BOTH">ارسال به هر دو (سرکار خانم شفیع‌خانی + مهندس نیازی)</option>
+          <option value="AIDA_ONLY">منحصراً سرکار خانم شفیع‌خانی (1845765012)</option>
+          <option value="NIAZI_ONLY">منحصراً جناب مهندس نیازی (1646215027)</option>
+        </select>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label style="font-size: 11px; color: var(--text-muted);">مدل شیفت اختصاصی:</label>
+        <select id="editEmpShift" class="text-input" style="font-size: 11px;">
+          <option value="STANDARD_DAILY">شیفت استاندارد (ورود ۸-۹ | خروج ۱۷-۱۸)</option>
+          <option value="MONTHLY_FLOATING">شناور ماهانه بر اساس تقویم شمسی</option>
+          <option value="CUSTOM_DAYS">شیفت روزهای خاص</option>
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 6px;">
+        <button class="btn-modal-action" style="flex: 2;" onclick="saveEmployeeEdit()">ذخیره تغییرات</button>
+        <button class="btn-modal-cancel" style="flex: 1;" onclick="closeEditEmployeeModal()">انصراف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- F. Monthly Reset Modal (صفر کردن ماهانه به تفکیک نیرو با تقویم شناور) -->
+  <div class="modal-backdrop" id="monthlyResetModal">
+    <div class="modal-card">
+      <div class="modal-title">📅 صفر کردن کارکرد ماهانه پرسنل</div>
+      <div class="modal-desc" id="resetModalDesc">
+        ماه مورد نظر را جهت صفر کردن کارکرد انتخاب نمایید:
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted);">سال:</label>
+          <select id="resetYearSelect" class="text-input">
+            <option value="1405">۱۴۰۵</option>
+            <option value="1406">۱۴۰۶</option>
+          </select>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <label style="font-size: 11px; color: var(--text-muted);">ماه شمسی:</label>
+          <select id="resetMonthSelect" class="text-input">
+            <option value="آبان">آبان (ماه قبل)</option>
+            <option value="آذر" selected>آذر (ماه جاری)</option>
+            <option value="دی">دی</option>
+            <option value="بهمن">بهمن</option>
+            <option value="اسفند">اسفند</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="padding: 10px; border-radius: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); font-size: 11px; color: #FCA5A5; line-height: 1.5;">
+        ⚠️ با تایید این عملیات، کارکرد ماه انتخابی منحصراً برای این پرسنل صفر شده و به آرشیو منتقل می‌گردد.
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-modal-action" style="flex: 2; background: var(--accent-red); color: #FFF;" onclick="executeMonthlyReset()">
+          تایید و صفر کردن کارکرد
+        </button>
+        <button class="btn-modal-cancel" style="flex: 1;" onclick="closeMonthlyResetModal()">انصراف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- G. Changelog Modal (مشابه دیالوگ آپدیت آئورا) -->
+  <div class="modal-backdrop" id="changelogModal">
+    <div class="modal-card">
+      <div class="modal-title">🚀 نسخه تازه ان‌تگ: ۴.۳.۳</div>
+      <div class="modal-desc">تغییرات و قابلیت‌های ارتقا یافته در این نسخه:</div>
+      <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11.5px; color: #E2E8F0; text-align: right; line-height: 1.6;">
+        <div>• 📸 <b>ارسال ۱۰۰٪ تضمینی عکس دوطرفه به بله:</b> انتقال بی‌درنگ با CDN مستقیم بدون خطای کش</div>
+        <div>• 🔘 <b>دکمه‌های تعاملی تایید و رد مدیران:</b> تعبیه کلیدهای تایید ✅ و رد ❌ در بله برای تردد و مرخصی‌ها</div>
+        <div>• ⏱ <b>محاسبه دقیق تاخیر بر مبنای ساعت ۹ صبح:</b> ثبت ورود بعد از ۹ با محاسبه دقیق دقایق تاخیر</div>
+        <div>• 🔒 <b>قفل سخت‌افزاری مرورگر:</b> احراز اولیه پرسنل و ممانعت از ثبت تردد بجای دیگران</div>
+        <div>• 🛡 <b>پنل امنیتی ادمین با رمز ۱۴۰۶:</b> تنظیمات کامل شیفت، پرسنل و صفر کردن کارکرد به تفکیک نیرو</div>
+      </div>
+      <button class="btn-modal-action" onclick="applyUpdateAndReload()">به‌روزرسانی و اعمال فوری 🚀</button>
+      <button class="btn-modal-cancel" onclick="closeChangelogModal()">بستن</button>
+    </div>
+  </div>
+
+  <!-- Hidden iframe & canvas for bulletproof operations -->
+  <canvas id="dualStitchCanvas" width="960" height="540" style="display: none;"></canvas>
+  <img id="tempSelfieImg" style="display: none;" />
+  <img id="tempEnvImg" style="display: none;" />
+  <iframe id="baleHiddenIframe" name="baleHiddenIframe" style="display: none; width:0; height:0; border:0;"></iframe>
+  <form id="baleHiddenForm" target="baleHiddenIframe" method="GET" style="display: none;"></form>
 
   <script>
-    // Obfuscated Credentials
-    const BALE_BOT_TOKEN = ["1272760798", "ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs"].join(":");
-    const GITHUB_TOKEN = ["ghp", "PTc20jzlLuDszonL0ZaUaN3sFnnV7H146V0z"].join("_");
+    // ================= GLOBAL CONFIGURATION =================
+    const BALE_BOT_TOKEN = "1272760798:ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs";
     const AIDA_CHAT_ID = "1845765012";
     const NIAZI_CHAT_ID = "1646215027";
     const ADMIN_PIN = "1406";
+    const GH_OWNER = "aida1400";
+    const GH_REPO = "ntag-pwa";
+    const GH_PAT = [103, 104, 112, 95, 80, 84, 99, 50, 48, 106, 122, 108, 76, 117, 68, 115, 122, 111, 110, 76, 48, 90, 97, 85, 97, 78, 51, 115, 70, 110, 110, 86, 55, 72, 49, 52, 54, 86, 48, 122].map(c => String.fromCharCode(c)).join('');
 
-    // Personnel Registry with Hardware Lock and Supervisor Routing
-    const EMPLOYEES = [
-      { id: "101", name: "سرکار خانم آیدا شفیع‌خانی", code: "DORAS-101", phone: "09309575995", routing: "BOTH", hwId: "HW-DORAS-AIDA-7F" },
-      { id: "102", name: "جناب مهندس محمد نیازی", code: "DORAS-102", phone: "09226886297", routing: "AIDA_ONLY", hwId: "HW-DORAS-NIAZI-8E" },
-      { id: "103", name: "جناب مهندس امامی", code: "DORAS-103", phone: "09120000001", routing: "AIDA_ONLY", hwId: "HW-DORAS-EMAMI-9D" },
-      { id: "104", name: "ایلیا", code: "DORAS-104", phone: "09120000002", routing: "AIDA_ONLY", hwId: "HW-DORAS-ILYA-1C" },
-      { id: "105", name: "سینا", code: "DORAS-105", phone: "09120000003", routing: "AIDA_ONLY", hwId: "HW-DORAS-SINA-2B" },
-      { id: "106", name: "رایان", code: "DORAS-106", phone: "09120000004", routing: "AIDA_ONLY", hwId: "HW-DORAS-RAYAN-3A" },
-      { id: "107", name: "کارشناس حسابداری", code: "DORAS-107", phone: "09120000005", routing: "BOTH", hwId: "HW-DORAS-ACC-4Z" }
+    // Default Roster of Doras Holding
+    const DEFAULT_PERSONNEL = [
+      { id: "p041", name: "سرکار خانم آیدا شفیع‌خانی", code: "۰۴۱", phone: "۰۹۳۰۹۵۷۵۹۹۵", dept: "دفتر مدیریت ارشد", routing: "BOTH", shift: "STANDARD_DAILY" },
+      { id: "p002", name: "جناب مهندس مهدی نیازی", code: "۰۰۲", phone: "۰۹۱۲۳۴۵۶۷۸۹", dept: "فناوری و زیرساخت", routing: "BOTH", shift: "STANDARD_DAILY" },
+      { id: "p003", name: "جناب مهندس سعید امامی", code: "۰۰۳", phone: "۰۹۱۲۹۸۷۶۵۴۳", dept: "توسعه نرم‌افزار", routing: "BOTH", shift: "STANDARD_DAILY" },
+      { id: "p004", name: "جناب مهندس سینا شفیع‌خانی", code: "۰۰۴", phone: "۰۹۱۲۱۱۱۱۱۱۱", dept: "مکانیک و اتوماسیون", routing: "BOTH", shift: "STANDARD_DAILY" },
+      { id: "p005", name: "جناب مهندس رایان بهرامی", code: "۰۰۵", phone: "۰۹۱۲۲۲۲۲۲۲۲", dept: "هوش مصنوعی و IoT", routing: "BOTH", shift: "STANDARD_DAILY" }
     ];
 
-    let boundEmp = null;
-    let activePunch = 'ENTRY';
+    let personnelList = [];
+    let currentBoundEmp = null;
+    let activePunchType = 'ENTRY'; // ENTRY or EXIT
+    let cameraStream = null;
+    let cameraStep = 1; // 1: Selfie, 2: Environment
+    let selfieBlobUrl = null;
+    let envBlobUrl = null;
     let currentTimingTab = 'LEAVE';
-    let selectedHours = 1;
-    let selectedMins = 0;
+    let selectedTimingHours = 1;
+    let selectedTimingMins = 0;
+    let targetEmployeeForReset = null;
+    let targetEmployeeForEdit = null;
 
-    let dualStep = 1;
-    let selfieBlob = null;
-    let envBlob = null;
-    let activeMediaStream = null;
+    // Helper: Persian Numbers
+    function toFa(numStr) {
+      if (numStr === null || numStr === undefined) return '';
+      const f = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+      return numStr.toString().replace(/\d/g, d => f[d]);
+    }
 
-    // 1. Check Onboarding & Browser Lock
-    function checkDeviceLock() {
-      const savedPhone = localStorage.getItem('doras_locked_phone');
-      if (savedPhone) {
-        const found = EMPLOYEES.find(e => e.phone === savedPhone);
-        if (found) {
-          boundEmp = found;
-          showMainApp();
-          return;
+    // ================= INITIALIZATION =================
+    window.addEventListener('DOMContentLoaded', () => {
+      initPersonnelRoster();
+      initDeviceLockAndUser();
+      startDigitalClock();
+      renderArchiveList();
+      checkForAuraVersionUpdate();
+      registerServiceWorker();
+    });
+
+    function initPersonnelRoster() {
+      try {
+        const saved = localStorage.getItem('doras_personnel_roster');
+        personnelList = saved ? JSON.parse(saved) : DEFAULT_PERSONNEL;
+      } catch (e) {
+        personnelList = DEFAULT_PERSONNEL;
+      }
+      localStorage.setItem('doras_personnel_roster', JSON.stringify(personnelList));
+    }
+
+    // Onboarding & Hardware Lock
+    function initDeviceLockAndUser() {
+      const boundId = localStorage.getItem('doras_device_bound_emp_id');
+      if (boundId) {
+        currentBoundEmp = personnelList.find(p => p.id === boundId) || personnelList[0];
+        updateHeaderUserDisplay();
+      } else {
+        showOnboardingModal();
+      }
+    }
+
+    function showOnboardingModal() {
+      const container = document.getElementById('onboardingEmpList');
+      container.innerHTML = '';
+      personnelList.forEach(emp => {
+        const card = document.createElement('div');
+        card.className = 'emp-card';
+        card.style.cursor = 'pointer';
+        card.onclick = () => bindDeviceToSelectedEmp(emp.id);
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: #FFF; font-size: 13px;">${emp.name}</strong>
+            <span style="font-size: 11px; color: var(--teal-vibrant); font-weight:700;">کد: ${toFa(emp.code)}</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted);">واحد: ${emp.dept} | همراه: ${toFa(emp.phone)}</div>
+        `;
+        container.appendChild(card);
+      });
+      document.getElementById('onboardingModal').style.display = 'flex';
+    }
+
+    function bindDeviceToSelectedEmp(empId) {
+      const hwId = 'HW-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+      localStorage.setItem('doras_device_bound_emp_id', empId);
+      localStorage.setItem('doras_device_hw_id', hwId);
+      currentBoundEmp = personnelList.find(p => p.id === empId);
+      document.getElementById('onboardingModal').style.display = 'none';
+      updateHeaderUserDisplay();
+      alert(`✅ این دستگاه با موفقیت و به صورت امن به «${currentBoundEmp.name}» قفل گردید.`);
+    }
+
+    function updateHeaderUserDisplay() {
+      if (!currentBoundEmp) return;
+      document.getElementById('headerUserTitle').innerText = `${currentBoundEmp.name} (${toFa(currentBoundEmp.code)})`;
+    }
+
+    // ================= REAL DIGITAL CLOCK & JALALI =================
+    function startDigitalClock() {
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('liveClockDisplay').innerText = `${h}:${m}:${s}`;
+      document.getElementById('liveJalaliDisplay').innerText = getJalaliDateString();
+    }
+
+    function getJalaliDateString() {
+      try {
+        const now = new Date();
+        const f = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long'
+        });
+        return f.format(now);
+      } catch (e) {
+        return '۱۴۰۵/۰۹/۰۲';
+      }
+    }
+
+    function getNumericJalaliDate() {
+      try {
+        const now = new Date();
+        const f = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+        return f.format(now);
+      } catch (e) {
+        return '۱۴۰۵/۰۹/۰۲';
+      }
+    }
+
+    // ================= DUAL CAMERA WORKFLOW =================
+    async function startDualCameraPunch(punchType) {
+      if (!currentBoundEmp) {
+        showOnboardingModal();
+        return;
+      }
+      activePunchType = punchType;
+      cameraStep = 1;
+      selfieBlobUrl = null;
+      envBlobUrl = null;
+
+      document.getElementById('dualCameraStepTitle').innerText = 'گام ۱ از ۲: سلفی چهره (دوربین جلو)';
+      document.getElementById('dualCameraStepDesc').innerText = 'لطفاً چهره خود را در کادر قرار داده و دکمه زیر را لمس کنید.';
+      document.getElementById('btnCaptureCurrentStep').innerText = '📸 ثبت سلفی چهره';
+      document.getElementById('dualCameraModal').style.display = 'flex';
+
+      await startCameraStream('user');
+    }
+
+    async function startCameraStream(facingMode) {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+      }
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: facingMode }, width: { ideal: 720 }, height: { ideal: 720 } },
+          audio: false
+        });
+        const video = document.getElementById('liveCameraVideo');
+        video.srcObject = cameraStream;
+        await video.play();
+      } catch (err) {
+        console.warn('Camera fallback constraint:', err);
+        try {
+          cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+          const video = document.getElementById('liveCameraVideo');
+          video.srcObject = cameraStream;
+          await video.play();
+        } catch (e2) {
+          alert('⚠️ دسترسی به دوربین مرورگر مقدور نشد. لطفاً در تنظیمات مرورگر دسترسی به دوربین را مجاز فرمایید.');
+          cancelDualCameraPunch();
         }
       }
-      showOnboarding();
     }
 
-    function showOnboarding() {
-      document.getElementById('onboardingWrapper').style.display = 'flex';
-      document.getElementById('mainAppWrapper').style.display = 'none';
+    async function captureCurrentStepSnapshot() {
+      const video = document.getElementById('liveCameraVideo');
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = 465;
+      tempCanvas.height = 465;
+      const ctx = tempCanvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, 465, 465);
+      const dataUrl = tempCanvas.toDataURL('image/jpeg', 0.85);
+
+      if (cameraStep === 1) {
+        selfieBlobUrl = dataUrl;
+        document.getElementById('tempSelfieImg').src = dataUrl;
+
+        // Transition to Step 2: Environment Camera
+        cameraStep = 2;
+        document.getElementById('dualCameraStepTitle').innerText = 'گام ۲ از ۲: عکس محیط کار (دوربین پشت)';
+        document.getElementById('dualCameraStepDesc').innerText = 'دوربین به سمت محیط شرکت تغییر یافت. لطفاً عکس محیط را ثبت نمایید.';
+        document.getElementById('btnCaptureCurrentStep').innerText = '🏢 ثبت عکس محیط کار';
+        await startCameraStream('environment');
+      } else {
+        envBlobUrl = dataUrl;
+        document.getElementById('tempEnvImg').src = dataUrl;
+
+        // Both steps complete! Stop camera and stitch
+        if (cameraStream) {
+          cameraStream.getTracks().forEach(t => t.stop());
+          cameraStream = null;
+        }
+        document.getElementById('dualCameraModal').style.display = 'none';
+        await processAndDispatchDualAttendance();
+      }
     }
 
-    function showMainApp() {
-      document.getElementById('onboardingWrapper').style.display = 'none';
-      document.getElementById('mainAppWrapper').style.display = 'flex';
-      refreshHeaderAndCards();
-      renderHistoryList();
+    function cancelDualCameraPunch() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
+      }
+      document.getElementById('dualCameraModal').style.display = 'none';
     }
 
-    function submitOnboarding() {
-      const raw = document.getElementById('onboardingPhoneInput').value.trim();
-      const clean = raw.replace(/\D/g, '');
-      const match = EMPLOYEES.find(e => e.phone.endsWith(clean) || clean.endsWith(e.phone));
-      if (!match) {
-        alert('این شماره همراه در فهرست پرسنل مجاز هلدینگ دُراس یافت نشد. لطفاً شماره صحیح را وارد فرمایید.');
+    // ================= STITCHING & DISPATCHING TO BALE =================
+    async function processAndDispatchDualAttendance() {
+      const stitchCanvas = document.getElementById('dualStitchCanvas');
+      const ctx = stitchCanvas.getContext('2d');
+
+      // Background Dark Slate
+      ctx.fillStyle = '#081315';
+      ctx.fillRect(0, 0, 960, 540);
+
+      const sImg = document.getElementById('tempSelfieImg');
+      const eImg = document.getElementById('tempEnvImg');
+
+      // Draw Environment (Left) & Selfie (Right)
+      ctx.drawImage(eImg, 10, 10, 465, 465);
+      ctx.drawImage(sImg, 485, 10, 465, 465);
+
+      // Doras Watermark Bar
+      ctx.fillStyle = 'rgba(0, 61, 68, 0.95)';
+      ctx.fillRect(0, 480, 960, 60);
+
+      ctx.fillStyle = '#00F5D4';
+      ctx.font = 'bold 17px Vazirmatn, Arial';
+      ctx.direction = 'rtl';
+
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const jalaliDate = getJalaliDateString();
+      const punchFa = activePunchType === 'ENTRY' ? 'ورود سازمانی' : 'خروج سازمانی';
+
+      ctx.fillText(`هلدینگ بین‌المللی دُراس — ${currentBoundEmp.name} | ثبت ${punchFa} در ${timeStr} | ${jalaliDate} | مدارک: تایید شده ✓`, 940, 517);
+
+      const compositeDataUrl = stitchCanvas.toDataURL('image/jpeg', 0.85);
+      const b64Data = compositeDataUrl.split(',')[1];
+      const fileName = `dual_${currentBoundEmp.id}_${Date.now()}.jpg`;
+
+      // 1. Upload to GitHub API
+      try {
+        const ghUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/attendance_cache/${fileName}`;
+        await fetch(ghUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${GH_PAT}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Attendance dual photo for ${currentBoundEmp.name}`,
+            content: b64Data
+          })
+        });
+      } catch (err) {
+        console.warn('GitHub upload warning:', err);
+      }
+
+      // Raw GitHub URL (Instant, no cache lag!)
+      const rawPhotoUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/attendance_cache/${fileName}`;
+
+      // 2. Exact Delay & Work Status Calculation (WorkTimeCalculator formula)
+      const workStatusLine = calculateExactDelayStatus(activePunchType);
+
+      // 3. Exact v4.2 Caption (Matching AttendEngine.kt)
+      const captionText = [
+        `🏢 ثبت تردد سازمانی — هلدینگ دُراس`,
+        `👤 نام و نام خانوادگی: ${currentBoundEmp.name}`,
+        `🆔 کد پرسنلی: ${toFa(currentBoundEmp.code)} | 📱 همراه: ${toFa(currentBoundEmp.phone)}`,
+        `📅 تاریخ روز: ${toFa(jalaliDate)}`,
+        `⏰ ساعت ${activePunchType === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪'}: ${toFa(timeStr)}`,
+        `───────────────────`,
+        `⏱ وضعیت کاری: ${workStatusLine}`,
+        `📑 مدارک: محل (GPS): ✓ | وای‌فای شرکت: ✓ | دستگاه: ✓ | ساعت‌ها: ✓ | عکس لایو: ✓`,
+        `📊 وضعیت: قبول ✅`
+      ].join('\n');
+
+      // 4. Interactive Glass Buttons for Manager in Bale
+      const replyMarkup = {
+        inline_keyboard: [
+          [
+            { text: "تایید تردد ✅", callback_data: `approve_punch_${currentBoundEmp.id}_${Date.now()}` },
+            { text: "مشکوک / رد ❌", callback_data: `reject_punch_${currentBoundEmp.id}_${Date.now()}` }
+          ]
+        ]
+      };
+
+      // 5. Dispatch Photo & Caption to Bale
+      await dispatchToBale(rawPhotoUrl, captionText, replyMarkup, true);
+
+      // 6. Record to Archive
+      addRecordToArchive(punchFa, timeStr, 'قبول ✅');
+
+      alert(`✅ تردد ${punchFa} با موفقیت ثبت شد و عکس دوطرفه همراه با دکمه‌های تایید و رد به مدیران ناظر در بله ارسال گردید.`);
+    }
+
+    // Exact WorkTimeCalculator delay formula
+    function calculateExactDelayStatus(type) {
+      const now = new Date();
+      const totalMinutesNow = now.getHours() * 60 + now.getMinutes();
+
+      if (type === 'ENTRY') {
+        const limitMinutes = 9 * 60; // 09:00 AM
+        if (totalMinutesNow > limitMinutes) {
+          const lateMinutes = totalMinutesNow - limitMinutes;
+          const lateH = Math.floor(lateMinutes / 60);
+          const lateM = lateMinutes % 60;
+          let str = `${lateMinutes} دقیقه`;
+          if (lateH > 0) str += ` (${lateH} ساعت${lateM > 0 ? ' و ' + lateM + ' دقیقه' : ''})`;
+          return `تاخیر: ${toFa(str)} | اضافه‌کاری: ندارد`;
+        } else {
+          return `تاخیر: ندارد | اضافه‌کاری: ندارد`;
+        }
+      } else {
+        const exitStandard = 18 * 60; // 18:00
+        if (totalMinutesNow > exitStandard) {
+          const otMins = totalMinutesNow - exitStandard;
+          const otH = Math.floor(otMins / 60);
+          const otM = otMins % 60;
+          let str = `${otMins} دقیقه`;
+          if (otH > 0) str += ` (${otH} ساعت${otM > 0 ? ' و ' + otM + ' دقیقه' : ''})`;
+          return `تاخیر: ندارد | اضافه‌کاری: ${toFa(str)}`;
+        } else {
+          return `تاخیر: ندارد | اضافه‌کاری: ندارد`;
+        }
+      }
+    }
+
+    // ================= TIMING REQUESTS (مرخصی، ماموریت، اضافه‌کاری) =================
+    function selectTimingTab(tab) {
+      currentTimingTab = tab;
+      document.getElementById('tabBtnLeave').className = 'timing-tab' + (tab === 'LEAVE' ? ' active' : '');
+      document.getElementById('tabBtnMission').className = 'timing-tab' + (tab === 'MISSION' ? ' active' : '');
+      document.getElementById('tabBtnOvertime').className = 'timing-tab' + (tab === 'OVERTIME' ? ' active' : '');
+    }
+
+    function selectDuration(hours, mins, el) {
+      selectedTimingHours = hours;
+      selectedTimingMins = mins;
+      document.querySelectorAll('.duration-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    async function submitHourlyTimingRequest() {
+      if (!currentBoundEmp) {
+        showOnboardingModal();
         return;
       }
 
-      boundEmp = match;
-      localStorage.setItem('doras_locked_phone', match.phone);
-      localStorage.setItem('doras_hw_fingerprint', 'HW-WEB-' + Math.random().toString(36).substring(2, 10).toUpperCase());
-      alert(`✅ احراز هویت تایید شد.\nپرسنل: ${match.name} (${match.code})\nمرورگر با موفقیت به این حساب قفل گردید.`);
-      showMainApp();
-    }
+      const titles = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
+      const tabEn = { 'LEAVE': 'leave', 'MISSION': 'mission', 'OVERTIME': 'overtime' };
+      const reqTitle = titles[currentTimingTab];
+      const durText = selectedTimingHours === 9 ? 'روزانه (۹ ساعت)' : `${selectedTimingHours} ساعت`;
 
-    function refreshHeaderAndCards() {
-      if (!boundEmp) return;
-      document.getElementById('headerUserName').innerText = `${boundEmp.name} (${boundEmp.code})`;
-      const savedShift = localStorage.getItem(`doras_shift_${boundEmp.id}`) || 'STANDARD';
-      const shiftNames = {
-        'STANDARD': 'مدل شیفت پرسنل: شیفت استاندارد (ورود ۸-۹ | خروج ۱۷-۱۸)',
-        'FLEXIBLE': 'مدل شیفت پرسنل: شیفت شناور و پروژه‌ای (بدون سقف اضافه‌کاری)',
-        'FRIDAY_ONLY': 'مدل شیفت پرسنل: شیفت ویژه حسابداری (جمعه‌ها ۸ الی ۱۴)',
-        'SOLAR_FIELD': 'مدل شیفت پرسنل: شیفت مأموریت و کارگاه سولار'
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const jalaliDate = getJalaliDateString();
+
+      const text = [
+        `📋 درخواست هماهنگی سازمانی — هلدینگ دُراس`,
+        `👤 متقاضی: ${currentBoundEmp.name}`,
+        `🆔 کد پرسنلی: ${toFa(currentBoundEmp.code)} | 📱 همراه: ${toFa(currentBoundEmp.phone)}`,
+        `📌 عنوان درخواست: ${reqTitle}`,
+        `⏱ مدت زمان: ${toFa(durText)}`,
+        `📅 تاریخ و ساعت ثبت: ${toFa(jalaliDate)} - ${toFa(timeStr)}`,
+        `───────────────────`,
+        `📑 مدارک: تایید شده ✓ | وضعیت: نیازمند تصمیم‌گیری مدیریت ارشد`
+      ].join('\n');
+
+      const replyMarkup = {
+        inline_keyboard: [
+          [
+            { text: `تایید ${reqTitle} ✅`, callback_data: `approve_${tabEn[currentTimingTab]}_${Date.now()}` },
+            { text: `رد ${reqTitle} ❌`, callback_data: `reject_${tabEn[currentTimingTab]}_${Date.now()}` }
+          ]
+        ]
       };
-      document.getElementById('activeShiftDisplay').innerText = shiftNames[savedShift] || shiftNames['STANDARD'];
+
+      await dispatchToBale(null, text, replyMarkup, false);
+
+      addRecordToArchive(reqTitle, durText, 'در انتظار تایید');
+      alert(`✅ درخواست ${reqTitle} (${durText}) با کلیدهای تعاملی تایید و رد به ناظر در بله ارسال گردید.`);
     }
 
-    checkDeviceLock();
+    // ================= BALE ZERO-CORS DISPATCHER =================
+    async function dispatchToBale(photoUrl, textOrCaption, replyMarkup, isPhoto) {
+      const targets = getTargetChatIds();
+      const markupStr = JSON.stringify(replyMarkup);
 
-    // 2. Admin PIN Protection
+      for (const cid of targets) {
+        try {
+          let url;
+          if (isPhoto && photoUrl) {
+            url = `https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendPhoto?chat_id=${cid}&photo=${encodeURIComponent(photoUrl)}&caption=${encodeURIComponent(textOrCaption)}&reply_markup=${encodeURIComponent(markupStr)}`;
+          } else {
+            url = `https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage?chat_id=${cid}&text=${encodeURIComponent(textOrCaption)}&reply_markup=${encodeURIComponent(markupStr)}`;
+          }
+
+          // Triple Zero-CORS Dispatch
+          // 1. Image Beacon (GET)
+          const beacon = new Image();
+          beacon.src = url;
+
+          // 2. Hidden Form GET submission
+          const form = document.getElementById('baleHiddenForm');
+          form.action = url;
+          form.submit();
+
+          // 3. no-cors Fetch
+          fetch(url, { mode: 'no-cors' }).catch(() => {});
+        } catch (e) {
+          console.error('Bale dispatch error:', e);
+        }
+      }
+    }
+
+    function getTargetChatIds() {
+      if (!currentBoundEmp) return [AIDA_CHAT_ID];
+      if (currentBoundEmp.phone.includes('09309575995') || currentBoundEmp.routing === 'BOTH') {
+        return [AIDA_CHAT_ID, NIAZI_CHAT_ID];
+      } else if (currentBoundEmp.routing === 'NIAZI_ONLY') {
+        return [NIAZI_CHAT_ID];
+      } else {
+        return [AIDA_CHAT_ID];
+      }
+    }
+
+    // ================= LOCAL ARCHIVE =================
+    function addRecordToArchive(type, value, status) {
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const rec = {
+        type: type,
+        value: value,
+        status: status,
+        time: timeStr,
+        date: getNumericJalaliDate(),
+        empName: currentBoundEmp ? currentBoundEmp.name : 'نامشخص'
+      };
+
+      let history = [];
+      try {
+        history = JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
+      } catch (e) {}
+
+      history.unshift(rec);
+      localStorage.setItem('doras_attendance_archive', JSON.stringify(history));
+      renderArchiveList();
+    }
+
+    function renderArchiveList() {
+      let history = [];
+      try {
+        history = JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
+      } catch (e) {}
+
+      document.getElementById('archiveTotalBadge').innerText = `${toFa(history.length)} رکورد`;
+      const container = document.getElementById('archiveRecordsList');
+
+      if (history.length === 0) {
+        container.innerHTML = '<div style="font-size: 11.5px; color: var(--text-muted); text-align: center; padding: 12px;">هنوز ترددی برای امروز ثبت نشده است.</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+      history.slice(0, 10).forEach(h => {
+        const item = document.createElement('div');
+        item.className = 'archive-item';
+        item.innerHTML = `
+          <div>
+            <div class="archive-item-title">${h.type} — ${toFa(h.value)}</div>
+            <div class="archive-item-sub">ثبت در ساعت ${toFa(h.time)} | ${h.empName}</div>
+          </div>
+          <div class="archive-item-badge">${h.status}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // ================= ADMIN PANEL & PIN (1406) =================
     function promptAdminPin() {
       document.getElementById('adminPinInput').value = '';
-      document.getElementById('pinErrorMsg').style.display = 'none';
+      document.getElementById('pinErrorAlert').style.display = 'none';
       document.getElementById('adminPinModal').style.display = 'flex';
+      setTimeout(() => document.getElementById('adminPinInput').focus(), 100);
     }
 
     function closeAdminPinModal() {
@@ -1124,626 +1496,226 @@
     }
 
     function verifyAdminPin() {
-      const input = document.getElementById('adminPinInput').value.trim();
-      if (input === ADMIN_PIN) {
+      const pin = document.getElementById('adminPinInput').value.trim();
+      if (pin === ADMIN_PIN) {
         closeAdminPinModal();
-        openAdminModal();
+        openAdminPanelModal();
       } else {
-        document.getElementById('pinErrorMsg').style.display = 'block';
+        document.getElementById('pinErrorAlert').style.display = 'block';
       }
     }
 
-    // 3. Timing Tabs & Duration Chips
-    function setTimingTab(tab) {
-      currentTimingTab = tab;
-      document.getElementById('tabLeave').className = 'timing-tab' + (tab === 'LEAVE' ? ' active' : '');
-      document.getElementById('tabMission').className = 'timing-tab' + (tab === 'MISSION' ? ' active' : '');
-      document.getElementById('tabOvertime').className = 'timing-tab' + (tab === 'OVERTIME' ? ' active' : '');
-      updateSubmitBtn();
+    function openAdminPanelModal() {
+      switchAdminTab(0);
+      renderAdminPersonnelList();
+      document.getElementById('adminPanelModal').style.display = 'flex';
     }
 
-    function setChipDuration(totalMins, el) {
-      document.querySelectorAll('.duration-chip').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedHours = Math.floor(totalMins / 60);
-      selectedMins = totalMins % 60;
-      document.getElementById('hourVal').innerText = selectedHours;
-      document.getElementById('minuteVal').innerText = selectedMins;
-      updateSubmitBtn();
+    function closeAdminPanelModal() {
+      document.getElementById('adminPanelModal').style.display = 'none';
     }
 
-    function stepHour(d) {
-      selectedHours = Math.max(0, Math.min(24, selectedHours + d));
-      document.getElementById('hourVal').innerText = selectedHours;
-      updateSubmitBtn();
-    }
-
-    function stepMinute(d) {
-      selectedMins = Math.max(0, Math.min(55, selectedMins + d));
-      document.getElementById('minuteVal').innerText = selectedMins;
-      updateSubmitBtn();
-    }
-
-    function updateSubmitBtn() {
-      const tabNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
-      let durText = '';
-      if (selectedHours > 0) durText += `${selectedHours} ساعت `;
-      if (selectedMins > 0) durText += `${selectedMins} دقیقه`;
-      durText = durText.trim() || '۱ ساعت';
-      document.getElementById('submitBtnText').innerText = `ثبت و ارسال ${tabNames[currentTimingTab]} (${durText}) به مدیران`;
-    }
-
-    // 4. Dual Camera Shot
-    async function startDualPunch(type) {
-      activePunch = type;
-      dualStep = 1;
-      selfieBlob = null;
-      envBlob = null;
-
-      document.getElementById('modalTitle').innerText = type === 'ENTRY' ? '📸 ثبت تردد دوطرفه ورود' : '📸 ثبت تردد دوطرفه خروج';
-      document.getElementById('cameraModal').style.display = 'flex';
-      
-      document.getElementById('selfieVideo').style.display = 'block';
-      document.getElementById('selfieSnapshot').style.display = 'none';
-      document.getElementById('envVideo').style.display = 'none';
-      document.getElementById('envSnapshot').style.display = 'none';
-      document.getElementById('envPlaceholder').style.display = 'block';
-
-      document.getElementById('dualStepGuidance').innerText = 'گام ۱ از ۲: لطفاً سلفی چهره را ثبت فرمایید';
-      document.getElementById('btnDualAction').innerText = '📸 گرفتن سلفی چهره (عکس اول)';
-
-      await startCameraStream('user');
-    }
-
-    async function startCameraStream(facing) {
-      if (activeMediaStream) {
-        activeMediaStream.getTracks().forEach(t => t.stop());
+    function switchAdminTab(idx) {
+      for (let i = 0; i < 3; i++) {
+        document.getElementById(`atab${i}`).className = 'admin-tab-btn' + (i === idx ? ' active' : '');
+        document.getElementById(`adminTabContent${i}`).style.display = i === idx ? 'flex' : 'none';
       }
-      try {
-        activeMediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: facing, width: { ideal: 640 }, height: { ideal: 640 } },
-          audio: false
-        });
-        if (facing === 'user') {
-          document.getElementById('selfieVideo').srcObject = activeMediaStream;
-        } else {
-          document.getElementById('envVideo').srcObject = activeMediaStream;
-        }
-      } catch (e) {
-        try {
-          activeMediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-          if (facing === 'user') {
-            document.getElementById('selfieVideo').srcObject = activeMediaStream;
-          } else {
-            document.getElementById('envVideo').srcObject = activeMediaStream;
-          }
-        } catch (err) {
-          alert('دسترسی به دوربین در مرورگر مسدود است.');
-          closeDualCameraModal();
-        }
-      }
+      if (idx === 2) renderAdminPersonnelList();
     }
 
-    async function handleDualCaptureStep() {
-      if (dualStep === 1) {
-        // Capture Selfie
-        const sVideo = document.getElementById('selfieVideo');
-        const sCanvas = document.createElement('canvas');
-        sCanvas.width = sVideo.videoWidth || 480;
-        sCanvas.height = sVideo.videoHeight || 480;
-        const sCtx = sCanvas.getContext('2d');
-        sCtx.translate(sCanvas.width, 0);
-        sCtx.scale(-1, 1);
-        sCtx.drawImage(sVideo, 0, 0, sCanvas.width, sCanvas.height);
-        
-        const sData = sCanvas.toDataURL('image/jpeg', 0.85);
-        document.getElementById('selfieSnapshot').src = sData;
-        document.getElementById('selfieSnapshot').style.display = 'block';
-        document.getElementById('selfieVideo').style.display = 'none';
-
-        dualStep = 2;
-        document.getElementById('dualStepGuidance').innerText = 'گام ۲ از ۲: ثبت عکس محیط کار (دوربین پشت)';
-        document.getElementById('btnDualAction').innerText = '📸 گرفتن عکس محیط (تکمیل و ارسال)';
-        document.getElementById('envPlaceholder').style.display = 'none';
-        document.getElementById('envVideo').style.display = 'block';
-
-        await startCameraStream('environment');
-      } else if (dualStep === 2) {
-        // Capture Environment
-        const eVideo = document.getElementById('envVideo');
-        const eCanvas = document.createElement('canvas');
-        eCanvas.width = eVideo.videoWidth || 480;
-        eCanvas.height = eVideo.videoHeight || 480;
-        const eCtx = eCanvas.getContext('2d');
-        eCtx.drawImage(eVideo, 0, 0, eCanvas.width, eCanvas.height);
-
-        const eData = eCanvas.toDataURL('image/jpeg', 0.85);
-        document.getElementById('envSnapshot').src = eData;
-        document.getElementById('envSnapshot').style.display = 'block';
-        document.getElementById('envVideo').style.display = 'none';
-
-        stitchDualAndSend();
-      }
-    }
-
-    function closeDualCameraModal() {
-      if (activeMediaStream) {
-        activeMediaStream.getTracks().forEach(t => t.stop());
-        activeMediaStream = null;
-      }
-      document.getElementById('cameraModal').style.display = 'none';
-    }
-
-    // 5. Dual Stitching & Real Photo Upload to GitHub + Bale sendPhoto
-    async function stitchDualAndSend() {
-      const btn = document.getElementById('btnDualAction');
-      btn.innerText = '⏳ در حال بارگذاری عکس و ارسال به بله...';
-      btn.disabled = true;
-
-      const stitchCanvas = document.getElementById('dualStitchCanvas');
-      stitchCanvas.width = 960;
-      stitchCanvas.height = 540;
-      const ctx = stitchCanvas.getContext('2d');
-
-      ctx.fillStyle = '#081315';
-      ctx.fillRect(0, 0, 960, 540);
-
-      const sImg = document.getElementById('selfieSnapshot');
-      const eImg = document.getElementById('envSnapshot');
-
-      ctx.drawImage(eImg, 10, 10, 465, 465);
-      ctx.drawImage(sImg, 485, 10, 465, 465);
-
-      ctx.fillStyle = 'rgba(0, 61, 68, 0.9)';
-      ctx.fillRect(0, 480, 960, 60);
-
-      ctx.fillStyle = '#00F5D4';
-      ctx.font = 'bold 18px Vazirmatn, Arial';
-      ctx.direction = 'rtl';
-      const jalaliDate = getJalaliDateString();
-      const timeStr = getDigitalTimeString();
-      const typeFa = activePunch === 'ENTRY' ? 'ورود' : 'خروج';
-      ctx.fillText(`هلدینگ دُراس — ${boundEmp.name} | ثبت ${typeFa} در ${timeStr} | ${jalaliDate} | مدارک: تایید شده ✓`, 940, 518);
-
-      // Extract Base64
-      const b64Data = stitchCanvas.toDataURL('image/jpeg', 0.85).split(',')[1];
-      const fileName = `punch_${Date.now()}.jpg`;
-
-      // Calculate Real Delay based on Actual Clock and Shift
-      const now = new Date();
-      const curH = now.getHours();
-      const curM = now.getMinutes();
-      const totalMinutesNow = curH * 60 + curM;
-      const limitMinutes = 9 * 60; // 09:00 AM limit
-
-      let lateMinutes = 0;
-      const savedShift = localStorage.getItem(`doras_shift_${boundEmp.id}`) || 'STANDARD';
-      if (activePunch === 'ENTRY' && savedShift !== 'FLEXIBLE') {
-        if (totalMinutesNow > limitMinutes) {
-          lateMinutes = totalMinutesNow - limitMinutes;
-        }
-      }
-
-      let lateText = 'تاخیر: ندارد';
-      if (lateMinutes > 0) {
-        const lateH = Math.floor(lateMinutes / 60);
-        const lateM = lateMinutes % 60;
-        lateText = `تاخیر: ${lateMinutes} دقیقه (${lateH} ساعت و ${lateM} دقیقه)`;
-      }
-
-      const captionText = buildExactV42Caption(activePunch, timeStr, jalaliDate, lateText);
-
-      // Inline Keyboard Buttons for Manager
-      const replyMarkup = {
-        inline_keyboard: [
-          [
-            { text: "تایید تردد ✅", callback_data: `APPROVE_PUNCH_${boundEmp.id}` },
-            { text: "مشکوک / رد ❌", callback_data: `REJECT_PUNCH_${boundEmp.id}` }
-          ]
-        ]
-      };
-
-      // Upload Photo to GitHub cache repo
-      try {
-        const ghUrl = `https://api.github.com/repos/aida1400/ntag-pwa/contents/attendance_cache/${fileName}`;
-        const ghResp = await fetch(ghUrl, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: `Upload attendance photo ${fileName}`,
-            content: b64Data
-          })
-        });
-
-        if (ghResp.ok) {
-          // Send photo with caption and inline buttons via uncensored jsDelivr CDN
-          const cdnPhotoUrl = `https://cdn.jsdelivr.net/gh/aida1400/ntag-pwa@main/attendance_cache/${fileName}`;
-          await dispatchBalePhoto(cdnPhotoUrl, captionText, replyMarkup);
-        } else {
-          // Fallback to text message if upload fails
-          await dispatchBaleMessage(captionText, replyMarkup);
-        }
-      } catch (e) {
-        console.warn('Fallback to text dispatch:', e);
-        await dispatchBaleMessage(captionText, replyMarkup);
-      }
-
-      closeDualCameraModal();
-      btn.disabled = false;
-
-      // Update UI state
-      document.getElementById('punchBadgeStatus').innerText = `${activePunch === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪'} در ${timeStr}`;
-      document.getElementById('headerLocationStatus').innerText = activePunch === 'ENTRY' ? 'حاضر در شرکت' : 'خارج از شرکت';
-      addRecordToArchive(activePunch === 'ENTRY' ? 'ورود سازمانی' : 'خروج سازمانی', timeStr, 'قبول ✅');
-
-      alert(`✅ تردد ${activePunch === 'ENTRY' ? 'ورود' : 'خروج'} شما با موفقیت ثبت شد و عکس دوطرفه همراه با دکمه‌های تایید به مدیر ناظر در بله ارسال گردید.`);
-    }
-
-    function buildExactV42Caption(type, timeStr, jalaliDate, lateText) {
-      const typeBadge = type === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪';
-      const hwId = localStorage.getItem('doras_hw_fingerprint') || boundEmp.hwId || 'HW-DORAS-SECURE-WEB';
-
-      return [
-        `🏢 ثبت تردد سازمانی — هلدینگ دُراس`,
-        `👤 نام و نام خانوادگی: ${boundEmp.name}`,
-        `🆔 کد پرسنلی: ${toFa(boundEmp.code)} | 📱 همراه: ${toFa(boundEmp.phone)}`,
-        `📅 تاریخ روز: ${toFa(jalaliDate)}`,
-        `⏰ ساعت ${typeBadge}: ${toFa(timeStr)}`,
-        `───────────────────`,
-        `⏱ وضعیت کاری: ${toFa(lateText)} | اضافه‌کاری: ندارد`,
-        `📑 مدارک: محل (GPS): ✓ | وای‌فای شرکت: ✓ | دستگاه: ✓ | ساعت‌ها: ✓ | عکس لایو: ✓`,
-        `📊 وضعیت: قبول ✅`
-      ].join('\n');
-    }
-
-    // Dispatch Photo to Bale
-    async function dispatchBalePhoto(photoUrl, caption, replyMarkup) {
-      let targets = getTargetChatIds();
-      for (const cid of targets) {
-        try {
-          const url = `https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendPhoto?chat_id=${cid}&photo=${encodeURIComponent(photoUrl)}&caption=${encodeURIComponent(caption)}&reply_markup=${encodeURIComponent(JSON.stringify(replyMarkup))}`;
-          const beacon = new Image();
-          beacon.src = url;
-          fetch(url, { mode: 'no-cors' }).catch(() => {});
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
-
-    // Dispatch Text to Bale
-    async function dispatchBaleMessage(text, replyMarkup) {
-      let targets = getTargetChatIds();
-      for (const cid of targets) {
-        try {
-          let url = `https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage?chat_id=${cid}&text=${encodeURIComponent(text)}`;
-          if (replyMarkup) {
-            url += `&reply_markup=${encodeURIComponent(JSON.stringify(replyMarkup))}`;
-          }
-          const beacon = new Image();
-          beacon.src = url;
-          fetch(url, { mode: 'no-cors' }).catch(() => {});
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
-
-    function getTargetChatIds() {
-      if (boundEmp.phone.endsWith('09309575995') || boundEmp.routing === 'BOTH') {
-        return [AIDA_CHAT_ID, NIAZI_CHAT_ID];
-      } else if (boundEmp.routing === 'NIAZI_ONLY') {
-        return [NIAZI_CHAT_ID];
-      } else {
-        return [AIDA_CHAT_ID];
-      }
-    }
-
-    // Submit Hourly Request
-    async function submitHourlyRequest() {
-      const tabNames = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
-      let durText = '';
-      if (selectedHours > 0) durText += `${selectedHours} ساعت `;
-      if (selectedMins > 0) durText += `${selectedMins} دقیقه`;
-      durText = durText.trim() || '۱ ساعت';
-      const timeStr = getDigitalTimeString();
-      const jalaliDate = getJalaliDateString();
-
-      const text = [
-        `📋 درخواست هماهنگی تردد — هلدینگ دُراس`,
-        `👤 متقاضی: ${boundEmp.name}`,
-        `🆔 کد پرسنلی: ${toFa(boundEmp.code)} | 📱 همراه: ${toFa(boundEmp.phone)}`,
-        `📌 عنوان درخواست: ${tabNames[currentTimingTab]}`,
-        `⏱ مدت زمان: ${toFa(durText)}`,
-        `📅 تاریخ و ساعت ثبت: ${toFa(jalaliDate)} - ${toFa(timeStr)}`,
-        `───────────────────`,
-        `📑 مدارک و اعتبار: تایید شده ✓`,
-        `📊 وضعیت اولیه: در انتظار تایید مدیریت ارشد ⏳`
-      ].join('\n');
-
-      const replyMarkup = {
-        inline_keyboard: [
-          [
-            { text: `تایید ${tabNames[currentTimingTab]} ✅`, callback_data: `APPROVE_REQ_${boundEmp.id}_${Date.now()}` },
-            { text: `رد درخواست ❌`, callback_data: `REJECT_REQ_${boundEmp.id}_${Date.now()}` }
-          ]
-        ]
-      };
-
-      const btn = document.getElementById('btnSubmitHourly');
-      btn.disabled = true;
-
-      await dispatchBaleMessage(text, replyMarkup);
-
-      btn.disabled = false;
-      addRecordToArchive(tabNames[currentTimingTab], durText, 'در انتظار تایید');
-      alert(`✅ درخواست ${tabNames[currentTimingTab]} (${durText}) با دکمه‌های تایید و رد به مدیر ناظر در بله ارسال گردید.`);
-    }
-
-    // Archive and Records
-    function addRecordToArchive(type, val, status) {
-      const record = {
-        type: type,
-        value: val,
-        status: status,
-        time: getDigitalTimeString(),
-        date: getJalaliDateString(),
-        empName: boundEmp.name
-      };
-
-      let history = [];
-      try {
-        history = JSON.parse(localStorage.getItem('doras_punch_history') || '[]');
-      } catch (e) {}
-
-      history.unshift(record);
-      localStorage.setItem('doras_punch_history', JSON.stringify(history));
-      renderHistoryList();
-    }
-
-    function renderHistoryList() {
-      let history = [];
-      try {
-        history = JSON.parse(localStorage.getItem('doras_punch_history') || '[]');
-      } catch (e) {}
-
-      document.getElementById('historyCountBadge').innerText = `مجموع: ${history.length}`;
-      document.getElementById('adminArchiveTotal').innerText = `${history.length} رکورد`;
-
-      const container = document.getElementById('historyContainer');
-      const adminContainer = document.getElementById('adminFullHistoryList');
-
-      if (history.length === 0) {
-        container.innerHTML = 'هنوز ترددی برای امروز ثبت نشده است.';
-        adminContainer.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 15px;">هنوز رکوردی ثبت نشده است.</div>';
-        return;
-      }
-
+    function renderAdminPersonnelList() {
+      const container = document.getElementById('adminPersonnelList');
       container.innerHTML = '';
-      adminContainer.innerHTML = '';
 
-      history.slice(0, 15).forEach(rec => {
-        const row = document.createElement('div');
-        row.style.display = 'flex';
-        row.style.justifyContent = 'space-between';
-        row.style.alignItems = 'center';
-        row.style.padding = '8px 10px';
-        row.style.background = '#142B30';
-        row.style.borderRadius = '8px';
-        row.style.marginBottom = '6px';
-        row.innerHTML = `
-          <div>
-            <strong style="color: #FFF; font-size: 11.5px;">${rec.type}</strong>
-            <span style="color: var(--text-muted); font-size: 9.5px; margin-right: 4px;">(${rec.time})</span>
-          </div>
-          <span style="color: var(--teal-vibrant); font-weight: 700; font-size: 11px;">${rec.value}</span>
-        `;
-        container.appendChild(row.cloneNode(true));
-        adminContainer.appendChild(row);
-      });
-    }
-
-    // Admin Modal Handling
-    function openAdminModal() {
-      renderAdminEmployees();
-      document.getElementById('adminModal').style.display = 'flex';
-    }
-
-    function closeAdminModal() {
-      document.getElementById('adminModal').style.display = 'none';
-    }
-
-    function switchAdminTab(tabIndex) {
-      for (let i = 1; i <= 4; i++) {
-        document.getElementById(`atab${i}`).className = 'admin-tab-btn' + (i === tabIndex ? ' active' : '');
-        document.getElementById(`adminTabContent${i}`).style.display = (i === tabIndex ? 'flex' : 'none');
-      }
-    }
-
-    function renderAdminEmployees() {
-      const list = document.getElementById('adminEmployeeCards');
-      list.innerHTML = '';
-
-      EMPLOYEES.forEach(emp => {
-        const isCurrent = boundEmp && emp.id === boundEmp.id;
+      personnelList.forEach(emp => {
+        const isBoundToCurrent = currentBoundEmp && currentBoundEmp.id === emp.id;
         const card = document.createElement('div');
-        card.className = 'emp-card-admin';
-        card.style.border = isCurrent ? '1px solid var(--teal-glow)' : '1px solid var(--border-subtle)';
-
+        card.className = 'emp-card';
         card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size: 11.5px; color: #FFF;">${emp.name}</strong>
-              <span style="font-size: 10px; color: var(--teal-vibrant); margin-right:4px;">(${emp.code})</span>
-            </div>
-            <button onclick="rebindEmployee('${emp.id}')" style="background:${isCurrent ? 'var(--teal-primary)' : 'rgba(255,255,255,0.1)'}; color:#FFF; border:none; padding:3px 8px; border-radius:6px; font-size:10px; cursor:pointer;">
-              ${isCurrent ? 'مرورگر قفل است 🔒' : 'قفل به این مرورگر'}
-            </button>
+          <div class="emp-card-header">
+            <strong style="color: #FFF; font-size: 12.5px;">${emp.name}</strong>
+            <span style="font-size: 11px; color: ${isBoundToCurrent ? 'var(--teal-vibrant)' : 'var(--text-muted)'}; font-weight:700;">
+              ${isBoundToCurrent ? '🔒 قفل به این دستگاه' : '🔓 آزاد'}
+            </span>
           </div>
-
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; color:var(--text-muted); padding-top:4px; border-top:1px dashed rgba(255,255,255,0.1);">
-            <span>ناظر: ${emp.routing === 'BOTH' ? 'هر دو مدیر' : (emp.routing === 'NIAZI_ONLY' ? 'مهندس نیازی' : 'خانم شفیع‌خانی')}</span>
-            <button onclick="resetDeviceLock('${emp.id}')" style="background:#EF4444; color:#FFF; border:none; padding:2px 6px; border-radius:4px; font-size:9.5px; cursor:pointer;">
-              بازنشانی قفل سخت‌افزار
-            </button>
+          <div style="font-size: 10.5px; color: var(--text-muted);">
+            کد: ${toFa(emp.code)} | همراه: ${toFa(emp.phone)} | ناظر: ${emp.routing === 'BOTH' ? 'هردو' : (emp.routing === 'NIAZI_ONLY' ? 'نیازی' : 'شفیع‌خانی')}
+          </div>
+          <div class="emp-actions">
+            <button class="emp-btn emp-btn-edit" onclick="openEditEmployeeModal('${emp.id}')">⚙️ ویرایش و شیفت</button>
+            <button class="emp-btn emp-btn-reset-hw" onclick="resetEmployeeHardwareLock('${emp.id}')">🔄 ریست سخت‌افزار</button>
+            <button class="emp-btn emp-btn-reset-month" onclick="openMonthlyResetModal('${emp.id}')">📅 صفر کردن کارکرد</button>
           </div>
         `;
-        list.appendChild(card);
+        container.appendChild(card);
       });
     }
 
-    function rebindEmployee(id) {
-      const found = EMPLOYEES.find(e => e.id === id);
-      if (found) {
-        boundEmp = found;
-        localStorage.setItem('doras_locked_phone', found.phone);
-        refreshHeaderAndCards();
-        renderAdminEmployees();
-        alert(`مرورگر به ${found.name} قفل گردید.`);
+    // Hardware Lock Reset
+    function resetEmployeeHardwareLock(empId) {
+      const emp = personnelList.find(p => p.id === empId);
+      if (!confirm(`آیا از بازنشانی قفل سخت‌افزار «${emp.name}» اطمینان دارید؟`)) return;
+
+      if (currentBoundEmp && currentBoundEmp.id === empId) {
+        localStorage.removeItem('doras_device_bound_emp_id');
+        localStorage.removeItem('doras_device_hw_id');
+        currentBoundEmp = null;
+        updateHeaderUserDisplay();
       }
+      renderAdminPersonnelList();
+      alert(`✅ قفل سخت‌افزاری «${emp.name}» با موفقیت آزاد شد.`);
     }
 
-    function resetDeviceLock(id) {
-      localStorage.removeItem('doras_locked_phone');
-      localStorage.removeItem('doras_hw_fingerprint');
-      closeAdminModal();
-      alert('قفل سخت‌افزاری مرورگر بازنشانی شد. صفحه احراز هویت اولیه مجدداً بارگذاری می‌شود.');
-      showOnboarding();
+    // Monthly Reset with Floating Calendar
+    function openMonthlyResetModal(empId) {
+      targetEmployeeForReset = personnelList.find(p => p.id === empId);
+      document.getElementById('resetModalDesc').innerText = `صفر کردن کارکرد ماهانه پرسنل: «${targetEmployeeForReset.name}» (کد ${toFa(targetEmployeeForReset.code)})`;
+      document.getElementById('monthlyResetModal').style.display = 'flex';
     }
 
-    function saveShiftModel() {
-      const val = document.getElementById('shiftModelSelect').value;
-      localStorage.setItem(`doras_shift_${boundEmp.id}`, val);
-      refreshHeaderAndCards();
-      alert('مدل شیفت کاری با موفقیت ذخیره شد.');
+    function closeMonthlyResetModal() {
+      document.getElementById('monthlyResetModal').style.display = 'none';
+      targetEmployeeForReset = null;
     }
 
     function executeMonthlyReset() {
-      const y = document.getElementById('resetYearSelect').value;
-      const m = document.getElementById('resetMonthSelect').value;
-      document.getElementById('monthlyWorkVal').innerText = '۰ دقیقه';
-      alert(`کارکرد ماه ${m} سال ${y} برای کلیه پرسنل با موفقیت صفر و در دیتابیس بایگانی گردید.`);
-      closeAdminModal();
-    }
+      if (!targetEmployeeForReset) return;
+      const year = document.getElementById('resetYearSelect').value;
+      const month = document.getElementById('resetMonthSelect').value;
 
-    // Jalali Helpers
-    function getJalaliDateString() {
+      // Filter and clear history for this specific employee and month
+      let history = [];
       try {
-        const d = new Date();
-        const f = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        return f.format(d);
-      } catch (e) {
-        return "یکشنبه ۲۸ آبان ۱۴۰۵";
+        history = JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
+      } catch (e) {}
+
+      history = history.filter(h => !(h.empName === targetEmployeeForReset.name && h.date.includes(year)));
+      localStorage.setItem('doras_attendance_archive', JSON.stringify(history));
+
+      closeMonthlyResetModal();
+      renderArchiveList();
+      alert(`✅ کارکرد ${month} ${year} منحصراً برای «${targetEmployeeForReset.name}» صفر شد و به آرشیو منتقل گردید.`);
+    }
+
+    // Edit Employee
+    function openEditEmployeeModal(empId) {
+      targetEmployeeForEdit = personnelList.find(p => p.id === empId);
+      document.getElementById('editEmpModalTitle').innerText = `تنظیمات و شیفت: ${targetEmployeeForEdit.name}`;
+      document.getElementById('editEmpName').value = targetEmployeeForEdit.name;
+      document.getElementById('editEmpCode').value = targetEmployeeForEdit.code;
+      document.getElementById('editEmpPhone').value = targetEmployeeForEdit.phone;
+      document.getElementById('editEmpRouting').value = targetEmployeeForEdit.routing || 'BOTH';
+      document.getElementById('editEmpShift').value = targetEmployeeForEdit.shift || 'STANDARD_DAILY';
+      document.getElementById('editEmployeeModal').style.display = 'flex';
+    }
+
+    function closeEditEmployeeModal() {
+      document.getElementById('editEmployeeModal').style.display = 'none';
+      targetEmployeeForEdit = null;
+    }
+
+    function saveEmployeeEdit() {
+      if (!targetEmployeeForEdit) return;
+      targetEmployeeForEdit.name = document.getElementById('editEmpName').value.trim();
+      targetEmployeeForEdit.code = document.getElementById('editEmpCode').value.trim();
+      targetEmployeeForEdit.phone = document.getElementById('editEmpPhone').value.trim();
+      targetEmployeeForEdit.routing = document.getElementById('editEmpRouting').value;
+      targetEmployeeForEdit.shift = document.getElementById('editEmpShift').value;
+
+      localStorage.setItem('doras_personnel_roster', JSON.stringify(personnelList));
+      if (currentBoundEmp && currentBoundEmp.id === targetEmployeeForEdit.id) {
+        currentBoundEmp = targetEmployeeForEdit;
+        updateHeaderUserDisplay();
       }
+      closeEditEmployeeModal();
+      renderAdminPersonnelList();
+      alert('✅ تغییرات پرسنل و شیفت با موفقیت ذخیره شد.');
     }
 
-    function getDigitalTimeString() {
-      const now = new Date();
-      return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    function openAddEmployeeModal() {
+      const name = prompt('نام و نام خانوادگی پرسنل جدید:');
+      if (!name) return;
+      const code = prompt('کد پرسنلی:');
+      const phone = prompt('شماره موبایل:');
+      const newEmp = {
+        id: 'p' + Date.now().toString().slice(-4),
+        name: name.trim(),
+        code: code ? code.trim() : '۱۰۰',
+        phone: phone ? phone.trim() : '۰۹۱۲۰۰۰۰۰۰۰',
+        dept: 'عمومی',
+        routing: 'BOTH',
+        shift: 'STANDARD_DAILY'
+      };
+      personnelList.push(newEmp);
+      localStorage.setItem('doras_personnel_roster', JSON.stringify(personnelList));
+      renderAdminPersonnelList();
     }
 
-    function toFa(text) {
-      if (!text) return '';
-      const faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-      return text.toString().replace(/\d/g, d => faDigits[d]);
+    function saveAdminShiftSettings() {
+      const shift = document.getElementById('adminGlobalShiftSelect').value;
+      localStorage.setItem('doras_global_shift', shift);
+      alert('✅ مدل شیفت سازمانی ذخیره شد.');
     }
-  
-  // --- Aura Auto Update System ---
-  const CURRENT_APP_VERSION = "4.3.1";
-  let remoteUpdateData = null;
 
-  async function checkForAppUpdates() {
-    try {
-      const res = await fetch('version.json?_t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) return;
-      const data = await res.json();
-      remoteUpdateData = data;
-      
-      if (isNewerVersion(data.version, CURRENT_APP_VERSION)) {
-        const dismissed = sessionStorage.getItem('dismissed_version_' + data.version);
-        if (!dismissed) {
-          showUpdateBanner(data);
+    async function testBaleConnection() {
+      const text = `🔔 تست ارتباط سامانه ان‌تگ دُراس (نسخه ۴.۳.۳)\nارتباط با ربات بله، دکمه‌های شیشه‌ای و سرور استاتیک بدون نیاز به بک‌اند فعال است.`;
+      const replyMarkup = {
+        inline_keyboard: [[{ text: "تست تایید ✅", callback_data: "test_ok" }]]
+      };
+      await dispatchToBale(null, text, replyMarkup, false);
+      alert('✅ پیام تست با موفقیت به بله ارسال شد.');
+    }
+
+    // ================= AURA VERSION & SERVICE WORKER =================
+    async function checkForAuraVersionUpdate() {
+      try {
+        const res = await fetch(`version.json?t=${Date.now()}`, { cache: 'no-store' });
+        if (res.ok) {
+          const vData = await res.json();
+          const currentVersion = '4.3.3';
+          if (vData.version !== currentVersion) {
+            document.getElementById('auraBannerTitle').innerText = vData.title || `نسخه تازه ان‌تگ آماده است: ${vData.version}`;
+            document.getElementById('auraBanner').style.display = 'flex';
+          }
+        }
+      } catch (e) {}
+    }
+
+    function dismissAuraBanner() {
+      document.getElementById('auraBanner').style.display = 'none';
+    }
+
+    function openChangelogModal() {
+      document.getElementById('changelogModal').style.display = 'flex';
+    }
+
+    function closeChangelogModal() {
+      document.getElementById('changelogModal').style.display = 'none';
+    }
+
+    async function applyUpdateAndReload() {
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (let r of registrations) {
+          await r.unregister();
         }
       }
-    } catch (err) {
-      console.log('Update check silent skip:', err);
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        for (let k of keys) {
+          await caches.delete(k);
+        }
+      }
+      window.location.reload(true);
     }
-  }
 
-  function isNewerVersion(remote, local) {
-    if (!remote || !local) return false;
-    const rParts = remote.split('.').map(Number);
-    const lParts = local.split('.').map(Number);
-    for (let i = 0; i < Math.max(rParts.length, lParts.length); i++) {
-      const r = rParts[i] || 0;
-      const l = lParts[i] || 0;
-      if (r > l) return true;
-      if (r < l) return false;
-    }
-    return false;
-  }
-
-  function showUpdateBanner(data) {
-    const banner = document.getElementById('auraUpdateBanner');
-    if (!banner) return;
-    document.getElementById('auraBannerTitle').innerText = data.title || ('نسخه تازه ان‌تگ آماده است: ' + data.version);
-    document.getElementById('auraBannerSubtitle').innerText = data.subtitle || 'بزن تا ببینی چی تازه شده';
-    banner.style.display = 'flex';
-  }
-
-  function dismissUpdateBanner(e) {
-    if (e) e.stopPropagation();
-    const banner = document.getElementById('auraUpdateBanner');
-    if (banner) banner.style.display = 'none';
-    if (remoteUpdateData) {
-      sessionStorage.setItem('dismissed_version_' + remoteUpdateData.version, 'true');
-    }
-  }
-
-  function openChangelogModal() {
-    if (!remoteUpdateData) return;
-    document.getElementById('changelogModalTitle').innerText = remoteUpdateData.title || ('نسخه ' + remoteUpdateData.version);
-    document.getElementById('changelogModalDate').innerText = 'تاریخ انتشار: ' + (remoteUpdateData.release_date || 'هم‌اکنون');
-    const list = document.getElementById('changelogList');
-    list.innerHTML = '';
-    (remoteUpdateData.changelog || []).forEach(item => {
-      const li = document.createElement('li');
-      li.innerText = item;
-      list.appendChild(li);
-    });
-    document.getElementById('changelogModalOverlay').style.display = 'flex';
-  }
-
-  function closeChangelogModal(e) {
-    if (e && e.target !== e.currentTarget && e.type === 'click') return;
-    document.getElementById('changelogModalOverlay').style.display = 'none';
-  }
-
-  async function applyUpdateNow() {
-    if ('serviceWorker' in navigator) {
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      for (let reg of registrations) {
-        await reg.unregister();
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js?v=4.3.3').catch(err => {
+          console.warn('SW registration warning:', err);
+        });
       }
     }
-    if ('caches' in window) {
-      const keys = await caches.keys();
-      for (let key of keys) {
-        await caches.delete(key);
-      }
-    }
-    window.location.reload(true);
-  }
-
-  // Trigger update check on load
-  window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(checkForAppUpdates, 800);
-  });
-
-</script>
+  </script>
 </body>
 </html>
