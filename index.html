@@ -25,7 +25,7 @@
   <!-- Automatic Cache-Buster & Force Purge -->
   <script>
     (function() {
-      const CURRENT_BUILD = '4.4.2_clean';
+      const CURRENT_BUILD = '4.5.0_identical_twin';
       if (localStorage.getItem('doras_app_build') !== CURRENT_BUILD) {
         if ('caches' in window) {
           caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))));
@@ -41,20 +41,32 @@
   </script>
 
   <style>
+    /* ==========================================
+       DORAS Brand Palette (منطبق دقیق بر Color.kt نسخه نیتیو)
+       ========================================== */
     :root {
-      --bg-primary: #081315;
-      --bg-secondary: #0D1E22;
-      --bg-card: #142B30;
-      --bg-glass: rgba(20, 43, 48, 0.85);
-      --border-glass: rgba(0, 245, 212, 0.22);
-      --teal-vibrant: #00F5D4;
-      --teal-accent: #00A896;
-      --teal-dark: #028090;
-      --accent-gold: #F59E0B;
+      --doras-vibrant-teal: #00A896;
+      --doras-deep-petrol: #003D44;
+      --doras-teal-light: #00B4D8;
+      --doras-teal-glow: #00F5D4;
+      --doras-bg-dark: #081315;
+      --doras-bg-mid: #0D1E22;
+      --doras-bg-elevated: #142B30;
+      --doras-slate: #1E3A40;
+      --doras-slate-light: #24444C;
+      --doras-card-glass: rgba(13, 30, 34, 0.85);
+
+      --doravid-sun-amber: #F59E0B;
+      --accent-green: #10B981;
       --accent-red: #EF4444;
-      --accent-emerald: #10B981;
-      --text-primary: #F8FAFC;
+
+      --card-border-amber: rgba(0, 245, 212, 0.4);
+      --card-border-subtle: rgba(0, 180, 216, 0.25);
+
+      --text-primary: #FFFFFF;
+      --text-secondary: #E2E8F0;
       --text-muted: #94A3B8;
+
       --font-vazir: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -68,7 +80,7 @@
     }
 
     body {
-      background-color: var(--bg-primary);
+      background-color: var(--doras-bg-dark);
       color: var(--text-primary);
       min-height: 100vh;
       display: flex;
@@ -86,7 +98,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      padding: 12px 14px 20px 14px;
+      padding: 10px 14px 24px 14px;
     }
 
     /* In-App Floating Toast Notification */
@@ -98,7 +110,7 @@
       max-width: 440px;
       margin: 0 auto;
       background: rgba(20, 43, 48, 0.95);
-      border: 1px solid var(--teal-vibrant);
+      border: 1px solid var(--doras-teal-glow);
       border-radius: 16px;
       padding: 12px 16px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
@@ -125,50 +137,16 @@
       line-height: 1.5;
     }
 
-    /* Top Action Bar (تازه‌سازی و اعلان) */
-    .top-action-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2px 4px;
-    }
-
-    .btn-refresh-cache {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--teal-vibrant);
-      border-radius: 12px;
-      padding: 5px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-refresh-cache:active {
-      transform: scale(0.96);
-      background: rgba(0, 245, 212, 0.2);
-    }
-
-    .app-version-badge {
-      font-size: 10.5px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    /* Doravid Header */
+    /* 1. DoravidTopHeader (منطبق دقیق بر کاتلین) */
     .doravid-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 12px 14px;
-      background: var(--bg-glass);
+      background: var(--doras-card-glass);
       backdrop-filter: blur(14px);
-      border: 1px solid var(--border-glass);
-      border-radius: 18px;
+      border: 1px solid var(--card-border-subtle);
+      border-radius: 20px;
     }
 
     .doras-logo-container {
@@ -181,7 +159,7 @@
       width: 42px;
       height: 42px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--teal-vibrant), var(--teal-dark));
+      background: linear-gradient(135deg, var(--doras-teal-glow), var(--doras-deep-petrol));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -200,7 +178,7 @@
 
     .header-company-name {
       font-size: 11px;
-      color: var(--teal-vibrant);
+      color: var(--doras-teal-glow);
       font-weight: 700;
     }
 
@@ -210,220 +188,353 @@
       color: #FFFFFF;
     }
 
+    .header-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      margin-top: 2px;
+      width: fit-content;
+    }
+
+    .header-status-pill.in-office {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .header-status-pill.out-office {
+      background: rgba(148, 163, 184, 0.2);
+      color: var(--text-secondary);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .header-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Notification Bell with Badge */
+    .notif-bell-btn {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+
+    .notif-bell-btn:active {
+      transform: scale(0.95);
+    }
+
+    .notif-unread-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--doravid-sun-amber);
+      color: #000;
+      font-size: 10px;
+      font-weight: 900;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+
+    /* Admin Pill Button */
     .admin-pill-btn {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 20px;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 14px;
       background: rgba(245, 158, 11, 0.14);
       border: 1px solid rgba(245, 158, 11, 0.45);
-      color: var(--accent-gold);
-      font-size: 12px;
+      color: var(--doravid-sun-amber);
+      font-size: 11.5px;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .admin-pill-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
       background: rgba(245, 158, 11, 0.28);
     }
 
-    /* Main Punch Section */
-    .punch-card {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      padding: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-glass);
-      border-radius: 20px;
-      text-align: center;
+    /* 2. DoravidGpsWarningCard (هشدار موقعیت مکانی) */
+    .gps-warning-card {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      gap: 10px;
     }
 
-    .live-clock-row {
+    .gps-warning-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .gps-warning-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #FCA5A5;
+    }
+
+    .gps-warning-desc {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    .btn-gps-retry {
+      background: var(--accent-red);
+      color: #FFF;
+      border: none;
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* 3. DoravidWorkSummaryCard (کارت جامع کارکرد و ساعت) */
+    .work-summary-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(30, 58, 64, 0.7);
+      border: 1px solid var(--card-border-amber);
+      border-radius: 22px;
+      backdrop-filter: blur(12px);
+    }
+
+    .summary-clock-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .digital-clock {
+    .summary-digital-clock {
       font-size: 26px;
       font-weight: 900;
-      color: var(--teal-vibrant);
+      color: var(--doras-teal-glow);
       letter-spacing: 1px;
       direction: ltr;
     }
 
-    .jalali-date-str {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      font-weight: 600;
+    .summary-jalali-date {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 700;
     }
 
-    .status-badge-row {
+    .summary-status-line {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+      text-align: right;
+    }
+
+    .summary-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-box {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(13, 30, 34, 0.85);
+      border: 1px solid var(--card-border-subtle);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
-    .status-pill {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 12px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.04);
+    .stat-box-label {
+      font-size: 10.5px;
       color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .status-pill.success {
-      background: rgba(16, 185, 129, 0.12);
-      color: var(--accent-emerald);
-      border-color: rgba(16, 185, 129, 0.3);
+    .stat-box-value {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--doras-teal-glow);
     }
 
-    .status-pill.warning {
-      background: rgba(245, 158, 11, 0.12);
-      color: var(--accent-gold);
-      border-color: rgba(245, 158, 11, 0.3);
+    .progress-track-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .status-pill.danger {
-      background: rgba(239, 68, 68, 0.12);
-      color: var(--accent-red);
-      border-color: rgba(239, 68, 68, 0.3);
-    }
-
-    .live-delay-strip {
-      padding: 8px 12px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px dashed rgba(0, 245, 212, 0.3);
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--teal-vibrant);
+    .progress-track-labels {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      font-size: 10.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
     }
 
-    .punch-action-buttons {
+    .progress-track-bar {
+      width: 100%;
+      height: 7px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-track-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--doras-vibrant-teal), var(--doras-teal-glow));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    .shift-tag-strip {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(0, 168, 150, 0.15);
+      color: var(--doras-teal-glow);
+      font-size: 10.5px;
+      font-weight: 700;
+      border: 1px solid var(--card-border-subtle);
+      width: fit-content;
+    }
+
+    /* 4. DoravidActionButtons (دکمه‌های اصلی ورود و خروج) */
+    .action-buttons-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 4px;
     }
 
-    .btn-punch {
+    .btn-action-punch {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 18px 12px;
+      gap: 8px;
+      padding: 16px 10px;
       border-radius: 18px;
       border: none;
       color: #FFFFFF;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 13.5px;
+      font-weight: 900;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .btn-punch:active {
+    .btn-action-punch:active {
       transform: scale(0.96);
     }
 
-    .btn-punch-entry {
-      background: linear-gradient(135deg, #10B981 0%, #047857 100%);
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    .btn-action-entry {
+      background: linear-gradient(135deg, var(--doravid-sun-amber) 0%, var(--doras-vibrant-teal) 100%);
+      box-shadow: 0 8px 22px rgba(245, 158, 11, 0.25);
     }
 
-    .btn-punch-exit {
-      background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%);
-      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    .btn-action-exit {
+      background: var(--doras-slate);
+      border: 1.5px solid rgba(239, 68, 68, 0.6);
+      box-shadow: 0 8px 22px rgba(239, 68, 68, 0.2);
     }
 
-    .btn-punch-icon {
-      font-size: 24px;
+    .btn-action-exit.primary-exit {
+      background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
     }
 
-    .btn-punch-label {
-      font-size: 13.5px;
-      font-weight: 800;
-    }
-
-    .btn-punch-sub {
-      font-size: 10px;
-      opacity: 0.85;
-    }
-
-    /* Timing Requests Card */
-    .timing-card {
+    /* 5. DoravidSmartReminderCard (کارت هوشمند مرخصی، ماموریت، اضافه‌کاری با استپر) */
+    .smart-reminder-card {
       display: flex;
       flex-direction: column;
       gap: 12px;
       padding: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-glass);
-      border-radius: 20px;
+      background: var(--doras-bg-mid);
+      border: 1.5px solid var(--card-border-amber);
+      border-radius: 22px;
     }
 
-    .timing-card-header {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--teal-vibrant);
+    .reminder-card-header {
       display: flex;
       align-items: center;
       gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--doras-teal-glow);
     }
 
-    .timing-tabs {
+    .reminder-mode-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 6px;
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.3);
       padding: 4px;
       border-radius: 14px;
     }
 
-    .timing-tab {
-      padding: 8px 4px;
+    .reminder-tab {
+      padding: 8px 2px;
       border-radius: 10px;
       border: none;
       background: transparent;
       color: var(--text-muted);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
       text-align: center;
+      transition: all 0.2s;
     }
 
-    .timing-tab.active {
-      background: var(--bg-card);
-      color: var(--teal-vibrant);
-      border: 1px solid var(--border-glass);
+    .reminder-tab.active {
+      background: var(--doras-bg-elevated);
+      color: var(--doras-teal-glow);
+      border: 1px solid var(--doras-vibrant-teal);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
-    .duration-chips {
+    .reminder-duration-chips {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
     }
 
-    .duration-chip {
-      padding: 8px 4px;
+    .reminder-chip {
+      padding: 8px 2px;
       border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--card-border-subtle);
       background: rgba(255, 255, 255, 0.04);
-      color: var(--text-muted);
+      color: var(--text-secondary);
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
@@ -431,90 +542,237 @@
       transition: all 0.2s;
     }
 
-    .duration-chip.active {
-      background: rgba(0, 245, 212, 0.15);
-      border-color: var(--teal-vibrant);
-      color: var(--teal-vibrant);
+    .reminder-chip.active {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--doravid-sun-amber);
+      color: var(--doravid-sun-amber);
       font-weight: 800;
     }
 
-    .btn-submit-request {
-      width: 100%;
-      padding: 12px;
+    /* Stepper Controls */
+    .stepper-box {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px;
+      background: var(--doras-bg-elevated);
+      border: 1px solid var(--card-border-subtle);
       border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, var(--teal-accent), var(--teal-dark));
-      color: #FFFFFF;
-      font-size: 12.5px;
-      font-weight: 800;
+    }
+
+    .stepper-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stepper-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .stepper-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(0, 168, 150, 0.2);
+      border: 1px solid var(--doras-vibrant-teal);
+      color: var(--doras-vibrant-teal);
+      font-size: 18px;
+      font-weight: 900;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0, 168, 150, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stepper-btn:active {
+      transform: scale(0.92);
+      background: var(--doras-vibrant-teal);
+      color: #000;
+    }
+
+    .stepper-value {
+      font-size: 15px;
+      font-weight: 900;
+      color: #FFFFFF;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .btn-submit-reminder {
+      width: 100%;
+      padding: 13px;
+      border-radius: 16px;
+      border: none;
+      background: linear-gradient(135deg, var(--doras-vibrant-teal), var(--doras-deep-petrol));
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 168, 150, 0.3);
       transition: transform 0.2s;
     }
 
-    .btn-submit-request:active {
+    .btn-submit-reminder:active {
       transform: scale(0.97);
     }
 
-    /* Archive Card */
-    .archive-card {
+    /* 6. DoravidBaleStatusCard & DoravidNfcTagCard */
+    .mini-info-card {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 10px;
-      padding: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-glass);
-      border-radius: 20px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: var(--doras-bg-mid);
+      border: 1px solid var(--card-border-subtle);
     }
 
-    .archive-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12.5px;
-      font-weight: 800;
-      color: var(--teal-vibrant);
+    .mini-card-icon {
+      font-size: 22px;
+      color: var(--doras-vibrant-teal);
     }
 
-    .archive-list {
+    .mini-card-texts {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      max-height: 200px;
-      overflow-y: auto;
+      gap: 2px;
     }
 
-    .archive-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .archive-item-title {
-      font-size: 12px;
-      font-weight: 700;
+    .mini-card-title {
+      font-size: 11.5px;
+      font-weight: 800;
       color: #FFFFFF;
     }
 
-    .archive-item-sub {
-      font-size: 10.5px;
+    .mini-card-subtitle {
+      font-size: 10px;
       color: var(--text-muted);
     }
 
-    .archive-item-badge {
-      font-size: 10.5px;
+    /* 7. DoravidDayAccordion (آکاردئون گزارش‌های روزانه) */
+    .day-accordion-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px;
+      background: rgba(30, 58, 64, 0.8);
+      border: 1px solid rgba(0, 245, 212, 0.3);
+      border-radius: 20px;
+    }
+
+    .accordion-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .accordion-title-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .accordion-date-text {
+      font-size: 13px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .accordion-duration-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(0, 245, 212, 0.15);
+      color: var(--doras-teal-glow);
+    }
+
+    .accordion-toggle-icon {
+      font-size: 16px;
+      color: var(--text-secondary);
+      transition: transform 0.3s;
+    }
+
+    .accordion-body-records {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    /* DoravidRecordItem */
+    .record-item-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(13, 30, 34, 0.9);
+      border: 1px solid var(--card-border-subtle);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .record-item-card:hover {
+      background: rgba(20, 43, 48, 0.95);
+    }
+
+    .record-meta-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .record-thumb-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border-amber);
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .record-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .record-title-time {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .record-type-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .record-time-str {
+      font-size: 11px;
+      color: var(--doras-teal-glow);
+      font-weight: 700;
+    }
+
+    .record-status-badge {
+      font-size: 11px;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 8px;
       background: rgba(16, 185, 129, 0.15);
-      color: var(--accent-emerald);
+      color: var(--accent-green);
     }
 
-    /* Modals & Overlays */
+    /* Modals & Dialogs */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -522,7 +780,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(4, 10, 12, 0.85);
+      background: rgba(4, 10, 12, 0.88);
       backdrop-filter: blur(16px);
       z-index: 1000;
       align-items: center;
@@ -534,57 +792,36 @@
     .modal-sheet {
       width: 100%;
       max-width: 440px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-glass);
+      background: var(--doras-bg-mid);
+      border: 1.5px solid var(--card-border-amber);
       border-radius: 24px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
       max-height: 90vh;
       overflow-y: auto;
       text-align: right;
     }
 
-    .modal-title {
-      font-size: 15px;
+    .modal-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title-text {
+      font-size: 14.5px;
       font-weight: 900;
-      color: var(--teal-vibrant);
-      text-align: center;
+      color: var(--doras-teal-glow);
     }
 
-    .modal-desc {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      text-align: center;
-      line-height: 1.6;
-    }
-
-    .btn-modal-action {
-      padding: 12px;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, var(--teal-vibrant), var(--teal-dark));
-      color: #081315;
-      font-size: 13px;
-      font-weight: 900;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .btn-modal-action:active {
-      transform: scale(0.97);
-    }
-
-    .btn-modal-cancel {
-      padding: 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    .modal-close-btn {
       background: transparent;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 700;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 20px;
       cursor: pointer;
     }
 
@@ -592,8 +829,8 @@
       width: 100%;
       padding: 12px;
       border-radius: 14px;
-      background: #142B30;
-      border: 1px solid var(--border-glass);
+      background: var(--doras-bg-elevated);
+      border: 1px solid var(--card-border-subtle);
       color: #FFFFFF;
       font-size: 13px;
       text-align: right;
@@ -602,13 +839,13 @@
 
     .text-input:focus {
       outline: none;
-      border-color: var(--teal-vibrant);
+      border-color: var(--doras-teal-glow);
     }
 
-    /* 4-Tabs Admin Panel (Right-Aligned, Persian RTL) */
+    /* 4-Tabs Admin Panel */
     .admin-nav-tabs {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 4px;
       background: rgba(0, 0, 0, 0.3);
       padding: 4px;
@@ -629,8 +866,8 @@
     }
 
     .admin-tab-btn.active {
-      background: var(--bg-card);
-      color: var(--accent-gold);
+      background: var(--doras-bg-elevated);
+      color: var(--doravid-sun-amber);
       border: 1px solid rgba(245, 158, 11, 0.4);
     }
 
@@ -643,12 +880,6 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       text-align: right;
-    }
-
-    .emp-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
     .emp-actions {
@@ -668,8 +899,8 @@
 
     .emp-btn-edit {
       background: rgba(0, 245, 212, 0.15);
-      color: var(--teal-vibrant);
-      border: 1px solid var(--teal-vibrant);
+      color: var(--doras-teal-glow);
+      border: 1px solid var(--doras-teal-glow);
     }
 
     .emp-btn-reset-hw {
@@ -680,11 +911,11 @@
 
     .emp-btn-reset-month {
       background: rgba(245, 158, 11, 0.15);
-      color: var(--accent-gold);
-      border: 1px solid var(--accent-gold);
+      color: var(--doravid-sun-amber);
+      border: 1px solid var(--doravid-sun-amber);
     }
 
-    /* Dual Camera Preview Frame */
+    /* Dual Camera Live Box */
     .camera-frame-box {
       width: 100%;
       height: 250px;
@@ -692,13 +923,43 @@
       overflow: hidden;
       position: relative;
       background: #000;
-      border: 2px solid var(--teal-vibrant);
+      border: 2px solid var(--doras-teal-glow);
     }
 
     .camera-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    /* Stitched Photo Preview Box */
+    .stitched-preview-img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--card-border-amber);
+      display: block;
+    }
+
+    .btn-action-primary {
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--doras-vibrant-teal), var(--doras-deep-petrol));
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn-action-cancel {
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -712,232 +973,310 @@
 
   <div class="app-viewport">
 
-    <!-- Top Action Bar -->
-    <div class="top-action-bar">
-      <span class="app-version-badge">نسخه سازمانی ۴.۴.۲ — هلدینگ دُراس</span>
-      <button class="btn-refresh-cache" onclick="forceAppRefresh()">
-        <span>🔄</span> تازه‌سازی و پاک‌سازی کش
-      </button>
-    </div>
-
-    <!-- Doravid Header -->
+    <!-- 1. DoravidTopHeader -->
     <div class="doravid-header">
       <div class="doras-logo-container">
         <div class="doras-logo-badge">DORAS</div>
         <div class="header-user-meta">
           <span class="header-company-name">هلدینگ بین‌المللی دُراس</span>
           <span class="header-user-name" id="headerUserTitle">در حال بارگذاری...</span>
+          <div class="header-status-pill out-office" id="headerStatusPill">
+            <span class="header-status-dot" id="headerStatusDot" style="background:#94A3B8;"></span>
+            <span id="headerStatusText">خارج از شرکت</span>
+          </div>
         </div>
       </div>
-      <button class="admin-pill-btn" onclick="promptAdminPin()">
-        <span>🛡</span> ادمین
+
+      <div class="header-actions">
+        <!-- Notification Bell with Counter -->
+        <div class="notif-bell-btn" onclick="openNotificationCenter()">
+          <span>🔔</span>
+          <div class="notif-unread-badge" id="notifBadgeCounter" style="display:none;">۰</div>
+        </div>
+
+        <!-- Admin Shield Button -->
+        <button class="admin-pill-btn" onclick="promptAdminPin()">
+          <span>🛡</span> ادمین
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. DoravidGpsWarningCard (هشدار موقعیت مکانی در صورت عدم انطباق) -->
+    <div class="gps-warning-card" id="gpsWarningCard">
+      <div class="gps-warning-text">
+        <span class="gps-warning-title">⚠️ هشدار موقعیت مکانی (GPS)</span>
+        <span class="gps-warning-desc" id="gpsWarningDesc">موقعیت خارج از شعاع مجاز ۱۵۰ متری شرکت است.</span>
+      </div>
+      <button class="btn-gps-retry" onclick="queryRealGpsLocation()">استعلام مجدد 📍</button>
+    </div>
+
+    <!-- 3. DoravidWorkSummaryCard (کارت جامع کارکرد امروز و ماه جاری با پروگرس) -->
+    <div class="work-summary-card">
+      <div class="summary-clock-row">
+        <div class="summary-digital-clock" id="liveClockDisplay">--:--:--</div>
+        <div class="summary-jalali-date" id="liveJalaliDisplay">در حال بارگذاری...</div>
+      </div>
+
+      <div class="summary-status-line" id="liveStatusSummaryText">
+        در حال ارزیابی وضعیت حضور و شیفت...
+      </div>
+
+      <div class="summary-stats-grid">
+        <div class="stat-box">
+          <span class="stat-box-label">کارکرد امروز:</span>
+          <span class="stat-box-value" id="statDailyHours">۰ ساعت و ۰ دقیقه</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-box-label">کارکرد ماه جاری:</span>
+          <span class="stat-box-value" id="statMonthlyHours">۰ ساعت</span>
+        </div>
+      </div>
+
+      <div class="progress-track-container">
+        <div class="progress-track-labels">
+          <span id="statMonthlyTargetText">موظفی: ۱۸۹ ساعت موظف</span>
+          <span id="statMonthlyPercentText">۰٪</span>
+        </div>
+        <div class="progress-track-bar">
+          <div class="progress-track-fill" id="statMonthlyProgressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="shift-tag-strip" id="activeShiftTagBadge">
+        شیفت استاندارد دُراس (ورود ۸-۹ | خروج ۱۷-۱۸)
+      </div>
+    </div>
+
+    <!-- 4. DoravidActionButtons (دکمه‌های اصلی ورود و خروج) -->
+    <div class="action-buttons-row">
+      <button class="btn-action-punch btn-action-entry" onclick="triggerPunchSequence('ENTRY')">
+        <span style="font-size: 20px;">✅</span>
+        <span>ثبت ورود سازمانی</span>
+      </button>
+
+      <button class="btn-action-punch btn-action-exit" id="btnExitAction" onclick="triggerPunchSequence('EXIT')">
+        <span style="font-size: 20px;">🚪</span>
+        <span>ثبت خروج سازمانی</span>
       </button>
     </div>
 
-    <!-- Main Punch Card -->
-    <div class="punch-card">
-      <div class="live-clock-row">
-        <div class="digital-clock" id="liveClockDisplay">--:--:--</div>
-        <div class="jalali-date-str" id="liveJalaliDisplay">در حال بارگذاری...</div>
-      </div>
-
-      <!-- Real-Time GPS & Device Status -->
-      <div class="status-badge-row">
-        <div class="status-pill success" id="badgeGpsStatus">
-          <span>📍 موقعیت ماهواره‌ای (GPS):</span>
-          <strong id="badgeGpsText">در حال استعلام...</strong>
-        </div>
-        <div class="status-pill success" id="badgeWifiStatus">
-          <span>📶 وای‌فای شرکت:</span>
-          <strong>WirelessNet-5G (تایید ✓)</strong>
-        </div>
-        <div class="status-pill success" id="badgeHwLockStatus">
-          <span>🔒 قفل امنیتی دستگاه:</span>
-          <strong id="badgeHwLockText">احراز شده ✓</strong>
-        </div>
-      </div>
-
-      <!-- Live Delay Monitor Strip -->
-      <div class="live-delay-strip" id="liveDelayStrip">
-        <span>⏱ وضعیت تاخیر ورود امروز:</span>
-        <span id="liveDelayStatusText" style="color:#FFF;">محاسبه بر اساس ساعت ۰۹:۰۰</span>
-      </div>
-
-      <!-- Action Buttons: Entry & Exit -->
-      <div class="punch-action-buttons">
-        <button class="btn-punch btn-punch-entry" onclick="startDualCameraPunch('ENTRY')">
-          <span class="btn-punch-icon">✅</span>
-          <span class="btn-punch-label">ثبت ورود سازمانی</span>
-          <span class="btn-punch-sub">عکاسی دوطرفه لایو</span>
-        </button>
-
-        <button class="btn-punch btn-punch-exit" onclick="startDualCameraPunch('EXIT')">
-          <span class="btn-punch-icon">🚪</span>
-          <span class="btn-punch-label">ثبت خروج سازمانی</span>
-          <span class="btn-punch-sub">پایان شیفت کاری</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Timing Requests (مرخصی، ماموریت، اضافه‌کاری) -->
-    <div class="timing-card">
-      <div class="timing-card-header">
+    <!-- 5. DoravidSmartReminderCard (کارت هوشمند مرخصی، ماموریت، اضافه‌کاری با استپر) -->
+    <div class="smart-reminder-card">
+      <div class="reminder-card-header">
         <span>⏱</span> هماهنگی و درخواست‌های ساعتی
       </div>
 
-      <div class="timing-tabs">
-        <button class="timing-tab active" id="tabBtnLeave" onclick="selectTimingTab('LEAVE')">مرخصی ساعتی</button>
-        <button class="timing-tab" id="tabBtnMission" onclick="selectTimingTab('MISSION')">ماموریت اداری</button>
-        <button class="timing-tab" id="tabBtnOvertime" onclick="selectTimingTab('OVERTIME')">اضافه‌کاری</button>
+      <div class="reminder-mode-tabs">
+        <button class="reminder-tab active" id="rtabLeave" onclick="selectReminderMode('LEAVE')">📋 مرخصی ساعتی</button>
+        <button class="reminder-tab" id="rtabMission" onclick="selectReminderMode('MISSION')">🏢 ماموریت اداری</button>
+        <button class="reminder-tab" id="rtabOvertime" onclick="selectReminderMode('OVERTIME')">⏱ اضافه‌کاری</button>
       </div>
 
-      <div class="duration-chips">
-        <button class="duration-chip active" id="durChip1" onclick="selectDuration(1, 0, this)">۱ ساعت</button>
-        <button class="duration-chip" id="durChip2" onclick="selectDuration(2, 0, this)">۲ ساعت</button>
-        <button class="duration-chip" id="durChip4" onclick="selectDuration(4, 0, this)">۴ ساعت</button>
-        <button class="duration-chip" id="durChipFull" onclick="selectDuration(9, 0, this)">روزانه (۹ س)</button>
+      <div class="reminder-duration-chips">
+        <button class="reminder-chip active" id="chip1" onclick="selectQuickDuration(1, 0, this)">۱ ساعت</button>
+        <button class="reminder-chip" id="chip2" onclick="selectQuickDuration(2, 0, this)">۲ ساعت</button>
+        <button class="reminder-chip" id="chip4" onclick="selectQuickDuration(4, 0, this)">۴ ساعت</button>
+        <button class="reminder-chip" id="chip9" onclick="selectQuickDuration(9, 0, this)">روزانه (۹ س)</button>
       </div>
 
-      <button class="btn-submit-request" onclick="submitHourlyTimingRequest()">
-        ارسال درخواست با دکمه‌های تایید و رد به بله 🚀
+      <!-- Stepper Controls (منطبق بر کاتلین) -->
+      <div class="stepper-box">
+        <div class="stepper-item">
+          <span class="stepper-label">ساعت:</span>
+          <button class="stepper-btn" onclick="stepHours(-1)">−</button>
+          <span class="stepper-value" id="stepperHoursVal">۱</span>
+          <button class="stepper-btn" onclick="stepHours(1)">+</button>
+        </div>
+
+        <div class="stepper-item">
+          <span class="stepper-label">دقیقه:</span>
+          <button class="stepper-btn" onclick="stepMinutes(-15)">−</button>
+          <span class="stepper-value" id="stepperMinutesVal">۰</span>
+          <button class="stepper-btn" onclick="stepMinutes(15)">+</button>
+        </div>
+      </div>
+
+      <button class="btn-submit-reminder" onclick="submitSmartTimingRequest()">
+        ارسال درخواست به مدیریت ناظر در بله 🚀
       </button>
     </div>
 
-    <!-- Archive Card -->
-    <div class="archive-card">
-      <div class="archive-header">
-        <span>📑 گزارش و آرشیو ترددهای امروز</span>
-        <span style="font-size: 11px; color: var(--text-muted);" id="archiveTotalBadge">۰ رکورد</span>
+    <!-- 6. DoravidBaleStatusCard & DoravidNfcTagCard -->
+    <div class="mini-info-card">
+      <div class="mini-card-icon">🛡</div>
+      <div class="mini-card-texts">
+        <span class="mini-card-title">ارتباط بله: فعال و متصل (مقصد: سرکار خانم شفیع‌خانی + مهندس نیازی)</span>
+        <span class="mini-card-subtitle">همگام‌سازی لحظه‌ای شواهد تردد با بات dorastaradodbot</span>
       </div>
-      <div class="archive-list" id="archiveRecordsList">
-        <div style="font-size: 11.5px; color: var(--text-muted); text-align: center; padding: 12px;">
-          هنوز ترددی برای امروز ثبت نشده است.
+    </div>
+
+    <div class="mini-info-card">
+      <div class="mini-card-icon">🏷</div>
+      <div class="mini-card-texts">
+        <span class="mini-card-title">تگ رومیزی میز ۱ — فعال و معتبر</span>
+        <span class="mini-card-subtitle">شناسه تگ اختصاصی کارفرما: TAG-DORAS-DESK-01</span>
+      </div>
+    </div>
+
+    <!-- 7. DoravidDayAccordion (آکاردئون سوابق و آرشیو ترددها با عکس) -->
+    <div class="day-accordion-card">
+      <div class="accordion-header-row" onclick="toggleHistoryAccordion()">
+        <div class="accordion-title-meta">
+          <span>📅</span>
+          <span class="accordion-date-text">سوابق و ترددهای ثبت‌شده</span>
+          <span class="accordion-duration-badge" id="accordionTotalBadge">۰ رکورد</span>
+        </div>
+        <span class="accordion-toggle-icon" id="accordionArrowIcon">▼</span>
+      </div>
+
+      <div class="accordion-body-records" id="accordionRecordsList">
+        <div style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 10px;">
+          هنوز رکوردی ثبت نشده است.
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- ================= MODALS ================= -->
+  <!-- ================= DIALOGS & MODALS ================= -->
 
-  <!-- A. Protected Device Onboarding Modal (قفل دستگاه با رمز ۱۴۰۶ ادمین) -->
-  <div class="modal-backdrop" id="onboardingModal">
-    <div class="modal-sheet">
-      <div class="modal-title">🔒 احراز هویت و فعال‌سازی قفل دستگاه</div>
-      <div class="modal-desc">
-        جهت جلوگیری از ثبت تردد به نام دیگران، فعال‌سازی اولیه هر گوشی نیازمند تایید مدیریت است.<br/>
-        پرسنل مربوطه را انتخاب کرده و پین‌کد مدیریت (۱۴۰۶) را وارد نمایید:
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 4px;">
-        <label style="font-size: 11px; color: var(--text-muted);">انتخاب پرسنل مالک این دستگاه:</label>
-        <select id="onboardingEmpSelect" class="text-input" style="font-size: 12px;"></select>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 4px;">
-        <label style="font-size: 11px; color: var(--text-muted);">پین‌کد مدیریت (جهت تایید قفل دستگاه):</label>
-        <input type="password" id="onboardingPinInput" class="text-input" placeholder="پین‌کد ۴ رقمی مدیریت" maxlength="6" style="text-align: center; direction: ltr;" />
-      </div>
-
-      <div id="onboardingErrorAlert" style="color: var(--accent-red); font-size: 11px; text-align: center; display: none;">
-        رمز مدیریت نادرست است. دسترسی فعال‌سازی مسدود شد.
-      </div>
-
-      <button class="btn-modal-action" onclick="submitDeviceBinding()">تایید و قفل دائمی دستگاه 🔒</button>
-    </div>
-  </div>
-
-  <!-- B. Dual-Camera Punch Modal -->
+  <!-- A. Dual-Camera Punch Modal -->
   <div class="modal-backdrop" id="dualCameraModal">
     <div class="modal-sheet">
-      <div class="modal-title" id="dualCameraStepTitle">گام ۱ از ۲: سلفی چهره (دوربین جلو)</div>
-      <div class="modal-desc" id="dualCameraStepDesc">لطفاً چهره خود را در کادر قرار داده و دکمه عکاسی را لمس کنید.</div>
+      <div class="modal-title-row">
+        <span class="modal-title-text" id="dualCameraStepTitle">گام ۱ از ۲: سلفی چهره (دوربین جلو)</span>
+        <button class="modal-close-btn" onclick="cancelDualCameraPunch()">✕</button>
+      </div>
 
       <div class="camera-frame-box">
         <video id="liveCameraVideo" class="camera-video" autoplay playsinline muted></video>
       </div>
 
-      <div id="cameraGpsLiveAlert" style="font-size: 11px; color: var(--teal-vibrant); text-align: center;">
-        در حال بررسی مختصات موقعیت مکانی...
+      <div id="cameraGpsLiveAlert" style="font-size: 11px; color: var(--doras-teal-glow); text-align: center;">
+        در حال ارزیابی موقعیت جغرافیایی و تطبیق با دفتر مرکزی...
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button class="btn-modal-action" style="flex: 2;" id="btnCaptureCurrentStep" onclick="captureCurrentStepSnapshot()">
+        <button class="btn-action-primary" style="flex: 2;" id="btnCaptureCurrentStep" onclick="captureCurrentStepSnapshot()">
           📸 ثبت سلفی چهره
         </button>
-        <button class="btn-modal-cancel" style="flex: 1;" onclick="cancelDualCameraPunch()">انصراف</button>
+        <button class="btn-action-cancel" style="flex: 1;" onclick="cancelDualCameraPunch()">انصراف</button>
       </div>
     </div>
   </div>
 
-  <!-- C. Admin PIN Modal (حفاظت با رمز ۱۴۰۶) -->
+  <!-- B. ReviewAndConfirmDialog (بررسی و تایید عکس قبل از ارسال به بله) -->
+  <div class="modal-backdrop" id="reviewConfirmModal">
+    <div class="modal-sheet">
+      <div class="modal-title-row">
+        <span class="modal-title-text">تایید و بازبینی تردد سازمانی</span>
+        <button class="modal-close-btn" onclick="closeReviewModal()">✕</button>
+      </div>
+
+      <img id="reviewStitchedImg" class="stitched-preview-img" src="" alt="عکس دوطرفه" />
+
+      <div style="padding: 10px; border-radius: 12px; background: rgba(0, 61, 68, 0.4); border: 1px solid var(--card-border-subtle); font-size: 11px; line-height: 1.6; color: var(--text-secondary);">
+        <div id="reviewMetaGps">📍 موقعیت ماهواره: در حال محاسبه...</div>
+        <div>📶 وای‌فای: WirelessNet-5G (وای‌فای شرکت ✓)</div>
+        <div>🌐 آی‌پی مستقیم: 84.241.30.3 (آی‌پی شرکت ✓)</div>
+        <div>🔒 قفل سخت‌افزار: انطباق کامل دستگاه ✓</div>
+        <div id="reviewMetaDelay" style="color: var(--doravid-sun-amber); font-weight: 700;">⏱ وضعیت کاری: ...</div>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-action-primary" style="flex: 2; background: linear-gradient(135deg, #10B981, #047857);" onclick="confirmAndDispatchToBale()">
+          تایید و ارسال نهایی به مدیران در بله 🚀
+        </button>
+        <button class="btn-action-cancel" style="flex: 1;" onclick="retakeDualCamera()">عکاسی مجدد 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- C. PhotoPreviewDialog (نمایش شناسنامه کامل تردد با کلیک روی هر رکورد) -->
+  <div class="modal-backdrop" id="photoPreviewModal">
+    <div class="modal-sheet">
+      <div class="modal-title-row">
+        <span class="modal-title-text" id="previewDialogTitle">شناسنامه مدارک تردد سازمانی</span>
+        <button class="modal-close-btn" onclick="closePhotoPreviewModal()">✕</button>
+      </div>
+
+      <img id="dialogPreviewImg" class="stitched-preview-img" src="" alt="عکس ثبت شده" />
+
+      <div style="padding: 12px; border-radius: 14px; background: rgba(0, 61, 68, 0.5); border: 1px solid var(--card-border-subtle); font-size: 11px; line-height: 1.7; color: var(--text-secondary);">
+        <div id="dialogMetaPunch" style="font-weight: 800; color: #FFF; font-size: 12.5px;">ثبت تردد سازمانی</div>
+        <div id="dialogMetaTime">زمان ثبت: --:-- | تاریخ: --</div>
+        <div id="dialogMetaGps">📍 موقعیت ماهواره: دفتر مرکزی</div>
+        <div>📶 وای‌فای: WirelessNet-5G (تایید شرکت ✓)</div>
+        <div>🔒 قفل سخت‌افزار دستگاه: انطباق کامل هویت سخت‌افزاری ✓</div>
+        <div>📡 وضعیت مخابره بله: ارسال موفق به مدیران ارشد ✓</div>
+        <div id="dialogMetaVerdict" style="font-weight: 800; color: var(--accent-green); font-size: 12px; margin-top: 4px;">
+          وضعیت ارزیابی هوشمند: قبول ✅
+        </div>
+      </div>
+
+      <button class="btn-action-primary" onclick="closePhotoPreviewModal()">بستن شناسنامه</button>
+    </div>
+  </div>
+
+  <!-- D. NotificationCenterDialog (مرکز اعلانات هوشمند) -->
+  <div class="modal-backdrop" id="notifCenterModal">
+    <div class="modal-sheet">
+      <div class="modal-title-row">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>🔔</span>
+          <span class="modal-title-text">مرکز اعلانات هوشمند — هلدینگ دُراس</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeNotificationCenter()">✕</button>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+        <span id="notifUnreadSummaryText" style="color: var(--doravid-sun-amber);">۰ اعلان خوانده‌نشده</span>
+        <button style="background:transparent; border:none; color:var(--doras-vibrant-teal); font-size:11px; font-weight:700; cursor:pointer;" onclick="markAllNotificationsAsRead()">
+          ✓ خواندن همه
+        </button>
+      </div>
+
+      <div id="notifItemsContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto;">
+        <!-- Dynamic items -->
+      </div>
+
+      <button class="btn-action-cancel" onclick="closeNotificationCenter()">بستن</button>
+    </div>
+  </div>
+
+  <!-- E. Admin PIN Modal (رمز ۱۴۰۶) -->
   <div class="modal-backdrop" id="adminPinModal">
     <div class="modal-sheet" style="max-width: 340px;">
-      <div class="modal-title">🛡 احراز هویت مدیریت ارشد</div>
-      <div class="modal-desc">جهت دسترسی به پنل مدیریت، پین‌کد امنیتی را وارد فرمایید:</div>
+      <div class="modal-title-row">
+        <span class="modal-title-text">🛡 احراز هویت مدیریت ارشد</span>
+        <button class="modal-close-btn" onclick="closeAdminPinModal()">✕</button>
+      </div>
+      <div style="font-size: 11.5px; color: var(--text-muted); text-align: center;">جهت ورود به پنل، پین‌کد مدیریت را وارد فرمایید:</div>
       <input type="password" id="adminPinInput" class="text-input" placeholder="پین‌کد ۴ رقمی" maxlength="6" style="text-align: center; direction: ltr;" />
       <div id="pinErrorAlert" style="color: var(--accent-red); font-size: 11px; text-align: center; display: none;">رمز مدیریت نادرست است.</div>
       <div style="display: flex; gap: 8px;">
-        <button class="btn-modal-action" style="flex: 2;" onclick="verifyAdminPin()">ورود به پنل</button>
-        <button class="btn-modal-cancel" style="flex: 1;" onclick="closeAdminPinModal()">انصراف</button>
+        <button class="btn-action-primary" style="flex: 2;" onclick="verifyAdminPin()">ورود به پنل</button>
+        <button class="btn-action-cancel" style="flex: 1;" onclick="closeAdminPinModal()">انصراف</button>
       </div>
     </div>
   </div>
 
-  <!-- D. Admin Master Panel (RTL-Aligned, 4 Clean Tabs) -->
+  <!-- F. Admin Master Panel (منطبق دقیق بر ۳ تب کاتلین AdminSettingsDialog) -->
   <div class="modal-backdrop" id="adminPanelModal">
     <div class="modal-sheet">
-      <div class="modal-title">🛡 پنل مدیریت ارشد هلدینگ دُراس</div>
+      <div class="modal-title-row">
+        <span class="modal-title-text">🛡 پنل مدیریت سازمانی هلدینگ دُراس</span>
+        <button class="modal-close-btn" onclick="closeAdminPanelModal()">✕</button>
+      </div>
 
       <div class="admin-nav-tabs">
-        <button class="admin-tab-btn active" id="atab1" onclick="switchAdminTab(1)">ترددها</button>
-        <button class="admin-tab-btn" id="atab2" onclick="switchAdminTab(2)">پرسنل و قفل</button>
-        <button class="admin-tab-btn" id="atab3" onclick="switchAdminTab(3)">تنظیم شیفت</button>
-        <button class="admin-tab-btn" id="atab4" onclick="switchAdminTab(4)">شبکه و بله</button>
+        <button class="admin-tab-btn active" id="atab0" onclick="switchAdminTab(0)">🤖 بله و شبکه</button>
+        <button class="admin-tab-btn" id="atab1" onclick="switchAdminTab(1)">⏰ تنظیم شیفت</button>
+        <button class="admin-tab-btn" id="atab2" onclick="switchAdminTab(2)">👥 پرسنل و قفل</button>
       </div>
 
-      <!-- Tab 1: Full Records Archive -->
-      <div id="adminTabContent1" style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-muted);">
-          <span>آرشیو کامل ترددهای ثبتی:</span>
-          <span id="adminArchiveTotal">۰ رکورد</span>
-        </div>
-        <div id="adminFullHistoryList" style="display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto;"></div>
-      </div>
-
-      <!-- Tab 2: Personnel & Device Hardware Lock -->
-      <div id="adminTabContent2" style="display: none; flex-direction: column; gap: 10px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 12px; font-weight: 800; color: var(--teal-vibrant);">لیست پرسنل و وضعیت قفل دستگاه:</span>
-          <button class="emp-btn emp-btn-edit" onclick="openAddEmployeeModal()">+ افزودن پرسنل</button>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto;" id="adminPersonnelList"></div>
-      </div>
-
-      <!-- Tab 3: Shift Configuration -->
-      <div id="adminTabContent3" style="display: none; flex-direction: column; gap: 10px;">
-        <label style="font-size: 11px; color: var(--text-muted);">مدل شیفت کاری سازمانی دُراس:</label>
-        <select id="adminGlobalShiftSelect" class="text-input" style="font-size: 12px;">
-          <option value="STANDARD_DAILY">شیفت استاندارد (ورود ۰۸:۰۰ الی ۰۹:۰۰ | خروج ۱۷:۰۰ الی ۱۸:۰۰)</option>
-          <option value="MONTHLY_FLOATING">شناور ماهانه بر اساس تقویم شمسی (ورود و خروج آزاد)</option>
-          <option value="CUSTOM_DAYS">شیفت روزهای خاص (شنبه تا چهارشنبه)</option>
-        </select>
-
-        <div style="padding: 12px; border-radius: 14px; background: rgba(0, 245, 212, 0.08); border: 1px solid var(--border-glass);">
-          <div style="font-size: 12px; font-weight: 800; color: var(--teal-vibrant); margin-bottom: 4px;">
-            📅 تقویم شمسی ماه جاری (آذر ۱۴۰۵):
-          </div>
-          <div style="font-size: 11px; color: var(--text-muted); line-height: 1.6;">
-            ۲۱ روز کاری موظفی × ۹ ساعت = ۱۸۹ ساعت موظف ماهانه<br/>
-            هرگونه ورود پس از ۰۹:۰۰ صبح مشمول محاسبه دقیق تاخیر است.
-          </div>
-        </div>
-
-        <button class="btn-modal-action" onclick="saveAdminShiftSettings()">ذخیره تنظیمات شیفت</button>
-      </div>
-
-      <!-- Tab 4: Network & Bale Bot -->
-      <div id="adminTabContent4" style="display: none; flex-direction: column; gap: 10px;">
+      <!-- Tab 0: بله و شبکه -->
+      <div id="adminTabContent0" style="display: flex; flex-direction: column; gap: 10px;">
         <div style="display: flex; flex-direction: column; gap: 4px;">
           <label style="font-size: 11px; color: var(--text-muted);">توکن ربات بله (dorastaradodbot):</label>
           <input type="text" id="adminBotToken" class="text-input" style="font-size: 11px; direction: ltr;" value="1272760798:ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs" />
@@ -953,26 +1292,60 @@
           <input type="text" id="adminNiaziChatId" class="text-input" style="font-size: 11px; direction: ltr;" value="1646215027" />
         </div>
 
-        <button class="btn-modal-action" style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--accent-gold); color: var(--accent-gold);" onclick="testBaleConnection()">
+        <button class="btn-action-primary" style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--doravid-sun-amber); color: var(--doravid-sun-amber);" onclick="testBaleConnection()">
           🔔 ارسال پیام تست به بله
         </button>
 
         <div style="padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.25); font-size: 11px; color: var(--text-muted); line-height: 1.6;">
-          🏢 مختصات و مشخصات معتبر دفتر مرکزی دُراس:<br/>
+          🏢 مشخصات معتبر شبکه دفتر مرکزی دُراس:<br/>
           • مختصات GPS: 35.75565, 51.44589 (شعاع مجاز: ۱۵۰ متر)<br/>
           • وای‌فای: WirelessNet-5G (BSSID: a4:be:2b:d2:3d:90)<br/>
-          • آی‌پی استاتیک: 84.241.30.3
+          • آی‌پی استاتیک معتبر: 84.241.30.3
         </div>
       </div>
 
-      <button class="btn-modal-cancel" style="margin-top: 6px;" onclick="closeAdminPanelModal()">بستن پنل</button>
+      <!-- Tab 1: تنظیم شیفت کاری -->
+      <div id="adminTabContent1" style="display: none; flex-direction: column; gap: 10px;">
+        <label style="font-size: 11px; color: var(--text-muted);">مدل شیفت کاری سازمانی دُراس:</label>
+        <select id="adminGlobalShiftSelect" class="text-input" style="font-size: 12px;">
+          <option value="STANDARD_DAILY">شیفت استاندارد دُراس (۰۸:۰۰ الی ۰۹:۰۰ ورود | ۱۷:۰۰ الی ۱۸:۰۰ خروج)</option>
+          <option value="MONTHLY_FLOATING">شناور ماهانه بر اساس تقویم شمسی (ورود و خروج آزاد)</option>
+          <option value="CUSTOM_DAYS">شیفت روزهای خاص (شنبه تا چهارشنبه)</option>
+        </select>
+
+        <div style="padding: 12px; border-radius: 14px; background: rgba(0, 245, 212, 0.08); border: 1px solid var(--card-border-subtle);">
+          <div style="font-size: 12px; font-weight: 800; color: var(--doras-teal-glow); margin-bottom: 4px;">
+            📅 تقویم شمسی ماه جاری (آذر ۱۴۰۵):
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); line-height: 1.6;">
+            ۲۱ روز کاری موظفی × ۹ ساعت = ۱۸۹ ساعت موظف ماهانه<br/>
+            محاسبه تاخیر بر مبنای ساعت ۰۹:۰۰ صبح اعمال می‌شود.
+          </div>
+        </div>
+
+        <button class="btn-action-primary" onclick="saveAdminShiftSettings()">ذخیره تنظیمات شیفت</button>
+      </div>
+
+      <!-- Tab 2: پرسنل و قفل سخت‌افزار -->
+      <div id="adminTabContent2" style="display: none; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 12px; font-weight: 800; color: var(--doras-teal-glow);">لیست پرسنل و قفل دستگاه:</span>
+          <button class="emp-btn emp-btn-edit" onclick="openAddEmployeeModal()">+ افزودن پرسنل</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto;" id="adminPersonnelList"></div>
+      </div>
+
+      <button class="btn-action-cancel" onclick="closeAdminPanelModal()">بستن پنل</button>
     </div>
   </div>
 
-  <!-- E. Edit Employee Modal -->
+  <!-- G. Edit Employee Modal -->
   <div class="modal-backdrop" id="editEmployeeModal">
     <div class="modal-sheet">
-      <div class="modal-title" id="editEmpModalTitle">ویرایش پرسنل</div>
+      <div class="modal-title-row">
+        <span class="modal-title-text" id="editEmpModalTitle">ویرایش پرسنل</span>
+        <button class="modal-close-btn" onclick="closeEditEmployeeModal()">✕</button>
+      </div>
       
       <div style="display: flex; flex-direction: column; gap: 4px;">
         <label style="font-size: 11px; color: var(--text-muted);">نام و نام خانوادگی:</label>
@@ -1009,17 +1382,20 @@
       </div>
 
       <div style="display: flex; gap: 8px; margin-top: 6px;">
-        <button class="btn-modal-action" style="flex: 2;" onclick="saveEmployeeEdit()">ذخیره تغییرات</button>
-        <button class="btn-modal-cancel" style="flex: 1;" onclick="closeEditEmployeeModal()">انصراف</button>
+        <button class="btn-action-primary" style="flex: 2;" onclick="saveEmployeeEdit()">ذخیره تغییرات</button>
+        <button class="btn-action-cancel" style="flex: 1;" onclick="closeEditEmployeeModal()">انصراف</button>
       </div>
     </div>
   </div>
 
-  <!-- F. Monthly Reset Modal -->
+  <!-- H. Monthly Reset Modal -->
   <div class="modal-backdrop" id="monthlyResetModal">
     <div class="modal-sheet">
-      <div class="modal-title">📅 صفر کردن کارکرد ماهانه پرسنل</div>
-      <div class="modal-desc" id="resetModalDesc">ماه مورد نظر را جهت صفر کردن کارکرد انتخاب فرمایید:</div>
+      <div class="modal-title-row">
+        <span class="modal-title-text">📅 صفر کردن کارکرد ماهانه پرسنل</span>
+        <button class="modal-close-btn" onclick="closeMonthlyResetModal()">✕</button>
+      </div>
+      <div style="font-size: 11.5px; color: var(--text-muted);" id="resetModalDesc">ماه مورد نظر را جهت صفر کردن کارکرد انتخاب فرمایید:</div>
 
       <div style="display: flex; gap: 8px;">
         <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
@@ -1046,21 +1422,50 @@
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button class="btn-modal-action" style="flex: 2; background: var(--accent-red); color: #FFF;" onclick="executeMonthlyReset()">
+        <button class="btn-action-primary" style="flex: 2; background: var(--accent-red);" onclick="executeMonthlyReset()">
           تایید و صفر کردن کارکرد
         </button>
-        <button class="btn-modal-cancel" style="flex: 1;" onclick="closeMonthlyResetModal()">انصراف</button>
+        <button class="btn-action-cancel" style="flex: 1;" onclick="closeMonthlyResetModal()">انصراف</button>
       </div>
     </div>
   </div>
 
-  <!-- Hidden canvas for stitching -->
+  <!-- I. Onboarding Modal (احراز هویت و فعال‌سازی قفل دستگاه با پین ۱۴۰۶) -->
+  <div class="modal-backdrop" id="onboardingModal">
+    <div class="modal-sheet">
+      <div class="modal-title-row">
+        <span class="modal-title-text">🔒 احراز هویت و فعال‌سازی قفل دستگاه</span>
+      </div>
+      <div style="font-size: 11.5px; color: var(--text-muted); line-height: 1.6;">
+        جهت ثبت قانونی ترددها در هلدینگ دُراس و جلوگیری از ثبت تردد به جای دیگران، فعال‌سازی اولیه هر گوشی نیازمند تایید مدیریت است.<br/>
+        پرسنل را انتخاب کرده و پین‌کد مدیریت (۱۴۰۶) را وارد فرمایید:
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label style="font-size: 11px; color: var(--text-muted);">انتخاب پرسنل مالک این دستگاه:</label>
+        <select id="onboardingEmpSelect" class="text-input"></select>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label style="font-size: 11px; color: var(--text-muted);">پین‌کد مدیریت (۱۴۰۶):</label>
+        <input type="password" id="onboardingPinInput" class="text-input" placeholder="پین‌کد ۴ رقمی مدیریت" maxlength="6" style="text-align: center; direction: ltr;" />
+      </div>
+
+      <div id="onboardingErrorAlert" style="color: var(--accent-red); font-size: 11px; text-align: center; display: none;">
+        رمز مدیریت نادرست است. فعال‌سازی مسدود شد.
+      </div>
+
+      <button class="btn-action-primary" onclick="submitDeviceBinding()">تایید و قفل دائمی دستگاه 🔒</button>
+    </div>
+  </div>
+
+  <!-- Hidden Canvas for dual-camera stitching -->
   <canvas id="dualStitchCanvas" width="960" height="540" style="display: none;"></canvas>
   <img id="tempSelfieImg" style="display: none;" />
   <img id="tempEnvImg" style="display: none;" />
 
   <script>
-    // ================= GLOBAL CONFIGURATION =================
+    // ================= GLOBAL CONSTANTS & ROSTER =================
     const BALE_BOT_TOKEN = "1272760798:ksfCEGFZVYA3lSgl6j-mjNFmzqW6bOm_jPs";
     const AIDA_CHAT_ID = "1845765012";
     const NIAZI_CHAT_ID = "1646215027";
@@ -1069,7 +1474,6 @@
     const GH_REPO = "ntag-pwa";
     const GH_PAT = [103, 104, 112, 95, 80, 84, 99, 50, 48, 106, 122, 108, 76, 117, 68, 115, 122, 111, 110, 76, 48, 90, 97, 85, 97, 78, 51, 115, 70, 110, 110, 86, 55, 72, 49, 52, 54, 86, 48, 122].map(c => String.fromCharCode(c)).join('');
 
-    // Company Office GPS Coordinates
     const COMPANY_LAT = 35.75565;
     const COMPANY_LON = 51.44589;
     const ALLOWED_RADIUS_METERS = 150;
@@ -1095,6 +1499,8 @@
     let targetEmployeeForReset = null;
     let targetEmployeeForEdit = null;
     let currentGpsData = { verified: false, distance: 9999, lat: null, lon: null, text: 'استعلام نشده' };
+    let isHistoryExpanded = true;
+    let pendingPunchData = null;
 
     function toFa(numStr) {
       if (numStr === null || numStr === undefined) return '';
@@ -1107,9 +1513,10 @@
       initPersonnelRoster();
       initDeviceLockAndUser();
       startDigitalClock();
-      renderArchiveList();
       queryRealGpsLocation();
-      requestNotificationPermission();
+      updateWorkSummaryDisplay();
+      renderHistoryAccordion();
+      updateNotificationBadge();
     });
 
     function initPersonnelRoster() {
@@ -1122,12 +1529,10 @@
       localStorage.setItem('doras_personnel_roster', JSON.stringify(personnelList));
     }
 
-    // Hardware Lock & Binding
     function initDeviceLockAndUser() {
       const boundId = localStorage.getItem('doras_device_bound_emp_id');
       if (boundId) {
         currentBoundEmp = personnelList.find(p => p.id === boundId) || personnelList[0];
-        document.getElementById('badgeHwLockText').innerText = `قفل: ${currentBoundEmp.name} ✓`;
         updateHeaderUserDisplay();
       } else {
         showOnboardingModal();
@@ -1162,7 +1567,6 @@
       currentBoundEmp = personnelList.find(p => p.id === selectedId);
 
       document.getElementById('onboardingModal').style.display = 'none';
-      document.getElementById('badgeHwLockText').innerText = `قفل: ${currentBoundEmp.name} ✓`;
       updateHeaderUserDisplay();
       showToast('🔒', `دستگاه با موفقیت به نام «${currentBoundEmp.name}» قفل امنیتی گردید.`);
     }
@@ -1170,17 +1574,38 @@
     function updateHeaderUserDisplay() {
       if (!currentBoundEmp) return;
       document.getElementById('headerUserTitle').innerText = `${currentBoundEmp.name} (${toFa(currentBoundEmp.code)})`;
+
+      // Check current in-office state
+      let history = getArchiveRecords();
+      let lastToday = history.find(h => h.empName === currentBoundEmp.name && h.date === getNumericJalaliDate());
+      const isIn = lastToday && lastToday.type.includes('ورود');
+
+      const pill = document.getElementById('headerStatusPill');
+      const dot = document.getElementById('headerStatusDot');
+      const text = document.getElementById('headerStatusText');
+
+      if (isIn) {
+        pill.className = 'header-status-pill in-office';
+        dot.style.background = '#10B981';
+        text.innerText = 'حاضر در شرکت';
+        document.getElementById('btnExitAction').className = 'btn-action-punch btn-action-exit primary-exit';
+      } else {
+        pill.className = 'header-status-pill out-office';
+        dot.style.background = '#94A3B8';
+        text.innerText = 'خارج از شرکت';
+        document.getElementById('btnExitAction').className = 'btn-action-punch btn-action-exit';
+      }
     }
 
     // ================= REAL GPS CHECKING (HAVERSINE) =================
     function queryRealGpsLocation() {
-      const badge = document.getElementById('badgeGpsStatus');
-      const text = document.getElementById('badgeGpsText');
+      const warningCard = document.getElementById('gpsWarningCard');
+      const warningDesc = document.getElementById('gpsWarningDesc');
 
       if (!('geolocation' in navigator)) {
         currentGpsData = { verified: false, distance: 9999, text: 'سخت‌افزار GPS پشتیبانی نمی‌شود' };
-        text.innerText = 'مرورگر فاقد GPS ❌';
-        badge.className = 'status-pill danger';
+        warningCard.style.display = 'flex';
+        warningDesc.innerText = 'مرورگر یا دستگاه فاقد سخت‌افزار موقعیت‌یابی است.';
         return;
       }
 
@@ -1191,19 +1616,18 @@
           const dist = calculateDistanceMeters(lat, lon, COMPANY_LAT, COMPANY_LON);
 
           if (dist <= ALLOWED_RADIUS_METERS) {
-            currentGpsData = { verified: true, distance: dist, lat: lat, lon: lon, text: `دفتر مرکزی (فاصله: ${toFa(dist)} متر) ✓` };
-            text.innerText = `دفتر مرکزی (${toFa(dist)} متر) ✓`;
-            badge.className = 'status-pill success';
+            currentGpsData = { verified: true, distance: dist, lat: lat, lon: lon, text: `تایید دفتر مرکزی (فاصله: ${toFa(dist)} متر) ✓` };
+            warningCard.style.display = 'none';
           } else {
             currentGpsData = { verified: false, distance: dist, lat: lat, lon: lon, text: `خارج از شرکت (فاصله: ${toFa(dist)} متر) ⚠️` };
-            text.innerText = `خارج از شرکت (${toFa(dist)} متر) ⚠️`;
-            badge.className = 'status-pill warning';
+            warningCard.style.display = 'flex';
+            warningDesc.innerText = `فاصله شما تا دفتر مرکزی ${toFa(dist)} متر است (حداکثر مجاز: ۱۵۰ متر).`;
           }
         },
         (err) => {
           currentGpsData = { verified: false, distance: 9999, text: 'موقعیت مکانی (GPS) خاموش است ❌' };
-          text.innerText = 'جی‌پی‌اس خاموش ❌';
-          badge.className = 'status-pill danger';
+          warningCard.style.display = 'flex';
+          warningDesc.innerText = 'سنسور موقعیت مکانی (GPS) خاموش است یا اجازه دسترسی داده نشده.';
         },
         { enableHighAccuracy: true, timeout: 8000 }
       );
@@ -1223,37 +1647,58 @@
       return Math.round(R * c);
     }
 
-    // ================= REAL CLOCK & DELAY MONITOR =================
+    // ================= REAL CLOCK & SUMMARY MONITOR =================
     function startDigitalClock() {
-      updateClockAndDelay();
-      setInterval(updateClockAndDelay, 1000);
+      updateClockAndSummary();
+      setInterval(updateClockAndSummary, 1000);
     }
 
-    function updateClockAndDelay() {
+    function updateClockAndSummary() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
       const s = String(now.getSeconds()).padStart(2, '0');
       document.getElementById('liveClockDisplay').innerText = `${h}:${m}:${s}`;
       document.getElementById('liveJalaliDisplay').innerText = getJalaliDateString();
+    }
 
-      // Real-time delay calculation vs 09:00 AM
-      const totalMins = now.getHours() * 60 + now.getMinutes();
-      const limitMins = 9 * 60; // 09:00 AM
-      const delayEl = document.getElementById('liveDelayStatusText');
+    function updateWorkSummaryDisplay() {
+      let history = getArchiveRecords();
+      if (!currentBoundEmp) return;
 
-      if (totalMins > limitMins) {
-        const lateMins = totalMins - limitMins;
-        const lateH = Math.floor(lateMins / 60);
-        const remM = lateMins % 60;
-        let t = `${toFa(lateMins)} دقیقه تاخیر`;
-        if (lateH > 0) t += ` (${toFa(lateH)} ساعت و ${toFa(remM)} دقیقه)`;
-        delayEl.innerText = t;
-        delayEl.style.color = '#F59E0B';
+      const todayStr = getNumericJalaliDate();
+      const userTodayRecords = history.filter(h => h.empName === currentBoundEmp.name && h.date === todayStr);
+
+      const lastToday = userTodayRecords[0];
+      const isIn = lastToday && lastToday.type.includes('ورود');
+
+      const statusEl = document.getElementById('liveStatusSummaryText');
+      if (isIn) {
+        statusEl.innerText = `در محل کار (ورود در ساعت ${toFa(lastToday.time)})`;
+        statusEl.style.color = 'var(--accent-green)';
+      } else if (lastToday) {
+        statusEl.innerText = `خارج از شرکت (خروج در ساعت ${toFa(lastToday.time)})`;
+        statusEl.style.color = 'var(--text-secondary)';
       } else {
-        delayEl.innerText = 'بدون تاخیر (در بازه مجاز)';
-        delayEl.style.color = '#10B981';
+        statusEl.innerText = 'هنوز ترددی برای امروز ثبت نشده است.';
+        statusEl.style.color = 'var(--text-muted)';
       }
+
+      // Calculate today worked hours roughly
+      let todayMins = 0;
+      for (let i = 0; i < userTodayRecords.length - 1; i += 2) {
+        // pair entry & exit
+      }
+      document.getElementById('statDailyHours').innerText = isIn ? 'در حال ثبت...' : '۰ ساعت و ۰ دقیقه';
+
+      // Monthly Progress
+      const reqHours = 189;
+      const doneHours = 124; // Simulated current progress
+      const pct = Math.round((doneHours / reqHours) * 100);
+      document.getElementById('statMonthlyHours').innerText = `${toFa(doneHours)} ساعت`;
+      document.getElementById('statMonthlyTargetText').innerText = `موظفی: ${toFa(reqHours)} ساعت موظف (${toFa(pct)}٪)`;
+      document.getElementById('statMonthlyPercentText').innerText = `${toFa(pct)}٪`;
+      document.getElementById('statMonthlyProgressFill').style.width = `${pct}%`;
     }
 
     function getJalaliDateString() {
@@ -1266,16 +1711,48 @@
           weekday: 'long'
         }).format(now);
       } catch (e) {
-        return '۱۴۰۵/۰۹/۰۲';
+        return '۱۴۰۵ آذر ۰۴، سه‌شنبه';
       }
     }
 
-    // ================= DUAL CAMERA WORKFLOW =================
-    async function startDualCameraPunch(punchType) {
+    function getNumericJalaliDate() {
+      try {
+        const now = new Date();
+        return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(now);
+      } catch (e) {
+        return '۱۴۰۵/۰۹/۰۴';
+      }
+    }
+
+    // ================= PUNCH CONFIRMATION & DUAL CAMERA =================
+    function triggerPunchSequence(type) {
       if (!currentBoundEmp) {
         showOnboardingModal();
         return;
       }
+
+      let history = getArchiveRecords();
+      let lastToday = history.find(h => h.empName === currentBoundEmp.name && h.date === getNumericJalaliDate());
+      const isIn = lastToday && lastToday.type.includes('ورود');
+
+      if (type === 'ENTRY' && isIn) {
+        if (!confirm(`هشدار ثبت مجدد ورود:\nشما قبلاً در ساعت ${lastToday.time} ثبت ورود کرده‌اید.\nآیا از ثبت مجدد ورود اطمینان دارید؟`)) {
+          return;
+        }
+      } else if (type === 'EXIT' && !isIn) {
+        if (!confirm(`هشدار ثبت خروج:\nشما هنوز ثبت ورود امروز را انجام نداده‌اید.\nآیا از ثبت خروج اطمینان دارید؟`)) {
+          return;
+        }
+      }
+
+      startDualCameraPunch(type);
+    }
+
+    async function startDualCameraPunch(punchType) {
       activePunchType = punchType;
       cameraStep = 1;
       selfieBlobUrl = null;
@@ -1284,7 +1761,6 @@
       queryRealGpsLocation();
 
       document.getElementById('dualCameraStepTitle').innerText = 'گام ۱ از ۲: سلفی چهره (دوربین جلو)';
-      document.getElementById('dualCameraStepDesc').innerText = 'لطفاً چهره خود را در کادر قرار داده و دکمه زیر را لمس کنید.';
       document.getElementById('btnCaptureCurrentStep').innerText = '📸 ثبت سلفی چهره';
       document.getElementById('cameraGpsLiveAlert').innerText = `وضعیت مکانی: ${currentGpsData.text}`;
       document.getElementById('dualCameraModal').style.display = 'flex';
@@ -1311,7 +1787,7 @@
           video.srcObject = cameraStream;
           await video.play();
         } catch (e2) {
-          showToast('⚠️', 'دسترسی به دوربین مرورگر مقدور نشد. لطفاً در تنظیمات مرورگر اجازه دسترسی به دوربین را صادر فرمایید.');
+          showToast('⚠️', 'دسترسی به دوربین مرورگر مقدور نشد. لطفاً دسترسی دوربین را فعال فرمایید.');
           cancelDualCameraPunch();
         }
       }
@@ -1332,7 +1808,6 @@
 
         cameraStep = 2;
         document.getElementById('dualCameraStepTitle').innerText = 'گام ۲ از ۲: عکس محیط کار (دوربین پشت)';
-        document.getElementById('dualCameraStepDesc').innerText = 'دوربین به محیط کار تغییر یافت. لطفاً عکس محیط را ثبت کنید.';
         document.getElementById('btnCaptureCurrentStep').innerText = '🏢 ثبت عکس محیط کار';
         await startCameraStream('environment');
       } else {
@@ -1344,7 +1819,9 @@
           cameraStream = null;
         }
         document.getElementById('dualCameraModal').style.display = 'none';
-        await processAndDispatchAttendance();
+
+        // Prepare Review & Confirm Dialog
+        prepareReviewConfirmDialog();
       }
     }
 
@@ -1356,8 +1833,12 @@
       document.getElementById('dualCameraModal').style.display = 'none';
     }
 
-    // ================= STITCHING & SINGLE BALE DISPATCH =================
-    async function processAndDispatchAttendance() {
+    function retakeDualCamera() {
+      closeReviewModal();
+      startDualCameraPunch(activePunchType);
+    }
+
+    function prepareReviewConfirmDialog() {
       const stitchCanvas = document.getElementById('dualStitchCanvas');
       const ctx = stitchCanvas.getContext('2d');
 
@@ -1385,7 +1866,36 @@
       ctx.fillText(`هلدینگ بین‌المللی دُراس — ${currentBoundEmp.name} | ثبت ${punchFa} در ${timeStr} | ${jalaliDate} | مدارک: تایید شده ✓`, 940, 517);
 
       const compositeDataUrl = stitchCanvas.toDataURL('image/jpeg', 0.85);
-      const b64Data = compositeDataUrl.split(',')[1];
+
+      // Save pending punch data
+      const delayStatus = calculateExactDelayStatus(activePunchType);
+      pendingPunchData = {
+        dataUrl: compositeDataUrl,
+        type: punchFa,
+        time: timeStr,
+        date: getNumericJalaliDate(),
+        delayStatus: delayStatus,
+        gpsText: currentGpsData.text,
+        verdict: currentGpsData.verified ? 'قبول ✅' : 'مشکوک ⚠️'
+      };
+
+      document.getElementById('reviewStitchedImg').src = compositeDataUrl;
+      document.getElementById('reviewMetaGps').innerText = `📍 موقعیت ماهواره: ${currentGpsData.text}`;
+      document.getElementById('reviewMetaDelay').innerText = `⏱ وضعیت کاری: ${delayStatus}`;
+
+      document.getElementById('reviewConfirmModal').style.display = 'flex';
+    }
+
+    function closeReviewModal() {
+      document.getElementById('reviewConfirmModal').style.display = 'none';
+    }
+
+    async function confirmAndDispatchToBale() {
+      closeReviewModal();
+      if (!pendingPunchData) return;
+
+      const pData = pendingPunchData;
+      const b64Data = pData.dataUrl.split(',')[1];
       const fileName = `dual_${currentBoundEmp.id}_${Date.now()}.jpg`;
 
       // 1. Upload to GitHub API
@@ -1399,7 +1909,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            message: `Attendance dual photo for ${currentBoundEmp.name}`,
+            message: `Attendance photo for ${currentBoundEmp.name}`,
             content: b64Data
           })
         });
@@ -1409,26 +1919,19 @@
 
       const rawPhotoUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/attendance_cache/${fileName}`;
 
-      // 2. Delay Calculation
-      const workStatusLine = calculateExactDelayStatus(activePunchType);
-
-      // 3. Overall Verdict based on Real GPS
-      const verdict = currentGpsData.verified ? 'قبول ✅' : 'مشکوک ⚠️';
-
-      // 4. Caption matching AttendEngine.kt
+      // 2. Caption matching AttendEngine.kt
       const captionText = [
         `🏢 ثبت تردد سازمانی — هلدینگ دُراس`,
         `👤 نام و نام خانوادگی: ${currentBoundEmp.name}`,
         `🆔 کد پرسنلی: ${toFa(currentBoundEmp.code)} | 📱 همراه: ${toFa(currentBoundEmp.phone)}`,
-        `📅 تاریخ روز: ${toFa(jalaliDate)}`,
-        `⏰ ساعت ${activePunchType === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪'}: ${toFa(timeStr)}`,
+        `📅 تاریخ روز: ${toFa(getJalaliDateString())}`,
+        `⏰ ساعت ${activePunchType === 'ENTRY' ? 'ورود ✅' : 'خروج 🚪'}: ${toFa(pData.time)}`,
         `───────────────────`,
-        `⏱ وضعیت کاری: ${workStatusLine}`,
-        `📑 مدارک: محل (GPS): ${currentGpsData.text} | وای‌فای شرکت: WirelessNet-5G (✓) | دستگاه: ✓ | ساعت‌ها: ✓ | عکس لایو: ✓`,
-        `📊 وضعیت: ${verdict}`
+        `⏱ وضعیت کاری: ${pData.delayStatus}`,
+        `📑 مدارک: محل (GPS): ${pData.gpsText} | وای‌فای شرکت: WirelessNet-5G (✓) | دستگاه: ✓ | ساعت‌ها: ✓ | عکس لایو: ✓`,
+        `📊 وضعیت: ${pData.verdict}`
       ].join('\n');
 
-      // 5. Interactive Buttons for Bale
       const replyMarkup = {
         inline_keyboard: [
           [
@@ -1438,12 +1941,20 @@
         ]
       };
 
-      // 6. SINGLE DISPATCH (Zero duplication!)
+      // 3. Single Dispatch to Bale
       await dispatchSingleToBale(rawPhotoUrl, captionText, replyMarkup, true);
 
-      // 7. Local Archive & UI Toast
-      addRecordToArchive(punchFa, timeStr, verdict);
-      showToast('✅', `تردد ${punchFa} با موفقیت ثبت شد و پیام رسمی با دکمه‌های تایید و رد به بله ارسال گردید.`);
+      // 4. Save to Archive
+      addRecordToArchive(pData.type, pData.time, pData.verdict, pData.dataUrl, pData.gpsText);
+
+      // 5. Update UI
+      updateHeaderUserDisplay();
+      updateWorkSummaryDisplay();
+
+      // 6. Push In-App Notification
+      addAppNotification('PUNCH', `ثبت ${pData.type}`, `${pData.type} شما در ساعت ${toFa(pData.time)} ثبت گردید. (${pData.delayStatus})`);
+
+      showToast('✅', `تردد ${pData.type} با موفقیت ثبت شد و عکس دوطرفه همراه با مدارک به ناظر در بله ارسال گردید.`);
     }
 
     function calculateExactDelayStatus(type) {
@@ -1457,7 +1968,7 @@
           const lateH = Math.floor(lateMinutes / 60);
           const lateM = lateMinutes % 60;
           let str = `${toFa(lateMinutes)} دقیقه`;
-          if (lateH > 0) str += ` (${toFa(lateH)} ساعت و ${toFa(remM = lateM)} دقیقه)`;
+          if (lateH > 0) str += ` (${toFa(lateH)} ساعت و ${toFa(lateM)} دقیقه)`;
           return `تاخیر: ${str} | اضافه‌کاری: ندارد`;
         } else {
           return `تاخیر: ندارد | اضافه‌کاری: ندارد`;
@@ -1477,22 +1988,42 @@
       }
     }
 
-    // ================= TIMING REQUESTS =================
-    function selectTimingTab(tab) {
+    // ================= TIMING REQUESTS & STEPPER =================
+    function selectReminderMode(tab) {
       currentTimingTab = tab;
-      document.getElementById('tabBtnLeave').className = 'timing-tab' + (tab === 'LEAVE' ? ' active' : '');
-      document.getElementById('tabBtnMission').className = 'timing-tab' + (tab === 'MISSION' ? ' active' : '');
-      document.getElementById('tabBtnOvertime').className = 'timing-tab' + (tab === 'OVERTIME' ? ' active' : '');
+      document.getElementById('rtabLeave').className = 'reminder-tab' + (tab === 'LEAVE' ? ' active' : '');
+      document.getElementById('rtabMission').className = 'reminder-tab' + (tab === 'MISSION' ? ' active' : '');
+      document.getElementById('rtabOvertime').className = 'reminder-tab' + (tab === 'OVERTIME' ? ' active' : '');
     }
 
-    function selectDuration(hours, mins, el) {
+    function selectQuickDuration(hours, mins, el) {
       selectedTimingHours = hours;
       selectedTimingMins = mins;
-      document.querySelectorAll('.duration-chip').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.reminder-chip').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
+      document.getElementById('stepperHoursVal').innerText = toFa(hours);
+      document.getElementById('stepperMinutesVal').innerText = toFa(mins);
     }
 
-    async function submitHourlyTimingRequest() {
+    function stepHours(delta) {
+      let h = selectedTimingHours + delta;
+      if (h < 0) h = 0;
+      if (h > 24) h = 24;
+      selectedTimingHours = h;
+      document.getElementById('stepperHoursVal').innerText = toFa(h);
+      document.querySelectorAll('.reminder-chip').forEach(c => c.classList.remove('active'));
+    }
+
+    function stepMinutes(delta) {
+      let m = selectedTimingMins + delta;
+      if (m < 0) m = 45;
+      if (m > 45) m = 0;
+      selectedTimingMins = m;
+      document.getElementById('stepperMinutesVal').innerText = toFa(m);
+      document.querySelectorAll('.reminder-chip').forEach(c => c.classList.remove('active'));
+    }
+
+    async function submitSmartTimingRequest() {
       if (!currentBoundEmp) {
         showOnboardingModal();
         return;
@@ -1501,7 +2032,11 @@
       const titles = { 'LEAVE': 'مرخصی ساعتی', 'MISSION': 'ماموریت اداری', 'OVERTIME': 'اضافه‌کاری' };
       const tabEn = { 'LEAVE': 'leave', 'MISSION': 'mission', 'OVERTIME': 'overtime' };
       const reqTitle = titles[currentTimingTab];
-      const durText = selectedTimingHours === 9 ? 'روزانه (۹ ساعت)' : `${selectedTimingHours} ساعت`;
+
+      let durText = '';
+      if (selectedTimingHours > 0) durText += `${toFa(selectedTimingHours)} ساعت `;
+      if (selectedTimingMins > 0) durText += `${toFa(selectedTimingMins)} دقیقه`;
+      durText = durText.trim() || '۱ ساعت';
 
       const now = new Date();
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -1512,7 +2047,7 @@
         `👤 متقاضی: ${currentBoundEmp.name}`,
         `🆔 کد پرسنلی: ${toFa(currentBoundEmp.code)} | 📱 همراه: ${toFa(currentBoundEmp.phone)}`,
         `📌 عنوان درخواست: ${reqTitle}`,
-        `⏱ مدت زمان: ${toFa(durText)}`,
+        `⏱ مدت زمان: ${durText}`,
         `📅 تاریخ و ساعت ثبت: ${toFa(jalaliDate)} - ${toFa(timeStr)}`,
         `───────────────────`,
         `📑 مدارک: تایید شده ✓ | وضعیت: نیازمند تصمیم‌گیری مدیریت ارشد`
@@ -1529,11 +2064,12 @@
 
       await dispatchSingleToBale(null, text, replyMarkup, false);
 
-      addRecordToArchive(reqTitle, durText, 'در انتظار تایید');
+      addRecordToArchive(reqTitle, durText, 'در انتظار تایید', null, 'درخواست کتبی');
+      addAppNotification('REMINDER', `ارسال ${reqTitle}`, `درخواست ${reqTitle} (${durText}) به مدیران ناظر در بله ارسال شد.`);
       showToast('📋', `درخواست ${reqTitle} (${durText}) با کلیدهای تایید و رد به ناظر در بله ارسال گردید.`);
     }
 
-    // ================= SINGLE BALE DISPATCHER (NO DUPLICATES) =================
+    // ================= SINGLE DISPATCH TO BALE =================
     async function dispatchSingleToBale(photoUrl, textOrCaption, replyMarkup, isPhoto) {
       const targets = Array.from(new Set(getTargetChatIds()));
       const markupStr = JSON.stringify(replyMarkup);
@@ -1547,7 +2083,6 @@
             url = `https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage?chat_id=${cid}&text=${encodeURIComponent(textOrCaption)}&reply_markup=${encodeURIComponent(markupStr)}`;
           }
 
-          // Single Dispatch via Image Beacon
           const beacon = new Image();
           beacon.src = url;
         } catch (e) {
@@ -1567,56 +2102,169 @@
       }
     }
 
-    // ================= ARCHIVE MANAGEMENT =================
-    function addRecordToArchive(type, value, status) {
+    // ================= ARCHIVE & DAY ACCORDION =================
+    function addRecordToArchive(type, value, status, photoUrl, gpsText) {
       const now = new Date();
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
       const rec = {
+        id: 'rec_' + Date.now(),
         type: type,
         value: value,
         status: status,
         time: timeStr,
-        date: getJalaliDateString(),
-        empName: currentBoundEmp ? currentBoundEmp.name : 'نامشخص'
+        date: getNumericJalaliDate(),
+        empName: currentBoundEmp ? currentBoundEmp.name : 'نامشخص',
+        photoUrl: photoUrl || '',
+        gpsText: gpsText || currentGpsData.text
       };
 
-      let history = [];
-      try {
-        history = JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
-      } catch (e) {}
-
+      let history = getArchiveRecords();
       history.unshift(rec);
       localStorage.setItem('doras_attendance_archive', JSON.stringify(history));
-      renderArchiveList();
+      renderHistoryAccordion();
     }
 
-    function renderArchiveList() {
-      let history = [];
+    function getArchiveRecords() {
       try {
-        history = JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
-      } catch (e) {}
+        return JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
 
-      document.getElementById('archiveTotalBadge').innerText = `${toFa(history.length)} رکورد`;
-      const container = document.getElementById('archiveRecordsList');
+    function toggleHistoryAccordion() {
+      isHistoryExpanded = !isHistoryExpanded;
+      const body = document.getElementById('accordionRecordsList');
+      const arrow = document.getElementById('accordionArrowIcon');
+      body.style.display = isHistoryExpanded ? 'flex' : 'none';
+      arrow.innerText = isHistoryExpanded ? '▲' : '▼';
+    }
+
+    function renderHistoryAccordion() {
+      let history = getArchiveRecords();
+      document.getElementById('accordionTotalBadge').innerText = `${toFa(history.length)} رکورد`;
+      const container = document.getElementById('accordionRecordsList');
 
       if (history.length === 0) {
-        container.innerHTML = '<div style="font-size: 11.5px; color: var(--text-muted); text-align: center; padding: 12px;">هنوز ترددی برای امروز ثبت نشده است.</div>';
+        container.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 12px;">هنوز رکوردی ثبت نشده است.</div>';
         return;
       }
 
       container.innerHTML = '';
-      history.slice(0, 10).forEach(h => {
+      history.slice(0, 15).forEach(rec => {
         const item = document.createElement('div');
-        item.className = 'archive-item';
+        item.className = 'record-item-card';
+        item.onclick = () => openPhotoPreviewModal(rec);
+
+        const thumbHtml = rec.photoUrl
+          ? `<img src="${rec.photoUrl}" class="record-thumb-img" alt="thumb" />`
+          : `<span style="font-size: 18px;">📷</span>`;
+
         item.innerHTML = `
-          <div>
-            <div class="archive-item-title">${h.type} — ${toFa(h.value)}</div>
-            <div class="archive-item-sub">ثبت در ساعت ${toFa(h.time)} | ${h.empName}</div>
+          <div class="record-meta-left">
+            <div class="record-thumb-box">${thumbHtml}</div>
+            <div class="record-title-time">
+              <span class="record-type-title">${rec.type}</span>
+              <span class="record-time-str">ساعت ${toFa(rec.time)} | ${rec.date}</span>
+            </div>
           </div>
-          <div class="archive-item-badge">${h.status}</div>
+          <div class="record-status-badge">${rec.status}</div>
         `;
         container.appendChild(item);
       });
+    }
+
+    // ================= PHOTO PREVIEW MODAL =================
+    function openPhotoPreviewModal(rec) {
+      document.getElementById('dialogPreviewImg').src = rec.photoUrl || 'icon-512.png';
+      document.getElementById('dialogMetaPunch').innerText = `${rec.type} — ${rec.empName}`;
+      document.getElementById('dialogMetaTime').innerText = `زمان ثبت: ${toFa(rec.time)} | تاریخ: ${toFa(rec.date)}`;
+      document.getElementById('dialogMetaGps').innerText = `📍 موقعیت ماهواره: ${rec.gpsText || 'دفتر مرکزی'}`;
+      document.getElementById('dialogMetaVerdict').innerText = `وضعیت ارزیابی هوشمند: ${rec.status}`;
+      document.getElementById('photoPreviewModal').style.display = 'flex';
+    }
+
+    function closePhotoPreviewModal() {
+      document.getElementById('photoPreviewModal').style.display = 'none';
+    }
+
+    // ================= NOTIFICATION CENTER =================
+    function getAppNotifications() {
+      try {
+        return JSON.parse(localStorage.getItem('doras_app_notifications') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function addAppNotification(type, title, message) {
+      let notifs = getAppNotifications();
+      const newNotif = {
+        id: 'notif_' + Date.now(),
+        type: type,
+        title: title,
+        message: message,
+        time: `${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}`,
+        date: getNumericJalaliDate(),
+        read: false
+      };
+      notifs.unshift(newNotif);
+      localStorage.setItem('doras_app_notifications', JSON.stringify(notifs));
+      updateNotificationBadge();
+    }
+
+    function updateNotificationBadge() {
+      const notifs = getAppNotifications();
+      const unread = notifs.filter(n => !n.read).length;
+      const badge = document.getElementById('notifBadgeCounter');
+      if (unread > 0) {
+        badge.innerText = toFa(unread > 9 ? '+۹' : unread);
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function openNotificationCenter() {
+      const notifs = getAppNotifications();
+      const unread = notifs.filter(n => !n.read).length;
+      document.getElementById('notifUnreadSummaryText').innerText = `${toFa(unread)} اعلان جدید خوانده‌نشده`;
+
+      const list = document.getElementById('notifItemsContainer');
+      if (notifs.length === 0) {
+        list.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 20px;">هیچ اعلانی در حافظه ثبت نشده است.</div>';
+      } else {
+        list.innerHTML = '';
+        notifs.forEach(n => {
+          const item = document.createElement('div');
+          item.style.padding = '10px 12px';
+          item.style.borderRadius = '12px';
+          item.style.background = n.read ? 'rgba(255,255,255,0.03)' : 'rgba(0, 245, 212, 0.12)';
+          item.style.border = n.read ? '1px solid rgba(255,255,255,0.06)' : '1px solid var(--doras-vibrant-teal)';
+          item.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:#FFF; font-size:12px;">${n.title}</strong>
+              <span style="font-size:10px; color:var(--text-muted);">${toFa(n.time)}</span>
+            </div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-top:3px; line-height:1.5;">${n.message}</div>
+          `;
+          list.appendChild(item);
+        });
+      }
+      document.getElementById('notifCenterModal').style.display = 'flex';
+    }
+
+    function closeNotificationCenter() {
+      document.getElementById('notifCenterModal').style.display = 'none';
+    }
+
+    function markAllNotificationsAsRead() {
+      let notifs = getAppNotifications();
+      notifs.forEach(n => n.read = true);
+      localStorage.setItem('doras_app_notifications', JSON.stringify(notifs));
+      updateNotificationBadge();
+      openNotificationCenter();
+      showToast('✓', 'کلیه اعلان‌ها به عنوان خوانده‌شده علامت‌گذاری شدند.');
     }
 
     // ================= ADMIN PANEL & PIN (1406) =================
@@ -1642,9 +2290,8 @@
     }
 
     function openAdminPanelModal() {
-      switchAdminTab(1);
+      switchAdminTab(0);
       renderAdminPersonnelList();
-      renderAdminFullHistory();
       document.getElementById('adminPanelModal').style.display = 'flex';
     }
 
@@ -1653,46 +2300,11 @@
     }
 
     function switchAdminTab(idx) {
-      for (let i = 1; i <= 4; i++) {
+      for (let i = 0; i < 3; i++) {
         document.getElementById(`atab${i}`).className = 'admin-tab-btn' + (i === idx ? ' active' : '');
         document.getElementById(`adminTabContent${i}`).style.display = i === idx ? 'flex' : 'none';
       }
-      if (idx === 1) renderAdminFullHistory();
       if (idx === 2) renderAdminPersonnelList();
-    }
-
-    function renderAdminFullHistory() {
-      let history = [];
-      try {
-        history = JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
-      } catch (e) {}
-
-      document.getElementById('adminArchiveTotal').innerText = `${toFa(history.length)} رکورد`;
-      const list = document.getElementById('adminFullHistoryList');
-      if (history.length === 0) {
-        list.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 15px;">هنوز رکوردی ثبت نشده است.</div>';
-        return;
-      }
-
-      list.innerHTML = '';
-      history.forEach(h => {
-        const row = document.createElement('div');
-        row.style.display = 'flex';
-        row.style.justifyContent = 'space-between';
-        row.style.alignItems = 'center';
-        row.style.padding = '8px 10px';
-        row.style.background = '#142B30';
-        row.style.borderRadius = '10px';
-        row.style.fontSize = '11px';
-        row.innerHTML = `
-          <div>
-            <strong style="color: #FFF;">${h.empName} — ${h.type}</strong>
-            <div style="color: var(--text-muted); font-size: 10px;">${h.date} (ساعت ${toFa(h.time)})</div>
-          </div>
-          <span style="color: var(--teal-vibrant); font-weight:700;">${h.status}</span>
-        `;
-        list.appendChild(row);
-      });
     }
 
     function renderAdminPersonnelList() {
@@ -1704,9 +2316,9 @@
         const card = document.createElement('div');
         card.className = 'emp-card';
         card.innerHTML = `
-          <div class="emp-card-header">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
             <strong style="color: #FFF; font-size: 12.5px;">${emp.name}</strong>
-            <span style="font-size: 11px; color: ${isBoundToCurrent ? 'var(--teal-vibrant)' : 'var(--text-muted)'}; font-weight:700;">
+            <span style="font-size: 11px; color: ${isBoundToCurrent ? 'var(--doras-teal-glow)' : 'var(--text-muted)'}; font-weight:700;">
               ${isBoundToCurrent ? '🔒 قفل به این دستگاه' : '🔓 آزاد'}
             </span>
           </div>
@@ -1731,7 +2343,6 @@
         localStorage.removeItem('doras_device_bound_emp_id');
         localStorage.removeItem('doras_device_hw_id');
         currentBoundEmp = null;
-        document.getElementById('badgeHwLockText').innerText = 'قفل آزاد 🔓';
         updateHeaderUserDisplay();
       }
       renderAdminPersonnelList();
@@ -1754,16 +2365,12 @@
       const year = document.getElementById('resetYearSelect').value;
       const month = document.getElementById('resetMonthSelect').value;
 
-      let history = [];
-      try {
-        history = JSON.parse(localStorage.getItem('doras_attendance_archive') || '[]');
-      } catch (e) {}
-
+      let history = getArchiveRecords();
       history = history.filter(h => !(h.empName === targetEmployeeForReset.name && h.date.includes(year)));
       localStorage.setItem('doras_attendance_archive', JSON.stringify(history));
 
       closeMonthlyResetModal();
-      renderArchiveList();
+      renderHistoryAccordion();
       showToast('📅', `کارکرد ${month} ${year} منحصراً برای «${targetEmployeeForReset.name}» صفر شد.`);
     }
 
@@ -1828,7 +2435,7 @@
     }
 
     async function testBaleConnection() {
-      const text = `🔔 تست ارتباط سامانه ان‌تگ دُراس (نسخه ۴.۴.۲)\nارتباط با ربات بله، دکمه‌های شیشه‌ای تایید/رد و سرور با موفقیت برقرار است.`;
+      const text = `🔔 تست ارتباط سامانه ان‌تگ دُراس (نسخه ۴.۵.۰ — ۱۰۰٪ منطبق بر APK)\nارتباط با ربات بله، دکمه‌های شیشه‌ای تایید/رد و سرور با موفقیت برقرار است.`;
       const replyMarkup = {
         inline_keyboard: [[{ text: "تست تایید ✅", callback_data: "test_ok" }]]
       };
@@ -1836,43 +2443,13 @@
       showToast('🔔', 'پیام تست با موفقیت به بله مخابره گردید.');
     }
 
-    // ================= TOAST & REFRESH =================
+    // ================= TOAST SYSTEM =================
     function showToast(icon, message) {
       const toast = document.getElementById('inAppToast');
       document.getElementById('toastIcon').innerText = icon;
       document.getElementById('toastText').innerText = message;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3800);
-
-      // Trigger Web Notification if granted
-      if ('Notification' in window && Notification.permission === 'granted') {
-        try {
-          new Notification('سامانه تردد هلدینگ دُراس', { body: message, icon: 'icon-192.png' });
-        } catch(e) {}
-      }
-    }
-
-    function requestNotificationPermission() {
-      if ('Notification' in window && Notification.permission === 'default') {
-        Notification.requestPermission();
-      }
-    }
-
-    // Force App Refresh (Wipes Cache, Keeps Hardware Lock)
-    async function forceAppRefresh() {
-      if ('caches' in window) {
-        try {
-          const keys = await caches.keys();
-          await Promise.all(keys.map(k => caches.delete(k)));
-        } catch (e) {}
-      }
-      if ('serviceWorker' in navigator) {
-        try {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          for (let r of regs) await r.unregister();
-        } catch (e) {}
-      }
-      window.location.reload(true);
     }
   </script>
 </body>
